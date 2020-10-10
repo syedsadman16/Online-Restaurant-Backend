@@ -1,0 +1,5 @@
+INSERT INTO test VALUES (1,'t1');
+INSERT INTO test VALUES (2,'t2');
+INSERT INTO test VALUES (3,'t3');
+INSERT INTO test VALUES (4,'t4');
+COMMIT;
