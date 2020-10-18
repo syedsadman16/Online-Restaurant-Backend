@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.cs322.ors.db.UserRepository;
 import com.cs322.ors.security.filters.JwtAuthenticationFilter;
+import com.cs322.ors.security.filters.JwtAuthorizationFilter;
 
 
 @Configuration
@@ -42,6 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     	.headers().frameOptions().sameOrigin() //For DB GUI
     	.and()
     	.addFilter(new JwtAuthenticationFilter(authenticationManager()))
+    	.addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository))
     	.authorizeRequests()
         .antMatchers("/manager").hasRole("MANAGER")
         .antMatchers("/user").hasAnyRole("MANAGER", "USER")
