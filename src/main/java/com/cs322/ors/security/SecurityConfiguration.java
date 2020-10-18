@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.cs322.ors.db.UserRepository;
+import com.cs322.ors.security.filters.JwtAuthenticationFilter;
 
 
 @Configuration
@@ -40,6 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     	.and()
     	.headers().frameOptions().sameOrigin() //For DB GUI
     	.and()
+    	.addFilter(new JwtAuthenticationFilter(authenticationManager()))
     	.authorizeRequests()
         .antMatchers("/manager").hasRole("MANAGER")
         .antMatchers("/user").hasAnyRole("MANAGER", "USER")
