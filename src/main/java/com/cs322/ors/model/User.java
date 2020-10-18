@@ -31,13 +31,15 @@ public class User{
 
     public User(){}
 
-    public User(int id, String username, String password) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.enable = 1;
-        this.banned = 0;
-    }
+	public User(String username, String password, String roles, String permissions) {
+		this.username = username;
+		this.password = password;
+		this.roles = roles;
+		this.permissions = permissions;
+		this.enable = 1;
+		this.banned = 0;
+	}
+	
 
 	public long getId() {
 		return id;
