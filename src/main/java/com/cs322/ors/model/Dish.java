@@ -9,14 +9,25 @@ public class Dish {
 
     @Id
     private int dishId; 
-    private int price;
+	private int price;
     private String title;
     private String description;
     private String chefName;
     private String chefID;
     private String imageUrl;
 
-    public Dish() { }
+    public Dish() {
+    	
+    }
+
+    public Dish(int dishId, int price, String title, String description, String chefName, String chefID) {
+		this.dishId = dishId;
+		this.price = price;
+		this.title = title;
+		this.description = description;
+		this.chefName = chefName;
+		this.chefID = chefID;
+	}
 
     public Dish(int dishId, int price, String title, String description, String chefName, String chefID, String imageUrl) {
         this.dishId = dishId;
