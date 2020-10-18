@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -18,6 +19,7 @@ import com.cs322.ors.security.filters.JwtAuthorizationFilter;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	private UserPrincipalService userPrincipalService;
@@ -36,19 +38,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
+    	final JwtAuthenticationFilter AuthenticationFilter = new JwtAuthenticationFilter(authenticationManager());
+    	AuthenticationFilter.setFilterProcessesUrl("/api/auth");
+   	  	final JwtAuthorizationFilter AuthorizationFilter = new JwtAuthorizationFilter(authenticationManager(), userRepository);
+   	 
     	http
     	.csrf().disable()
     	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     	.and()
     	.headers().frameOptions().sameOrigin() //For DB GUI
     	.and()
-    	.addFilter(new JwtAuthenticationFilter(authenticationManager()))
-    	.addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository))
+    	.addFilter(AuthenticationFilter)
+    	.addFilter(AuthorizationFilter)
     	.authorizeRequests()
-        .antMatchers("/manager").hasRole("MANAGER")
-        .antMatchers("/user").hasAnyRole("MANAGER", "USER")
-        .antMatchers("/").permitAll()
-        .and().formLogin();
+    	.mvcMatchers("/h2-console/**").permitAll(); //For Db GUI
+
     }
 
     @Bean
@@ -63,4 +67,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		daoAuthenticationProvider.setUserDetailsService(userPrincipalService);
 		return daoAuthenticationProvider;
 	}
+    
+  
 }

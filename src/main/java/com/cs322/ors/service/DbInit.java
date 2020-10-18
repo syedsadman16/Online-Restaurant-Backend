@@ -19,7 +19,7 @@ public class DbInit implements CommandLineRunner{
 	
 	@Override
 	public void run(String... args) throws Exception {
-		User admin = new User("admin", "admin", "ADMIN", "");
+		User admin = new User("manager", "manager", "MANAGER", "");
 		User customer = new User("customer", "customer", "CUSTOMER", "");
 		
 		List<User> users = Arrays.asList(admin, customer);

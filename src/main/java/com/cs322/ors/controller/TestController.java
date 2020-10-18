@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,9 +20,28 @@ import com.cs322.ors.service.TestService;
 
 @RestController
 @RequestMapping("/api/test")
+@CrossOrigin
 public class TestController {
 	@Autowired
 	private TestService testService;
+	
+	@GetMapping("/surfer")
+	public String test1(){
+		return "This is a surfer usecase. No auth";
+	}
+	@GetMapping("/customer")
+	@PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
+	//@PreAuthorize("#username == authentication.name")
+	public String test2(){
+		return "This is a customer usecase. You are login";
+	}
+	
+	@GetMapping("/manager")
+	@PreAuthorize("hasAuthority('ROLE_MANAGER')")
+	//@PreAuthorize("#username == authentication.name")
+	public String test3(){
+		return "This is a manager usecase. You are login";
+	}
 	
 	@GetMapping
 	public List<Test> getAllTests(){
