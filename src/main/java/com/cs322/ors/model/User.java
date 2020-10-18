@@ -1,5 +1,10 @@
 package com.cs322.ors.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -7,38 +12,45 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name  = "User")
 public class User{
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private long userId; //PK
+    private long id; //PK
 
-    private String username; //need to define as unique
-    private String password;
-    private String role;
-    private boolean active;
-    private boolean closed;
+    @Column(nullable = false)
+	private String username;
+	
+	@Column(nullable = false,  unique=true)
+	private String password;
+	
+	private String roles;	
+	private String permissions;
+	private int enable; //Account closed (user can't login)
+    private int banned; // Account banned (user can login)
 
     public User(){}
 
-    public User(int userId, String username, String password) {
-        this.userId = userId;
+    public User(int id, String username, String password) {
+        this.id = id;
         this.username = username;
         this.password = password;
+        this.enable = 1;
+        this.banned = 0;
     }
 
-    public long getUserId() {
-        return userId;
-    }
+	public long getId() {
+		return id;
+	}
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+	public void setId(long id) {
+		this.id = id;
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	public String getUsername() {
+		return username;
+	}
+
 
     public void setUsername(String username) {
         this.username = username;
@@ -52,39 +64,57 @@ public class User{
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
-    }
+	public String getRoles() {
+		return roles;
+	}
 
-    public void setRole(String role) {
-        this.role = role;
-    }
+	public void setRoles(String roles) {
+		this.roles = roles;
+	}
 
-    public boolean isActive() {
-        return active;
-    }
+	public String getPermissions() {
+		return permissions;
+	}
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+	public void setPermissions(String permissions) {
+		this.permissions = permissions;
+	}
 
-    public boolean isClosed() {
-        return closed;
-    }
+	public int getEnable() {
+		return enable;
+	}
 
-    public void setClosed(boolean closed) {
-        this.closed = closed;
-    }
+	public void setEnable(int enable) {
+		this.enable = enable;
+	}
 
-    @Override
-    public String toString() {
-        return "User [active=" + active + ", closed=" + closed + ", password=" + password + ", role=" + role
-                + ", userId=" + userId + ", username=" + username + "]";
-    }
+	public int getBanned() {
+		return banned;
+	}
 
-    
-    //*
+	public void setBanned(int banned) {
+		this.banned = banned;
+	}
 
+	public List<String> getRoleList(){
+		if(roles.length() > 0) {
+			return Arrays.asList(roles.split(","));
+		}
+		return new ArrayList<>();
+	}
+	
+	public List<String> getPermissionList(){
+		if(permissions.length() > 0) {
+			return Arrays.asList(permissions.split(","));
+		}
+		return new ArrayList<>();
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", roles=" + roles
+				+ ", permissions=" + permissions + ", enable=" + enable + ", banned=" + banned + "]";
+	}
 
 
 }
