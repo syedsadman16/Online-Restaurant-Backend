@@ -11,7 +11,7 @@ public class Test {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	private String value;
-	
+
 	public long getId() {
 		return id;
 	}
