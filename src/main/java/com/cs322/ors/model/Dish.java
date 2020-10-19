@@ -8,19 +8,19 @@ import javax.websocket.server.ServerEndpoint;
 public class Dish {
 
     @Id
-    private int dishId; 
-	private int price;
-    private String title;
-    private String description;
-    private String chefName;
+    private long dishId; 
     private String chefID;
+    private String chefName;
+    private String description;
     private String imageUrl;
+	private double price;
+    private String title;
 
     public Dish() {
     	
     }
 
-    public Dish(int dishId, int price, String title, String description, String chefName, String chefID) {
+    public Dish(long dishId, double price, String title, String description, String chefName, String chefID) {
 		this.dishId = dishId;
 		this.price = price;
 		this.title = title;
@@ -29,7 +29,7 @@ public class Dish {
 		this.chefID = chefID;
 	}
 
-    public Dish(int dishId, int price, String title, String description, String chefName, String chefID, String imageUrl) {
+    public Dish(long dishId, double price, String title, String description, String chefName, String chefID, String imageUrl) {
         this.dishId = dishId;
         this.price = price;
         this.title = title;
@@ -39,7 +39,7 @@ public class Dish {
         this.imageUrl = imageUrl;
     }
 
-    public int getDishId() {
+    public long getDishId() {
         return dishId;
     }
 
@@ -47,12 +47,12 @@ public class Dish {
         this.dishId = dishId;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setPrice(double d) {
+        this.price = d;
     }
 
     public String getTitle() {

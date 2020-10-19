@@ -1,6 +1,7 @@
 package com.cs322.ors.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +26,7 @@ public class DishController {
 	}
 		
 	@RequestMapping("/Menu/{dishId}")
-	public Dish getDish(@PathVariable int dishId) {
+	public Optional<Dish> getDish(@PathVariable long dishId) {
 		return dishService.getDish(dishId);
 	}
 	
@@ -35,12 +36,12 @@ public class DishController {
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/Menu/{dishId}")
-	public void updateDish(@RequestBody Dish dish,@PathVariable int dishId) {
-		dishService.updateDish(dish);
+	public void updateDish(@RequestBody Dish dish,@PathVariable long dishId) {
+		dishService.updateDish(dish,dishId);
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE, value = "/Menu/{dishId}")
-	public void deleteDish(@RequestBody Dish dish,@PathVariable int dishId) {
+	public void deleteDish(@RequestBody Dish dish,@PathVariable long dishId) {
 		dishService.deleteDish(dish);
 	}
 	
