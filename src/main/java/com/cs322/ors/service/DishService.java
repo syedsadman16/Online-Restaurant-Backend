@@ -29,12 +29,10 @@ public class DishService {
 
 	public void addDish(Dish dish) {
 		dishRepository.save(dish);
-		
 	}
 
 	public void updateDish(Dish dish) {
 		dishRepository.save(dish);
-		
 	}
 
 	public void deleteDish(Dish dish) {

@@ -7,14 +7,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
+@RequestMapping("/Customer")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
 
-    @RequestMapping("/")
+    @GetMapping
     public List<Customer> getAllCustomers(){
         return customerService.getAllCustomers();
     }
@@ -25,12 +26,12 @@ public class CustomerController {
     }
 
     @RequestMapping(method=RequestMethod.PUT, value="/edit/{id}")
-    public void editCustomer(@RequestBody Customer customer, @PathVariable String id){
+    public void editCustomer(@RequestBody Customer customer, @PathVariable long id){
         customerService.editCustomer(customer, id);
     }
 
     @RequestMapping(method=RequestMethod.DELETE, value="/delete/{id}")
-    public void deleteCustomer(@RequestBody Customer customer, @PathVariable String id){
+    public void deleteCustomer(@RequestBody Customer customer, @PathVariable long id){
         customerService.deleteCustomer(customer, id);
     }
 

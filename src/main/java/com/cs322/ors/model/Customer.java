@@ -1,23 +1,25 @@
 package com.cs322.ors.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Customer {
 
     @Id
-    private String id;
+    @OrderBy
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private long id;
+    private double balance;
+    private String email;
     private String firstName;
     private String lastName;
-    private String email;
     private int phoneNumber;
-    private double balance;
+
 
 
     public Customer() { }
 
-    public Customer(String id, String firstName, String lastName, String email, int phoneNumber, double balance) {
+    public Customer(long id, String firstName, String lastName, String email, int phoneNumber, double balance) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -26,11 +28,11 @@ public class Customer {
         this.balance = balance;
     }
 
-    public String getId() {
+    public long getId() {
         return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
