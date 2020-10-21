@@ -39,7 +39,7 @@ public class UserService {
 		if (user != null) {
 			 // Map key is field name, v is value
 		    fields.forEach((k, v) -> {
-		       // use reflection to get field k on manager and set it to value v
+		       // use reflection to get field k on model and set it to value v
 		        Field field = ReflectionUtils.findField(User.class, (String) k);
 		        field.setAccessible(true);
 		        ReflectionUtils.setField(field, user, v);

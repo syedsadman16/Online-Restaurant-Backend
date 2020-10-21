@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -34,7 +36,7 @@ public class UserController {
 	}
 		
 	@PostMapping
-	public User createAccount(@RequestBody User newUser) {
+	public User createAccount(@Valid @RequestBody User newUser) {
 		return userService.createUser(newUser);
 	}
 	

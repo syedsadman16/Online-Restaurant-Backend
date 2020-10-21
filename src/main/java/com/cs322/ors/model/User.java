@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class User{
@@ -14,13 +16,18 @@ public class User{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id; //PK
 
-    @Column(nullable = false)
+    @NotBlank(message = "Username is mandatory")
+    @Size(min=1)
+    @Column(nullable = false, unique=true)
 	private String username;
 	
-	@Column(nullable = false,  unique=true)
+    @NotBlank(message = "Password is mandatory")
+	@Column(nullable = false)
 	private String password;
 	
+    @NotBlank(message = "Account type is mandatory")
 	private String role;	
+    
 	private int enable; //Account closed (user can't login)
     private int banned; // Account banned (user can login)
 
