@@ -1,15 +1,11 @@
 package com.cs322.ors.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
 public class User{
@@ -24,18 +20,16 @@ public class User{
 	@Column(nullable = false,  unique=true)
 	private String password;
 	
-	private String roles;	
-	private String permissions;
+	private String role;	
 	private int enable; //Account closed (user can't login)
     private int banned; // Account banned (user can login)
 
     public User(){}
 
-	public User(String username, String password, String roles, String permissions) {
+	public User(String username, String password, String role) {
 		this.username = username;
 		this.password = password;
-		this.roles = roles;
-		this.permissions = permissions;
+		this.role = role;
 		this.enable = 1;
 		this.banned = 0;
 	}
@@ -66,20 +60,12 @@ public class User{
         this.password = password;
     }
 
-	public String getRoles() {
-		return roles;
+	public String getRole() {
+		return role;
 	}
 
-	public void setRoles(String roles) {
-		this.roles = roles;
-	}
-
-	public String getPermissions() {
-		return permissions;
-	}
-
-	public void setPermissions(String permissions) {
-		this.permissions = permissions;
+	public void setrole(String role) {
+		this.role = role;
 	}
 
 	public int getEnable() {
@@ -98,24 +84,10 @@ public class User{
 		this.banned = banned;
 	}
 
-	public List<String> getRoleList(){
-		if(roles.length() > 0) {
-			return Arrays.asList(roles.split(","));
-		}
-		return new ArrayList<>();
-	}
-	
-	public List<String> getPermissionList(){
-		if(permissions.length() > 0) {
-			return Arrays.asList(permissions.split(","));
-		}
-		return new ArrayList<>();
-	}
-
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password + ", roles=" + roles
-				+ ", permissions=" + permissions + ", enable=" + enable + ", banned=" + banned + "]";
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role + ", enable="
+				+ enable + ", banned=" + banned + "]";
 	}
 
 

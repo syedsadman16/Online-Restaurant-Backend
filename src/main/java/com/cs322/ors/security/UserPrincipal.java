@@ -1,6 +1,6 @@
 package com.cs322.ors.security;
 
-import java.util.ArrayList;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class UserPrincipal implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
-		return getAuthorityList(user.getRoleList(), user.getPermissionList());
+		return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
 	}
 
 	@Override
@@ -58,21 +58,6 @@ public class UserPrincipal implements UserDetails {
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return user.getEnable() == 1;
-	}
-	
-	List<GrantedAuthority> getAuthorityList(List<String> roles, List<String> permissions){
-		List<GrantedAuthority> authorities = new ArrayList<>();
-		user.getPermissionList().forEach(p -> {
-			GrantedAuthority authority = new SimpleGrantedAuthority(p);
-			authorities.add(authority);
-		});		
-		
-		user.getRoleList().forEach(r -> {
-			GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + r);
-			authorities.add(authority);
-		});	
-		
-		return authorities;
-	}
+	}	
 	
 }
