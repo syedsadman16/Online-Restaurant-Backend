@@ -14,6 +14,10 @@ public class UserPrincipal implements UserDetails {
 
 	private User user;
 	
+	public User getUser() {
+		return user;
+	}
+
 	public UserPrincipal(User user) {
 		this.user = user;
 	}
@@ -23,6 +27,7 @@ public class UserPrincipal implements UserDetails {
 		// TODO Auto-generated method stub
 		return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
 	}
+	
 
 	@Override
 	public String getPassword() {

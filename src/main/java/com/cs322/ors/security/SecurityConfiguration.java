@@ -23,11 +23,9 @@ import com.cs322.ors.security.filters.JwtAuthorizationFilter;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	private UserPrincipalService userPrincipalService;
-	private UserRepository userRepository;
 
-	public SecurityConfiguration(UserPrincipalService userPrincipalService, UserRepository userRepository) {
+	public SecurityConfiguration(UserPrincipalService userPrincipalService) {
 		this.userPrincipalService = userPrincipalService;
-		this.userRepository = userRepository;
 	}
 
 
@@ -40,7 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
     	final JwtAuthenticationFilter AuthenticationFilter = new JwtAuthenticationFilter(authenticationManager());
     	AuthenticationFilter.setFilterProcessesUrl("/api/auth");
-   	  	final JwtAuthorizationFilter AuthorizationFilter = new JwtAuthorizationFilter(authenticationManager(), userRepository);
+   	  	final JwtAuthorizationFilter AuthorizationFilter = new JwtAuthorizationFilter(authenticationManager(), userPrincipalService);
    	 
     	http
     	.csrf().disable()
