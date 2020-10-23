@@ -20,7 +20,7 @@ public class DbInit implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		
 		// REAL DATA NEEDED TO INITIALIZE APPLICATION
-		User user0 = new User("manager", "manager", "MANAGER");
+		User user0 = new User("manager", "manager", "MANAGER"); 
 		
 		// DUMMY DATA
 		User user1 = new User("c1", "c1", "CUSTOMER");
