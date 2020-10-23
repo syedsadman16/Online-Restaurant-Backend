@@ -1,6 +1,7 @@
 package com.cs322.ors.security.filters;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -59,7 +60,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
 		
-		// Get the principal
+		// Get the principal & user
 		UserPrincipal principal = (UserPrincipal) authResult.getPrincipal();
 
 		// Create JWT
@@ -67,8 +68,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				.withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
 				.sign(HMAC512(JwtProperties.SECRET.getBytes()));
 
-		// Respond with JWT
+		// Respond with JWT & User
+		String user = new ObjectMapper().writeValueAsString(principal.getUser());
+		PrintWriter out = response.getWriter();
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");		
 		response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + token);
+		out.print(user);
 	}
 
 }
