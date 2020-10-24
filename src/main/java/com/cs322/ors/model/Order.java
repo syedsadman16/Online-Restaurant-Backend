@@ -1,6 +1,7 @@
 package com.cs322.ors.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,23 +22,21 @@ public class Order {
 	private User customer;	
 	
 	@Column(columnDefinition = "DATE")
-	private LocalDate date;
+	private LocalDateTime date;
 	
-
-
 	private int type; // 0 = pick-up, 1 = delivery, 2 = reservation
 	private boolean completed;
 	private boolean cancelled;
 
 	public Order() {}
 	
-	public Order(User customer, LocalDate date, int type, boolean completed, boolean cancelled) {
+	public Order(User customer, int type) {
 		super();
-		this.customer = customer;
-		this.date = date;
+		this.customer = customer;		
 		this.type = type;
-		this.completed = completed;
-		this.cancelled = cancelled;
+		this.date = LocalDateTime.now();
+		this.completed = false;
+		this.cancelled = false;
 	}
 
 	public long getId() {
@@ -48,11 +47,11 @@ public class Order {
 		this.id = id;
 	}
 
-	public LocalDate getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(LocalDate date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 
@@ -86,6 +85,12 @@ public class Order {
 
 	public void setCancelled(boolean cancelled) {
 		this.cancelled = cancelled;
+	}
+
+	@Override
+	public String toString() {
+		return "Order [id=" + id + ", customer=" + customer + ", date=" + date + ", type=" + type + ", completed="
+				+ completed + ", cancelled=" + cancelled + "]";
 	}
 
 }

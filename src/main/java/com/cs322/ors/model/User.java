@@ -1,6 +1,5 @@
 package com.cs322.ors.model;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,37 +9,37 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
-public class User{
+public class User {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private long id; //PK
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id; // PK
 
-    @NotBlank(message = "Username is mandatory")
-    @Size(min=1)
-    @Column(nullable = false, unique=true)
+	@NotBlank(message = "Username is mandatory")
+	@Size(min = 1)
+	@Column(nullable = false, unique = true)
 	private String username;
-	
-    @NotBlank(message = "Password is mandatory")
+
+	@NotBlank(message = "Password is mandatory")
 	@Column(nullable = false)
 	private String password;
+
+	@NotBlank(message = "Account type is mandatory")
+	private String role;
+
+	private int enable; // Account closed (user can't login)
+	private int banned; // Account banned (user can login)
 	
-    @NotBlank(message = "Account type is mandatory")
-	private String role;	
-    
-	private int enable; //Account closed (user can't login)
-    private int banned; // Account banned (user can login)
-
-    public User(){}
-
+	public User() {
+	}
+	
 	public User(String username, String password, String role) {
 		this.username = username;
 		this.password = password;
 		this.role = role;
 		this.enable = 1;
 		this.banned = 0;
-	}
-	
+	}		
 
 	public long getId() {
 		return id;
@@ -54,24 +53,23 @@ public class User{
 		return username;
 	}
 
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
 	public String getRole() {
 		return role;
 	}
 
-	public void setrole(String role) {
+	public void setRole(String role) {
 		this.role = role;
 	}
 
@@ -89,13 +87,12 @@ public class User{
 
 	public void setBanned(int banned) {
 		this.banned = banned;
-	}
+	}	
 
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role + ", enable="
 				+ enable + ", banned=" + banned + "]";
 	}
-
 
 }
