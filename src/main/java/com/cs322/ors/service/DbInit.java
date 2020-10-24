@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
+import com.cs322.ors.db.ChefJobRepository;
 import com.cs322.ors.db.OrderRepository;
 import com.cs322.ors.db.UserRepository;
+import com.cs322.ors.model.ChefJob;
 import com.cs322.ors.model.Order;
 import com.cs322.ors.model.User;
 
@@ -22,6 +24,9 @@ public class DbInit implements CommandLineRunner {
 
 	@Autowired
 	OrderRepository orderRepository;
+	
+	@Autowired
+	ChefJobRepository chefJobRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -39,6 +44,9 @@ public class DbInit implements CommandLineRunner {
 		
 		Order order1 = new Order(customer1, 0);
 		orderRepository.save(order1);
+		
+		ChefJob chefjob1 = new ChefJob(chef1, order1);
+		chefJobRepository.save(chefjob1);
 
 	}
 }
