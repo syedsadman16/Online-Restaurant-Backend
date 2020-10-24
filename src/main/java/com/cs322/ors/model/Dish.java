@@ -1,97 +1,105 @@
 package com.cs322.ors.model;
 
+import java.math.BigDecimal;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.websocket.server.ServerEndpoint;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Dish {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 
-    @Id
-    private long dishId; 
-    private String chefID;
-    private String chefName;
-    private String description;
-    private String imageUrl;
-	private double price;
-    private String title;
-
-    public Dish() {
-    	
-    }
-
-    public Dish(long dishId, double price, String title, String description, String chefName, String chefID) {
-		this.dishId = dishId;
-		this.price = price;
-		this.title = title;
+	@OneToOne(optional=false)
+	private User chef;
+	
+	@Column(precision = 13, scale = 2)
+	private BigDecimal price;
+	private String description;
+	private String imageUrl;
+	private String name;
+	
+	
+	public Dish(User chef, String description, String imageUrl, BigDecimal price, String name) {
+		super();
+		this.chef = chef;
 		this.description = description;
-		this.chefName = chefName;
-		this.chefID = chefID;
+		this.imageUrl = imageUrl;
+		this.price = price;
+		this.name = name;
 	}
 
-    public Dish(long dishId, double price, String title, String description, String chefName, String chefID, String imageUrl) {
-        this.dishId = dishId;
-        this.price = price;
-        this.title = title;
-        this.description = description;
-        this.chefName = chefName;
-        this.chefID = chefID;
-        this.imageUrl = imageUrl;
-    }
 
-    public long getDishId() {
-        return dishId;
-    }
+	public long getId() {
+		return id;
+	}
 
-    public void setDishId(int dishId) {
-        this.dishId = dishId;
-    }
 
-    public double getPrice() {
-        return price;
-    }
+	public void setId(long id) {
+		this.id = id;
+	}
 
-    public void setPrice(double d) {
-        this.price = d;
-    }
 
-    public String getTitle() {
-        return title;
-    }
+	public User getChef() {
+		return chef;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
-    public String getDescription() {
-        return description;
-    }
+	public void setChef(User chef) {
+		this.chef = chef;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
-    public String getChefName() {
-        return chefName;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setChefName(String chefName) {
-        this.chefName = chefName;
-    }
 
-    public String getChefID() {
-        return chefID;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public void setChefID(String chefID) {
-        this.chefID = chefID;
-    }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
+	public String getImageUrl() {
+		return imageUrl;
+	}
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
+
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Dish [id=" + id + ", chef=" + chef + ", description=" + description + ", imageUrl=" + imageUrl
+				+ ", price=" + price + ", name=" + name + "]";
+	}
+
+	
 }

@@ -33,12 +33,11 @@ public class DishService {
 
 	public void updateDish(Dish dish,long Id) {
 		Dish updatedDish = dishRepository.findById(Id).orElseThrow();
-		updatedDish.setChefID(dish.getChefID());
-		updatedDish.setChefName(dish.getChefName());
+		updatedDish.setChef(dish.getChef());
 		updatedDish.setDescription(dish.getDescription());
 		updatedDish.setImageUrl(dish.getImageUrl());
 		updatedDish.setPrice(dish.getPrice());
-		updatedDish.setTitle(dish.getTitle());
+		updatedDish.setName(dish.getName());
 		
 		dishRepository.save(updatedDish);
 	}

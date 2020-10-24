@@ -47,6 +47,11 @@ public class DbInit implements CommandLineRunner {
 		
 		ChefJob chefjob1 = new ChefJob(chef1, order1);
 		chefJobRepository.save(chefjob1);
+		
+		/*--dishes commit-
+INSERT INTO dish VALUES (1,'2','abir','NULL','strawberry cake',5,'Cake title');
+INSERT INTO dish VALUES (2,'1','syed','NULL','RED velvet cake',5,'Cake title');
+COMMIT;*/
 
 	}
 }
