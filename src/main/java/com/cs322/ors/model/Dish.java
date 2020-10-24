@@ -23,15 +23,27 @@ public class Dish {
 	private String description;
 	private String imageUrl;
 	private String name;
+	private boolean special;
 	
 	
-	public Dish(User chef, String description, String imageUrl, BigDecimal price, String name) {
+	public Dish(String name, User chef, String description, String imageUrl, BigDecimal price, boolean special) {
 		super();
 		this.chef = chef;
 		this.description = description;
 		this.imageUrl = imageUrl;
 		this.price = price;
 		this.name = name;
+		this.special = special;
+	}
+
+
+	public boolean isSpecial() {
+		return special;
+	}
+
+
+	public void setSpecial(boolean special) {
+		this.special = special;
 	}
 
 
@@ -97,8 +109,8 @@ public class Dish {
 
 	@Override
 	public String toString() {
-		return "Dish [id=" + id + ", chef=" + chef + ", description=" + description + ", imageUrl=" + imageUrl
-				+ ", price=" + price + ", name=" + name + "]";
+		return "Dish [id=" + id + ", chef=" + chef + ", price=" + price + ", description=" + description + ", imageUrl="
+				+ imageUrl + ", name=" + name + ", special=" + special + "]";
 	}
 
 	

@@ -48,14 +48,16 @@ public class DbInit implements CommandLineRunner {
 
 		// DUMMY DATA
 		User customer1 = new User("customer1", "customer1", "CUSTOMER");
+		User customer2 = new User("customer2", "customer2", "CUSTOMER");
+		customer2.setClosed(true);
 		User vip1 = new User("vip1", "vip1", "VIP");
 		User chef1 = new User("chef1", "chef1", "CHEF");
 		User deliverer1 = new User("deliverer1", "deliverer1", "DELIVERER");
-		List<User> users = Arrays.asList(manager, customer1, vip1, chef1, deliverer1);
+		List<User> users = Arrays.asList(manager, customer1, vip1, chef1, deliverer1,customer2);
 		userRepository.saveAll(users);
 		
-		Dish dish1 = new Dish(chef1, null, null, BigDecimal.valueOf(10), "strawberry cake");
-		Dish dish2 = new Dish(chef1, null, null, BigDecimal.valueOf(10.50), "RED velvet cake");
+		Dish dish1 = new Dish("strawberry cake", chef1, null, null, BigDecimal.valueOf(10), false);
+		Dish dish2 = new Dish( "RED velvet cake", chef1, null, null, BigDecimal.valueOf(10.50), true);
 		dishRepository.saveAll(Arrays.asList(dish1,dish2));
 		
 		Order order1 = new Order(customer1, 0);
