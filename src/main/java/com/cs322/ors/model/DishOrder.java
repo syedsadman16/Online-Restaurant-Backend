@@ -1,13 +1,10 @@
-package com.cs322.ors.service;
+package com.cs322.ors.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
-import com.cs322.ors.model.Dish;
-import com.cs322.ors.model.Order;
 
 @Entity
 public class DishOrder {

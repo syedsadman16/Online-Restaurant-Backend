@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Dish {
@@ -15,7 +15,7 @@ public class Dish {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@OneToOne(optional=false)
+	@ManyToOne(optional=false)
 	private User chef;
 	
 	@Column(precision = 13, scale = 2)
