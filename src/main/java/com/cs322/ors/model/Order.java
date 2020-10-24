@@ -12,27 +12,25 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="`ORDER`")
+@Table(name = "`ORDER`")
 public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
-	@ManyToOne
-	private User customer;	
-	
+
+	@ManyToOne(optional = false)
+	private User customer;
+
 	@Column(columnDefinition = "DATE")
 	private LocalDateTime date;
-	
+
 	private int type; // 0 = pick-up, 1 = delivery, 2 = reservation
 	private boolean completed;
 	private boolean cancelled;
 
-	public Order() {}
-	
 	public Order(User customer, int type) {
 		super();
-		this.customer = customer;		
+		this.customer = customer;
 		this.type = type;
 		this.date = LocalDateTime.now();
 		this.completed = false;

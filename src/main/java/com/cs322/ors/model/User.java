@@ -30,9 +30,6 @@ public class User {
 	private int enable; // Account closed (user can't login)
 	private int banned; // Account banned (user can login)
 	
-	public User() {
-	}
-	
 	public User(String username, String password, String role) {
 		this.username = username;
 		this.password = password;
