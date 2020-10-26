@@ -1,5 +1,7 @@
 package com.cs322.ors.security;
 
+import java.util.Arrays;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -11,6 +13,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.cs322.ors.db.UserRepository;
 import com.cs322.ors.security.filters.JwtAuthenticationFilter;
@@ -42,6 +47,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
    	 
     	http
     	.csrf().disable()
+    	.cors()
+    	.and()
     	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     	.and()
     	.headers().frameOptions().sameOrigin() //For DB GUI
@@ -65,6 +72,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		daoAuthenticationProvider.setUserDetailsService(userPrincipalService);
 		return daoAuthenticationProvider;
 	}
+	
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+    	
+    	CorsConfiguration configuration = new CorsConfiguration();
+        configuration.applyPermitDefaultValues();
+        // This allow us to expose the headers
+        configuration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Headers", "Authorization, x-xsrf-token, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, " +
+                "Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"));
+
+      
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**",configuration);
+        return source;
+    }
     
   
 }
