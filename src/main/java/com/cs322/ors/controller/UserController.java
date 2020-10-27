@@ -27,7 +27,6 @@ import com.cs322.ors.service.UserService;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin
 public class UserController {
 
 	@Autowired
