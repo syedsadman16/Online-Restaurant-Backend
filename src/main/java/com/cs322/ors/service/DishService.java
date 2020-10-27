@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cs322.ors.db.DishRepository;
-import com.cs322.ors.model.Customer;
 import com.cs322.ors.model.Dish;
-import com.cs322.ors.model.Test;
 
 @Service
 public class DishService {

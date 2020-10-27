@@ -2,7 +2,6 @@ package com.cs322.ors.model;
 
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class DeliveryJobs {
@@ -10,15 +9,12 @@ public class DeliveryJobs {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @OneToMany
-    private List<Order> orderId;
-//    @ManyToMany
-//    private CustomerInfo customerInfoId;
+    
+    @OneToOne(optional = false)
+    private Order order;
 
-
-    public DeliveryJobs(long id, List<Order> orderId) {
-        this.id = id;
-        this.orderId = orderId;
+    public DeliveryJobs(Order order) {
+        this.order = order;
     }
 
     public long getId() {
@@ -29,19 +25,12 @@ public class DeliveryJobs {
         this.id = id;
     }
 
-    public List<Order> getOrderId() {
-        return orderId;
+
+    public Order getOrder() {
+        return order;
     }
 
-    public void setOrderId(List<Order> orderId) {
-        this.orderId = orderId;
+    public void setOrder(Order order) {
+        this.order = order;
     }
-
-//    public CustomerInfo getCustomerInfoId() {
-//        return customerInfoId;
-//    }
-//
-//    public void setCustomerInfoId(CustomerInfo customerInfoId) {
-//        this.customerInfoId = customerInfoId;
-//    }
 }

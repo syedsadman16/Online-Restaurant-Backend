@@ -1,23 +1,24 @@
 package com.cs322.ors.model;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+@Entity
 public class DishRating {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private int rating; // 1-5 star rating
-    @OneToOne
-    private Order orderId;
+    @OneToOne(optional = false)
+    private Order order;
 
-    public DishRating(long id, int rating, Order orderId) {
-        this.id = id;
+    public DishRating(int rating, Order order) {
         this.rating = rating;
-        this.orderId = orderId;
+        this.order = order;
     }
 
     public long getId() {
@@ -36,11 +37,11 @@ public class DishRating {
         this.rating = rating;
     }
 
-    public Order getOrderId() {
-        return orderId;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setOrderId(Order orderId) {
-        this.orderId = orderId;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }
