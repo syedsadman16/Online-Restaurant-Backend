@@ -9,15 +9,12 @@ public class DeliveryJobs {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @OneToMany
-    private Order orderId;
-//    @ManyToMany
-//    private CustomerInfo customerInfoId;
+    
+    @OneToOne
+    private Order order;
 
-
-    public DeliveryJobs(long id, Order orderId) {
-        this.id = id;
-        this.orderId = orderId;
+    public DeliveryJobs(Order order) {
+        this.order = order;
     }
 
     public long getId() {
@@ -29,18 +26,10 @@ public class DeliveryJobs {
     }
 
     public Order getOrderId() {
-        return orderId;
+        return order;
     }
 
     public void setOrderId(Order orderId) {
-        this.orderId = orderId;
+        this.order = orderId;
     }
-
-//    public CustomerInfo getCustomerInfoId() {
-//        return customerInfoId;
-//    }
-//
-//    public void setCustomerInfoId(CustomerInfo customerInfoId) {
-//        this.customerInfoId = customerInfoId;
-//    }
 }
