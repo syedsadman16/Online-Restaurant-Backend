@@ -1,6 +1,7 @@
 package com.cs322.ors.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 public class UserRating {
 
@@ -9,9 +10,9 @@ public class UserRating {
     private long id;
     private int rating; // 1-5 star rating
     @OneToMany
-    private Order orderId;
+    private List<Order> orderId;
 
-    public UserRating(long id, int rating, Order orderId) {
+    public UserRating(long id, int rating, List<Order> orderId) {
         this.id = id;
         this.rating = rating;
         this.orderId = orderId;
@@ -33,11 +34,11 @@ public class UserRating {
         this.rating = rating;
     }
 
-    public Order getOrderId() {
+    public List<Order> getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(Order orderId) {
+    public void setOrderId(List<Order> orderId) {
         this.orderId = orderId;
     }
 }
