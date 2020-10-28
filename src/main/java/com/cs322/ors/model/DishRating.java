@@ -13,6 +13,7 @@ public class DishRating {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private int rating; // 1-5 star rating
+    
     @OneToOne(optional = false)
     private Order order;
 

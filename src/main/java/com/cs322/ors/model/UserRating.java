@@ -14,9 +14,10 @@ public class UserRating {
     @OneToOne
     private Order order;
 
-    public UserRating(long id, int rating, List<Order> orderId) {
+    public UserRating(long id, int rating, Order order) {
         this.id = id;
         this.rating = rating;
+        this.order = order;
     }
 
     public long getId() {
