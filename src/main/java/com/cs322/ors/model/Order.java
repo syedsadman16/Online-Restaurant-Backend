@@ -1,6 +1,5 @@
 package com.cs322.ors.model;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;

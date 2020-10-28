@@ -18,11 +18,11 @@ public class DishKeyWord {
 	@Column(name = "Word")
 	private String keyWord;
 	
-	@ManyToOne //multiple dishes can be marked by same keyword	
+	@ManyToOne (optional = false)   //multiple dishes can be marked by same keyword	
 	private Dish dish;
 	
-	// I didn't relate this class to chef users because chefID did not feel needed in the context. 
-	// we just need to relate a dish to a category/keyword
+	@ManyToOne (optional = false)	// one chef can use many keywords
+	private User chef;
 
 	
 	//empty constructor
@@ -31,11 +31,11 @@ public class DishKeyWord {
 	}
 	
 	// main constructor
-	public DishKeyWord(long id, String keyWord, Dish dish) {
+	public DishKeyWord(String keyWord, Dish dish, User chef) {
 		super();
-		Id = id;
 		this.keyWord = keyWord;
 		this.dish = dish;
+		this.chef = chef;
 	}
 
 	public long getId() {
@@ -62,6 +62,13 @@ public class DishKeyWord {
 		this.dish = dish;
 	}
 
+	public User getChef() {
+		return chef;
+	}
+
+	public void setChef(User chef) {
+		this.chef = chef;
+	}
 	
 	
 	
