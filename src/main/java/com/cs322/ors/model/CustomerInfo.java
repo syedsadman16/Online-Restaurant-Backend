@@ -28,9 +28,8 @@ public class CustomerInfo {
 		super();
 	}
 
-	public CustomerInfo(long id, String address, String name, User customer) {
+	public CustomerInfo(String address, String name, User customer) {
 		super();
-		Id = id;
 		this.address = address;
 		this.name = name;
 		this.customer = customer;

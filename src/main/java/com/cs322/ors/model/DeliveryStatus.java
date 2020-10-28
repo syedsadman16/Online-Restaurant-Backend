@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
-public class DelivaryStatus {
+public class DeliveryStatus {
 
 	
 	@Id
@@ -21,16 +21,15 @@ public class DelivaryStatus {
 	private boolean isRecieved;
 	
 	
-	public DelivaryStatus() {
+	public DeliveryStatus() {
 		
 	}
 	
-	public DelivaryStatus(long id, Order order, boolean isDelivered, boolean isRecieved) {
+	public DeliveryStatus(Order order) {
 		super();
-		this.id = id;
 		this.order = order;
-		this.isDelivered = isDelivered;
-		this.isRecieved = isRecieved;
+		this.isDelivered = false;
+		this.isRecieved = false;
 	}
 
 	public long getId() {
