@@ -11,21 +11,19 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
 import com.cs322.ors.db.ChefJobRepository;
-import com.cs322.ors.db.CustomerInfoRepository;
-import com.cs322.ors.db.DeliveryStatusRepository;
-import com.cs322.ors.db.DishKeyWordRepository;
 import com.cs322.ors.db.DishOrderRepository;
 import com.cs322.ors.db.DishRepository;
 import com.cs322.ors.db.OrderRepository;
+import com.cs322.ors.db.TabooWordsRepository;
 import com.cs322.ors.db.UserRepository;
+import com.cs322.ors.db.UserWarningRepository;
 import com.cs322.ors.model.ChefJob;
-import com.cs322.ors.model.CustomerInfo;
-import com.cs322.ors.model.DeliveryStatus;
 import com.cs322.ors.model.Dish;
-import com.cs322.ors.model.DishKeyWord;
 import com.cs322.ors.model.DishOrder;
 import com.cs322.ors.model.Order;
+import com.cs322.ors.model.TabooWords;
 import com.cs322.ors.model.User;
+import com.cs322.ors.model.UserWarning;
 
 @Service
 public class DbInit implements CommandLineRunner {
@@ -44,15 +42,12 @@ public class DbInit implements CommandLineRunner {
 	
 	@Autowired
 	DishOrderRepository dishOrderRepository;
+
+	@Autowired
+	TabooWordsRepository tabooWordsRepository;
 	
 	@Autowired
-	DishKeyWordRepository dishKeyWordRepository;
-	
-	@Autowired
-	CustomerInfoRepository customerInfoRepository;
-	
-	@Autowired
-	DeliveryStatusRepository deliveryStatusRepository;
+	UserWarningRepository userWarningRepository;
 
 
 	@Override
@@ -83,17 +78,12 @@ public class DbInit implements CommandLineRunner {
 
 		DishOrder dishOrder1 = new DishOrder(dish1, order1, 2);
 		dishOrderRepository.save(dishOrder1);
-		
-		DishKeyWord keyWord1 = new DishKeyWord("dessert",dish1,chef1);
-		dishKeyWordRepository.save(keyWord1);
-		
-		CustomerInfo customerInfo1 = new CustomerInfo("39-15 unicorn street, Rainbow Ave", "Abir", customer1);
-		customerInfoRepository.save(customerInfo1);
-		
-		DeliveryStatus status1 = new DeliveryStatus(order1);
-		deliveryStatusRepository.save(status1);
-		
-		
+
+		TabooWords tabooWord1 = new TabooWords("Jackass");
+		tabooWordsRepository.save(tabooWord1);
+
+		UserWarning strike1= new UserWarning(customer1, "1st strike");
+		userWarningRepository.save(strike1);
 
 	}
 }
