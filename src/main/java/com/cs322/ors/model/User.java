@@ -27,6 +27,7 @@ public class User {
 	@NotBlank(message = "Account type is mandatory")
 	private String role;
 	private boolean closed;
+	private float accountBalance; 
 	
 	public User() {}
 	
@@ -35,6 +36,11 @@ public class User {
 		this.password = password;
 		this.role = role;
 		this.closed = false;
+		
+		if (role == "CUSTOMER" || role == "VIP" ) {
+			this.accountBalance = 300;    // 300 dollars given to customers by default
+		}
+		
 	}
 	
 	public long getId() {
