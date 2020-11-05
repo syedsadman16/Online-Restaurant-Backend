@@ -14,14 +14,14 @@ import com.cs322.ors.db.ChefJobRepository;
 import com.cs322.ors.db.DishOrderRepository;
 import com.cs322.ors.db.DishRepository;
 import com.cs322.ors.db.OrderRepository;
-import com.cs322.ors.db.TabooWordsRepository;
+import com.cs322.ors.db.TabooWordRepository;
 import com.cs322.ors.db.UserRepository;
 import com.cs322.ors.db.UserWarningRepository;
 import com.cs322.ors.model.ChefJob;
 import com.cs322.ors.model.Dish;
 import com.cs322.ors.model.DishOrder;
 import com.cs322.ors.model.Order;
-import com.cs322.ors.model.TabooWords;
+import com.cs322.ors.model.TabooWord;
 import com.cs322.ors.model.User;
 import com.cs322.ors.model.UserWarning;
 
@@ -44,7 +44,7 @@ public class DbInit implements CommandLineRunner {
 	DishOrderRepository dishOrderRepository;
 
 	@Autowired
-	TabooWordsRepository tabooWordsRepository;
+	TabooWordRepository tabooWordsRepository;
 	
 	@Autowired
 	UserWarningRepository userWarningRepository;
@@ -79,7 +79,7 @@ public class DbInit implements CommandLineRunner {
 		DishOrder dishOrder1 = new DishOrder(dish1, order1, 2);
 		dishOrderRepository.save(dishOrder1);
 
-		TabooWords tabooWord1 = new TabooWords("Jackass");
+		TabooWord tabooWord1 = new TabooWord("Jackass");
 		tabooWordsRepository.save(tabooWord1);
 
 		UserWarning strike1= new UserWarning(customer1, "1st strike");
