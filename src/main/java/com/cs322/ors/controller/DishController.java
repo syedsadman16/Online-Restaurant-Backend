@@ -3,6 +3,8 @@ package com.cs322.ors.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +33,7 @@ public class DishController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/Menu")
-	public void addDish(@RequestBody Dish dish) {
+	public void addDish(@Valid @RequestBody Dish dish) {
 		dishService.addDish(dish);
 	}
 	

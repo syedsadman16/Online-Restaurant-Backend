@@ -25,6 +25,9 @@ public class Dish {
 	private String name;
 	private boolean special;
 	
+	public Dish() {
+		
+	}
 	
 	public Dish(String name, User chef, String description, String imageUrl, BigDecimal price, boolean special) {
 		super();
