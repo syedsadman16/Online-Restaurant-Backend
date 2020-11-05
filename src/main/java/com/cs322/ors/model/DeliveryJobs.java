@@ -13,6 +13,8 @@ public class DeliveryJobs {
     @OneToOne(optional = false)
     private Order order;
 
+	public DeliveryJobs() {}
+	
     public DeliveryJobs(Order order) {
         this.order = order;
     }

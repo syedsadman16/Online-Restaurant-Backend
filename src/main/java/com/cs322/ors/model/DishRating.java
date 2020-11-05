@@ -16,6 +16,9 @@ public class DishRating {
     
     @OneToOne(optional = false)
     private Order order;
+    
+	public DishRating() {
+	}
 
     public DishRating(int rating, Order order) {
         this.rating = rating;

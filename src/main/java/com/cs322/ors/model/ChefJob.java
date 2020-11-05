@@ -20,6 +20,8 @@ public class ChefJob {
 	private Order order;	
 	private boolean completed;
 	
+	public ChefJob() {}
+	
 	
 	public ChefJob(User chef, Order order) {
 		super();

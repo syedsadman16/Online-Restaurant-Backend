@@ -19,6 +19,8 @@ public class UserWarning {
 
     private String message;
 
+    public UserWarning() {}
+    
     public UserWarning(User customer, String message) {
         super();
         this.customer = customer;

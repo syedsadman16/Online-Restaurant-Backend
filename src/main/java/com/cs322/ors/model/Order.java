@@ -27,6 +27,9 @@ public class Order {
 	private boolean completed;
 	private boolean cancelled;
 
+	public Order() {
+	}
+	
 	public Order(User customer, int type) {
 		super();
 		this.customer = customer;

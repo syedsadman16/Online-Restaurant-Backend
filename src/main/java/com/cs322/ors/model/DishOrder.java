@@ -20,6 +20,8 @@ public class DishOrder {
 	
 	private int quantity;
 	
+	public DishOrder() {
+	}
 
 	public DishOrder(Dish dish, Order order, int quantity) {
 		super();

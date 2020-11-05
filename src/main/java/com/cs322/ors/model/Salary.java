@@ -17,6 +17,14 @@ private User user;
 private long amount;
 private String description;
 
+public Salary() {
+}
+
+public Salary(User user, long amount, String description) {
+    this.user = user;
+    this.amount = amount;
+    this.description = description;
+}
 
 
 public User getUser() {
@@ -43,11 +51,6 @@ public void setDescription(String description) {
     this.description = description;
 }
 
-public Salary(User user, long amount, String description) {
-    this.user = user;
-    this.amount = amount;
-    this.description = description;
-}
 
 @Override
 public String toString() {

@@ -17,6 +17,9 @@ public class EmployeeInfo{
 
     private boolean fired;
     private boolean demotion;
+    
+	public EmployeeInfo() {
+	}
 
     public EmployeeInfo(User userId, boolean fired, boolean demotion) {
         this.userId = userId;

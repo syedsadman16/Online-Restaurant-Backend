@@ -13,6 +13,11 @@ public class UserRating {
 
     @OneToOne
     private Order order;
+    
+
+    public UserRating() {
+      
+    }
 
     public UserRating(long id, int rating, Order order) {
         this.id = id;

@@ -15,6 +15,10 @@ public class TabooWord{
 
 	@Column(nullable = false, unique = true)
     private String word;
+	
+	public TabooWord() {
+	}
+
 
     public TabooWord(String word) {
         this.word = word;

@@ -17,6 +17,9 @@ public class Transaction {
     
     private long amount;
     private String description;
+    
+
+    public Transaction() {}
 
     public Transaction(User userid, long amount, String description) {
         this.userid = userid;
