@@ -19,11 +19,17 @@ public class OrderService {
 		return orderRepository.findAll();
 	}
 
-	public Optional<Order> getOrder(long id) {
-		return orderRepository.findById(id);
+	public List<Order> getOrderByUser(long id) {
+		return orderRepository.findByCustomer_Id(id);
 		// TODO Auto-generated method stub
 		
 	}
+
+	public Order makeOrder(Order order) {
+		return orderRepository.save(order);
+	}
+	
+	
 
 	
 	

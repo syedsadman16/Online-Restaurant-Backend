@@ -3,10 +3,14 @@ package com.cs322.ors.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,12 +30,24 @@ public class OrderController {
 		return orderService.getAllOrders();
 	}
 	
-	@GetMapping("/Orders/{id}")
-	@PreAuthorize("hasAnyRole('CUSTOMER','VIP')")  // do it for each user id so they can see their own orders
-	public Optional<Order> getOrdersWithId(@PathVariable long id){
-		return orderService.getOrder(id);
-		
+	@GetMapping("/Orders/{customerId}")										//principal is the user currently logged in
+	@PreAuthorize("#customerId == principal.user.id OR hasRole('MANAGER')")  				// do it for each user id so they can see their own orders
+	public List<Order> getOrdersWithId(@PathVariable long customerId){		// gave manager perms for testing purposes
+		return orderService.getOrderByUser(customerId);
+	}
+
+	@PostMapping("/Orders")
+	@PreAuthorize("hasAnyRole('CUSTOMER','VIP','MANAGER')")
+	public Order makeOrder(@Valid @RequestBody Order order) {
+		return orderService.makeOrder(order);
 	}
 	
-	//make it so each user can get their orders.
+	
+	
+	
+	
+	
+	
+	
+	
 }
