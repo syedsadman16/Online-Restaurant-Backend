@@ -1,14 +1,23 @@
 package com.cs322.ors.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property ="id")
 public class User {
 
 	@Id
@@ -27,22 +36,34 @@ public class User {
 	@NotBlank(message = "Account type is mandatory")
 	private String role;
 	private boolean closed;
-	private float accountBalance; 
-	
-	public User() {}
-	
+	private float accountBalance;
+
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Order> orders = new ArrayList<>();
+
+	public User() {
+	}
+
 	public User(String username, String password, String role) {
 		this.username = username;
 		this.password = password;
 		this.role = role;
 		this.closed = false;
-		
+
 		if (role == "CUSTOMER" || role == "VIP" ) {
 			this.accountBalance = 300;    // 300 dollars given to customers by default
 		}
-		
+
 	}
-	
+
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+
 	public long getId() {
 		return id;
 	}

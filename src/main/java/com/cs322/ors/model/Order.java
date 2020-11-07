@@ -11,14 +11,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name = "`ORDER`")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property ="id")
 public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@ManyToOne(optional = false)
+	@ManyToOne
+	@JoinColumn(name = "customer_id")
 	private User customer;
 
 	@Column(columnDefinition = "DATE")
