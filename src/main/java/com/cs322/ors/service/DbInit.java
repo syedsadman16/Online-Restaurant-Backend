@@ -69,6 +69,9 @@ public class DbInit implements CommandLineRunner {
 		Order order3 = new Order(customer2, 0);
 		orderRepository.save(order3);		
 
+		Order order4 = new Order(customer1, 0);
+		orderRepository.save(order4);	
+		
 		ChefJob chefjob1 = new ChefJob(chef1, order2);
 		chefJobRepository.save(chefjob1);
 		DishOrder dishOrder1 = new DishOrder(dish1, order1, 2);

@@ -37,20 +37,20 @@ public class User {
 	private String role;
 	private boolean closed;
 	private float accountBalance;
+//
+//	//@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+//	private List<Order> orders = new ArrayList<>();
+//	
+//	//@OneToMany(mappedBy = "chef", cascade = CascadeType.ALL, orphanRemoval = true)
+//	private List<ChefJob> chefJobs = new ArrayList<>();
 
-	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Order> orders = new ArrayList<>();
-	
-	@OneToMany(mappedBy = "chef", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<ChefJob> chefJobs = new ArrayList<>();
-
-	public List<ChefJob> getChefJobs() {
-		return chefJobs;
-	}
-
-	public void setChefJobs(List<ChefJob> chefJobs) {
-		this.chefJobs = chefJobs;
-	}
+//	public List<ChefJob> getChefJobs() {
+//		return chefJobs;
+//	}
+//
+//	public void setChefJobs(List<ChefJob> chefJobs) {
+//		this.chefJobs = chefJobs;
+//	}
 
 	public User() {
 	}
@@ -67,13 +67,13 @@ public class User {
 
 	}
 
-	public List<Order> getOrders() {
-		return orders;
-	}
-
-	public void setOrders(List<Order> orders) {
-		this.orders = orders;
-	}
+//	public List<Order> getOrders() {
+//		return orders;
+//	}
+//
+//	public void setOrders(List<Order> orders) {
+//		this.orders = orders;
+//	}
 
 	public long getId() {
 		return id;

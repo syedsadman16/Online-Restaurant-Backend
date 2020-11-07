@@ -23,7 +23,7 @@ public class Order {
 	private long id;
 
 	@ManyToOne
-	@JoinColumn(name = "customer_id")
+	//@JoinColumn(name = "customer_id")
 	private User customer;
 
 	@Column(columnDefinition = "DATE")
