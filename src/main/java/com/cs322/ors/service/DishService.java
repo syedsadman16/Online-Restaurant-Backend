@@ -41,6 +41,9 @@ public class DishService {
 
 	public void deleteDish(long dishid) {
 		Optional<Dish> dish = this.dishRepository.findById(dishid);
-		dishRepository.delete(dish.get());
+		
+		if(dish.isPresent()){
+			dishRepository.delete(dish.get());
+		}
 	}
 }
