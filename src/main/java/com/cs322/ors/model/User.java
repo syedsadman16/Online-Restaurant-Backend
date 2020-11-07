@@ -39,8 +39,8 @@ public class User {
 	private boolean closed;
 	private float accountBalance;
 //
-//	//@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-//	private List<Order> orders = new ArrayList<>();
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<Order> orders = new ArrayList<>();
 //	
 //	//@OneToMany(mappedBy = "chef", cascade = CascadeType.ALL, orphanRemoval = true)
 //	private List<ChefJob> chefJobs = new ArrayList<>();
@@ -71,10 +71,10 @@ public class User {
 //	public List<Order> getOrders() {
 //		return orders;
 //	}
-//
-//	public void setOrders(List<Order> orders) {
-//		this.orders = orders;
-//	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
 
 	public long getId() {
 		return id;

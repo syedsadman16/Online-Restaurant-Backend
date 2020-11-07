@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
@@ -24,7 +24,8 @@ public class Order {
 	private long id;
 
 	@ManyToOne
-	//@JoinColumn(name = "customer_id")
+	@JsonIgnoreProperties({"password", "role","closed"})
+	@JoinColumn(name = "customer_id")
 	private User customer;
 
 	@Column(columnDefinition = "DATE")
@@ -41,7 +42,7 @@ public class Order {
 		super();
 		this.customer = customer;
 		this.type = type;
-		this.date = LocalDateTime.now();
+		this.date = LocalDateTime.now(); 
 		this.completed = false;
 		this.cancelled = false;
 	}

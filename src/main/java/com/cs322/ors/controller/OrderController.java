@@ -37,6 +37,12 @@ public class OrderController {
 	public List<Order> getOrdersWithId(@PathVariable long customerId){		// gave manager perms for testing purposes
 		return orderService.getOrderByUser(customerId);
 	}
+	
+	@GetMapping("/Orders/{customerId}/{orderId}")										//principal is the user currently logged in
+	@PreAuthorize("#customerId == principal.user.id OR hasRole('MANAGER')")  				// do it for each user id so they can see their own orders
+	public Optional<Order> getOrdersWithId(@PathVariable long customerId,@PathVariable long orderId){		// gave manager perms for testing purposes
+		return orderService.getOrderByUserById(orderId);
+	}
 
 	@PostMapping("/Orders")
 	@PreAuthorize("hasAnyRole('CUSTOMER','VIP','MANAGER')")
