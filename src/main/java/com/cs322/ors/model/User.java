@@ -40,6 +40,17 @@ public class User {
 
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Order> orders = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "chef", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ChefJob> chefJobs = new ArrayList<>();
+
+	public List<ChefJob> getChefJobs() {
+		return chefJobs;
+	}
+
+	public void setChefJobs(List<ChefJob> chefJobs) {
+		this.chefJobs = chefJobs;
+	}
 
 	public User() {
 	}
