@@ -6,6 +6,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+
+/*
+ * Display order history for customers and vip users with DishOrder
+ * Delivery person is shown a delivery list with DishOrder objects
+ */
 @Entity
 public class DishOrder {
 	@Id

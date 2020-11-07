@@ -21,12 +21,23 @@ public class OrderService {
 
 	public List<Order> getOrderByUser(long id) {
 		return orderRepository.findByCustomer_Id(id);
-		// TODO Auto-generated method stub
-		
 	}
 
-	public Order makeOrder(Order order) {
-		return orderRepository.save(order);
+	public void makeOrder(Order order) {
+		orderRepository.save(order);
+	}
+
+	public void updateOrder(Order orderUpdate,long orderId) {
+		Optional<Order> OrderDB = this.orderRepository.findById(orderId);
+		
+		if(OrderDB.isPresent()) {
+			orderUpdate.setId(orderId);
+			orderRepository.save(orderUpdate);
+		}
+	}
+
+	public void deleteOrder(long orderId) {
+		orderRepository.deleteById(orderId);    //throws illegalArgumentException if null
 	}
 	
 	

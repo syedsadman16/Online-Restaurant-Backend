@@ -3,10 +3,12 @@ package com.cs322.ors.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.cs322.ors.model.TabooWord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.cs322.ors.db.DishRepository;
 import com.cs322.ors.model.Dish;
+import com.cs322.ors.model.Order;
 
 @Service
 public class DishService {
@@ -28,17 +30,15 @@ public class DishService {
 	}
 
 	public void updateDish(Dish dish,long Id) {
-		Dish updatedDish = dishRepository.findById(Id).orElseThrow();
-		updatedDish.setChef(dish.getChef());
-		updatedDish.setDescription(dish.getDescription());
-		updatedDish.setImageUrl(dish.getImageUrl());
-		updatedDish.setPrice(dish.getPrice());
-		updatedDish.setName(dish.getName());
+		Optional<Dish> DishDB = this.dishRepository.findById(Id);
 		
-		dishRepository.save(updatedDish);
+		if(DishDB.isPresent()) {
+			dish.setId(Id);
+			dishRepository.save(dish);
+		}
 	}
 
-	public void deleteDish(Dish dish) {
-		dishRepository.delete(dish);
+	public void deleteDish(long dishid) {
+		dishRepository.deleteById(dishid);
 	}
 }
