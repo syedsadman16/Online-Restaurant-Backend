@@ -16,6 +16,8 @@ public class UserRating {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private int rating;
+
     /*
      * Keep track of the User who submitted the rating
      */
@@ -34,18 +36,19 @@ public class UserRating {
     @OneToOne
     private DishOrder dishOrder;
 
-    private int rating;
 
     public UserRating() {
       
     }
 
-    public UserRating(long id, int rating, DishOrder order, User critic) {
-        this.id = id;
+    public UserRating(int rating, User critic, User victim, DishOrder order) {
+        //this.id = id;
         this.rating = rating;
         this.dishOrder = order;
         this.critic = critic;
     }
+
+
 
     public DishOrder getDishOrder() {
         return dishOrder;

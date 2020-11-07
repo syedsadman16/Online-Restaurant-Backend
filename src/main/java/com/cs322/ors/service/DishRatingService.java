@@ -28,6 +28,10 @@ public class DishRatingService {
         dishRatingRepository.save(dishRating);
     }
 
+    public void updateDishRating(DishRating updatedRating){
+        dishRatingRepository.save(updatedRating);
+    }
+
     public void deleteUserRating(long id) {
         Optional<DishRating> rating = this.dishRatingRepository.findById(id);
         dishRatingRepository.delete(rating.get());

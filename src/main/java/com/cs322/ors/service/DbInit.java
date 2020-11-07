@@ -6,24 +6,11 @@ import java.util.List;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.cs322.ors.db.*;
+import com.cs322.ors.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
-
-import com.cs322.ors.db.ChefJobRepository;
-import com.cs322.ors.db.DishOrderRepository;
-import com.cs322.ors.db.DishRepository;
-import com.cs322.ors.db.OrderRepository;
-import com.cs322.ors.db.TabooWordRepository;
-import com.cs322.ors.db.UserRepository;
-import com.cs322.ors.db.UserWarningRepository;
-import com.cs322.ors.model.ChefJob;
-import com.cs322.ors.model.Dish;
-import com.cs322.ors.model.DishOrder;
-import com.cs322.ors.model.Order;
-import com.cs322.ors.model.TabooWord;
-import com.cs322.ors.model.User;
-import com.cs322.ors.model.UserWarning;
 
 @Service
 public class DbInit implements CommandLineRunner {
@@ -48,6 +35,9 @@ public class DbInit implements CommandLineRunner {
 	
 	@Autowired
 	UserWarningRepository userWarningRepository;
+
+	@Autowired
+	UserRatingRepository userRatingRepository;
 
 
 	@Override
@@ -90,6 +80,9 @@ public class DbInit implements CommandLineRunner {
 
 		UserWarning strike1= new UserWarning(customer1, "1st strike");
 		userWarningRepository.save(strike1);
+
+		UserRating rating1 = new UserRating(4, customer1, deliverer1, dishOrder1);
+		userRatingRepository.save(rating1);
 
 	}
 }
