@@ -43,8 +43,8 @@ public class DishController {
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE, value = "/Menu/{dishId}")
-	public void deleteDish(@RequestBody Dish dish,@PathVariable long dishId) {
-		dishService.deleteDish(dish);
+	public void deleteDish(@PathVariable long dishId) {
+		dishService.deleteDish(dishId);
 	}
 	
 	

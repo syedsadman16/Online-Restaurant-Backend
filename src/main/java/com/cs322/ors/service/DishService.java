@@ -3,6 +3,7 @@ package com.cs322.ors.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.cs322.ors.model.TabooWord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.cs322.ors.db.DishRepository;
@@ -38,7 +39,8 @@ public class DishService {
 		dishRepository.save(updatedDish);
 	}
 
-	public void deleteDish(Dish dish) {
-		dishRepository.delete(dish);
+	public void deleteDish(long dishid) {
+		Optional<Dish> dish = this.dishRepository.findById(dishid);
+		dishRepository.delete(dish.get());
 	}
 }
