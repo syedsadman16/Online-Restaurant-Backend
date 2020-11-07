@@ -12,17 +12,25 @@ public class DishRating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private int rating; // 1-5 star rating
-    
+
+    /*
+     * Contains a reference to Dish and Order classes
+     * Dish contains User chef, Order contains User customer
+     */
     @OneToOne(optional = false)
-    private Order order;
-    
+    private DishOrder dishOrder;
+
+    /*
+     *  Value ranging from 1-5 stars
+     */
+    private int rating;
+
 	public DishRating() {
 	}
 
-    public DishRating(int rating, Order order) {
+    public DishRating(int rating, DishOrder dishOrder) {
         this.rating = rating;
-        this.order = order;
+        this.dishOrder = dishOrder;
     }
 
     public long getId() {
@@ -41,11 +49,11 @@ public class DishRating {
         this.rating = rating;
     }
 
-    public Order getOrder() {
-        return order;
+    public DishOrder getOrder() {
+        return dishOrder;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setOrder(DishOrder order) {
+        this.dishOrder = order;
     }
 }
