@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Dish {
 	@Id
@@ -16,6 +18,7 @@ public class Dish {
 	private long id;
 
 	@ManyToOne(optional=false)
+	@JsonIgnore
 	private User chef;
 	
 	@Column(precision = 13, scale = 2)
