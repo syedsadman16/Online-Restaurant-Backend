@@ -40,7 +40,7 @@ public class OrderService {
 		orderRepository.deleteById(orderId);    //throws illegalArgumentException if null
 	}
 
-	public Optional<Order> getOrderByUserById(long orderId) {
+	public Optional<Order> getOrderById(long orderId) {
 		return orderRepository.findById(orderId);
 	}
 	
