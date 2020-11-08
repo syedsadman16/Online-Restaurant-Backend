@@ -11,14 +11,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property ="id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User {
 
 	@Id
@@ -38,20 +40,52 @@ public class User {
 	private String role;
 	private boolean closed;
 	private float accountBalance;
-//
+
+	// Bidirectional Mapping
+
+	@JsonIgnore
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Order> orders = new ArrayList<>();
-//	
-//	//@OneToMany(mappedBy = "chef", cascade = CascadeType.ALL, orphanRemoval = true)
-//	private List<ChefJob> chefJobs = new ArrayList<>();
 
-//	public List<ChefJob> getChefJobs() {
-//		return chefJobs;
-//	}
-//
-//	public void setChefJobs(List<ChefJob> chefJobs) {
-//		this.chefJobs = chefJobs;
-//	}
+	@JsonIgnore
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<UserWarning> userWarnings = new ArrayList<>();
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "chef", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ChefJob> chefJobs = new ArrayList<>();
+
+	@JsonIgnore
+	@OneToOne(mappedBy = "critic", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private UserRating userRatingByCritic;
+
+	@JsonIgnore
+	@OneToOne(mappedBy = "victim", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private UserRating userRatingByVictim;
+
+	@JsonIgnore
+	@OneToOne(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private EmployeeInfo employeeInfo;
+
+	@JsonIgnore
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private Salary salary;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "userid", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<Transaction> transactions = new ArrayList<>();
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "chef", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<Dish> dishes = new ArrayList<>();
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "chef", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<DishKeyWord> dishKeywords = new ArrayList<>();
+
+	@JsonIgnore
+	@OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private CustomerInfo customerInfo;
 
 	public User() {
 	}
@@ -62,18 +96,10 @@ public class User {
 		this.role = role;
 		this.closed = false;
 
-		if (role == "CUSTOMER" || role == "VIP" ) {
-			this.accountBalance = 300;    // 300 dollars given to customers by default
+		if (role == "CUSTOMER" || role == "VIP") {
+			this.accountBalance = 300; // 300 dollars given to customers by default
 		}
 
-	}
-
-//	public List<Order> getOrders() {
-//		return orders;
-//	}
-
-	public void setOrders(List<Order> orders) {
-		this.orders = orders;
 	}
 
 	public long getId() {

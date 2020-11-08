@@ -19,10 +19,11 @@ public class ChefJob {
 	private long id;
 	
 	@ManyToOne
-	//@JoinColumn(name = "chef_id")
+	@JoinColumn(name = "chef_id")
 	private User chef;	
 	
-	@OneToOne(optional = false)
+	@OneToOne
+	@JoinColumn(name = "order_id", referencedColumnName = "id")
 	private Order order;	
 	private boolean completed;
 	
