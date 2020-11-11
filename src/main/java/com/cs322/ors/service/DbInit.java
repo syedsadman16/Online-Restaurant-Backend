@@ -88,8 +88,9 @@ public class DbInit implements CommandLineRunner {
 
 		UserRating rating1 = new UserRating(4, customer1, deliverer1, dishOrder1);
 		userRatingRepository.save(rating1);
-
-		Transaction transaction1 = new Transaction(customer1, 12 ,"cookie");
+		
+		BigDecimal bDecimal = new BigDecimal ("32.2");
+		Transaction transaction1 = new Transaction(customer1, bDecimal ,"cookie");
 		TransactionRepository.save(transaction1);
 
 	}

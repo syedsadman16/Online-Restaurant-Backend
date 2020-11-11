@@ -1,5 +1,7 @@
 package com.cs322.ors.model;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,13 +17,13 @@ public class Transaction {
     @ManyToOne(optional = false)
     private User userid;
     
-    private long amount;
+    private BigDecimal amount;
     private String description;
     
 
     public Transaction() {}
 
-    public Transaction(User userid, long amount, String description) {
+    public Transaction(User userid, BigDecimal amount, String description) {
         this.userid = userid;
         this.amount = amount;
         this.description = description;
@@ -35,11 +37,11 @@ public class Transaction {
         this.userid = userid;
     }
 
-    public long getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
