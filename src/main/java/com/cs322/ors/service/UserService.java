@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 
 import com.cs322.ors.db.UserRepository;
+import com.cs322.ors.model.Dish;
 import com.cs322.ors.model.User;
 
 @Service
@@ -47,6 +48,14 @@ public class UserService {
 		}
 		return user;
 		
+	}
+	
+	public void updateUser(User user) {
+		Optional<User> UserDB = this.userRepository.findById(user.getId());
+		
+		if(UserDB.isPresent()) {			
+			userRepository.save(user);
+		}
 	}
 
 

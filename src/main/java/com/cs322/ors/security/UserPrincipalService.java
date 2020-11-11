@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.cs322.ors.model.User;
+import com.cs322.ors.service.AccountStatusService;
 import com.cs322.ors.db.UserRepository;
 
 @Service
@@ -14,6 +15,9 @@ public class UserPrincipalService implements UserDetailsService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private AccountStatusService accountStatusService;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -21,6 +25,7 @@ public class UserPrincipalService implements UserDetailsService {
 		if (user == null) {
 			throw new UsernameNotFoundException(username);
 		}
+		accountStatusService.updateStatus(user);
 
 		UserPrincipal userPrincipal = new UserPrincipal(user);
 		return userPrincipal;

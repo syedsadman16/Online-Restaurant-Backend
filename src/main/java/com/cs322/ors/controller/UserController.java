@@ -50,7 +50,7 @@ public class UserController {
 		if (!currentUser.isClosed()) {
 			return userService.getUserById(id);
 		}
-		throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+		throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Account closed");
 
 	}
 
