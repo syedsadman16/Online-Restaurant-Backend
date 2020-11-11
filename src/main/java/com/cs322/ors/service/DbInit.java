@@ -39,6 +39,9 @@ public class DbInit implements CommandLineRunner {
 	@Autowired
 	UserRatingRepository userRatingRepository;
 
+	@Autowired
+	TransactionRepository TransactionRepository;
+
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -85,6 +88,9 @@ public class DbInit implements CommandLineRunner {
 
 		UserRating rating1 = new UserRating(4, customer1, deliverer1, dishOrder1);
 		userRatingRepository.save(rating1);
+
+		Transaction transaction1 = new Transaction(customer1, 12 ,"cookie");
+		TransactionRepository.save(transaction1);
 
 	}
 }
