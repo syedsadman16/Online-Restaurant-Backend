@@ -20,15 +20,12 @@ public class UserRating {
 
     /*
      * Keep track of the User who submitted the rating
+     * When list of ratings is viewed for current User, it will
+     * display the critic - only the critic and manager can 
+     * update the rating 
      */
     @OneToOne
     private User critic;
-
-    /*
-     * Keep track of the user being rated
-     */
-    @OneToOne
-    private User victim;
 
     /*
      * Keep track of the order that rating was made for

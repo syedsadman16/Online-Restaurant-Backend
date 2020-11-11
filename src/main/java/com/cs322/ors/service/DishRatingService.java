@@ -10,6 +10,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/*
+ * Handle all the crud methods of a dish rating. Can be accessed using id
+ * Surfers should be able to view all ratings of a dish
+ * Customers can create ratings for a specific dish they've ordered
+ * Chefs can only get ratings for their assoicated dishes
+ */
 @Service
 public class DishRatingService {
 
@@ -24,6 +30,9 @@ public class DishRatingService {
         return dishRatingRepository.findById(id).get();
     }
 
+    /*
+     * DishRating should only be created for an existing Dish
+     */
     public void createDishRating(DishRating dishRating){
         dishRatingRepository.save(dishRating);
     }

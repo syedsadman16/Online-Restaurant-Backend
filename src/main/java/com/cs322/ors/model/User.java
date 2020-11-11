@@ -55,13 +55,13 @@ public class User {
 	@OneToMany(mappedBy = "chef", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ChefJob> chefJobs = new ArrayList<>();
 
-	@JsonIgnore
-	@OneToOne(mappedBy = "critic", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private UserRating userRatingByCritic;
+	// @JsonIgnore
+	// @OneToOne(mappedBy = "critic", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	// private UserRating userRatingByCritic;
 
-	@JsonIgnore
-	@OneToOne(mappedBy = "victim", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private UserRating userRatingByVictim;
+	// @JsonIgnore
+	// @OneToOne(mappedBy = "victim", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	// private UserRating userRatingByVictim;
 
 	@JsonIgnore
 	@OneToOne(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -86,6 +86,13 @@ public class User {
 	@JsonIgnore
 	@OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private CustomerInfo customerInfo;
+
+
+	// Unidirectional 
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<UserRating> rating;
+
+
 
 	public User() {
 	}
@@ -141,6 +148,15 @@ public class User {
 	public void setClosed(boolean closed) {
 		this.closed = closed;
 	}
+
+	public List<UserRating> getRating() {
+		return this.rating;
+	}
+
+	public void setRating(List<UserRating> rating) {
+		this.rating = rating;
+	}
+
 
 	@Override
 	public String toString() {

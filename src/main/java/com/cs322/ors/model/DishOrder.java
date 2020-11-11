@@ -17,8 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 /*
- * Display order history for customers and vip users with DishOrder
- * Delivery person is shown a delivery list with DishOrder objects
+ * Join Table using ManyToOne relationships
  */
 @Entity
 public class DishOrder {
