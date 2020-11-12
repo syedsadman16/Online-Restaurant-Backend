@@ -31,7 +31,7 @@ public class UserRating {
      * Keep track of the order that rating was made for
      */
     @OneToOne
-    private DishOrder dishOrder;
+    private Order order;
 
 
     public UserRating() {

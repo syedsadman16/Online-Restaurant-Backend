@@ -1,6 +1,7 @@
 package com.cs322.ors.service;
 
 import com.cs322.ors.db.UserRatingRepository;
+import com.cs322.ors.db.UserRepository;
 import com.cs322.ors.model.User;
 import com.cs322.ors.model.UserRating;
 import org.hibernate.Criteria;
@@ -17,10 +18,26 @@ public class UserRatingService {
 
     @Autowired
     private UserRatingRepository userRatingRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    public List<UserRating> getAllUserRatings(){
-        return userRatingRepository.findAll();
+    /*
+     * View list of all ratings regardless of user type
+     */
+    public List<User> getAllUserRatings(){
+        return userRepository.findAll();
     }
+
+    /*
+     * Get all ratings for a specific user
+     */
+    public List<UserRating> getUsersRatings(Long userId){
+        //userRatingRepository
+    }
+
+    /*
+     * Get one rating for a user 
+     */
 
 //    /*
 //     * Repository looks for all UserRating objects that contain

@@ -87,11 +87,10 @@ public class User {
 	@OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private CustomerInfo customerInfo;
 
-//
-//	// Unidirectional
-//	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//	private List<UserRating> rating;
 
+	// Unidirectional
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<UserRating> ratingList;
 
 
 	public User() {
@@ -105,6 +104,10 @@ public class User {
 
 		if (role == "CUSTOMER" || role == "VIP") {
 			this.accountBalance = 300; // 300 dollars given to customers by default
+		}
+
+		if (role == "CUSTOMER" || role == "VIP" || role == "DELIVERER") {
+			ratingList = new ArrayList<>();
 		}
 
 	}
@@ -149,13 +152,51 @@ public class User {
 		this.closed = closed;
 	}
 
-//	public List<UserRating> getRating() {
-//		return this.rating;
-//	}
-//
-//	public void setRating(List<UserRating> rating) {
-//		this.rating = rating;
-//	}
+	public List<UserRating> getRating() {
+		return this.ratingList;
+	}
+
+	public void setRating(List<UserRating> rating) {
+		this.ratingList = rating;
+	}
+
+	public void addToRatings(UserRating uRating){
+		ratingList.add(uRating);
+	}
+
+	public UserRating getSingleUserRating(Long id) {
+		UserRating newRating = new UserRating();
+		for(int i=0; i<ratingList.size(); i++){
+			if(ratingList.get(i).getId() == id){
+			newRating = ratingList.get(i);
+			}
+		}
+		return newRating;
+	}
+
+	public void updateRating(UserRating newRating, Long ratingId){
+		for(int i=0; i<ratingList.size(); i++){
+			if(ratingList.get(i).getId() == ratingId){
+				ratingList.set(i, newRating);
+			}
+		}
+	}
+
+	public void deleteRating(Long dishId, Long ratingId){
+		for(int i=0; i<ratingList.size(); i++){
+			if(ratingList.get(i).getId() == ratingId){
+				ratingList.remove(i);
+			}
+		}
+	}
+
+	public double calculateAverageRating(){
+		double total = 0;
+		for(int i=0; i<ratingList.size(); i++){
+			total += ratingList.get(i).getRating();
+		}
+		return total/ratingList.size();
+	}
 
 
 	@Override
