@@ -16,8 +16,9 @@ import java.util.Optional;
 @Service
 public class UserRatingService {
 
-    @Autowired
-    private UserRatingRepository userRatingRepository;
+    // Possibly used for Disputing ratings
+    // @Autowired
+    // private UserRatingRepository userRatingRepository;
     @Autowired
     private UserRepository userRepository;
 
@@ -32,35 +33,48 @@ public class UserRatingService {
      * Get all ratings for a specific user
      */
     public List<UserRating> getUsersRatings(Long userId){
-        //userRatingRepository
+        User user = userRepository.findById(userId).get();
+        return user.getRating();
     }
 
     /*
      * Get one rating for a user 
      */
-
-//    /*
-//     * Repository looks for all UserRating objects that contain
-//     * a specific User - the critic who createed the rating
-//     */
-//    public List<UserRating> getUserRatings(User critic){
-//        Session session = HibernateUtil.getHibernateSession();
-//        Criteria criteria = session.createCriteria(YourClass.class);
-//        List<UserRating> list = criteria.add(Restrictions.eq("yourField", yourFieldValue)).list();
-//        return userRatingRepository.findByUserCritic(critic);
-//    }
-
-    public void postUserRating(UserRating rating){
-        userRatingRepository.save(rating);
+    public UserRating getUserSingleRatings(Long userId, Long ratingId){
+        User user = userRepository.findById(userId).get();
+        return user.getSingleUserRating(ratingId);
     }
 
-    public void editUserRating( UserRating rating){
-        userRatingRepository.save(rating);
+    /*
+     * Add rating for a victim with current user being the critic
+     * First find the user that is being rated 
+     * Next, create a new rating with the current user as the critic
+     * Finally, save the new rating to the victims ratings list
+     */
+    public void postUserRating(Long victimId, UserRating rating, User critic){
+        User victim = userRepository.findById(victimId).get();
+        UserRating newRating = rating;
+        newRating.setCritic(critic);
+        victim.addToRatings(newRating);
+        userRepository.save(victim);
     }
 
-    public void deleteUserRating(long id) {
-        Optional<UserRating> rating = this.userRatingRepository.findById(id);
-        userRatingRepository.delete(rating.get());
+    /*
+     * Locate user object and edit rating from users list
+     */
+    public void editUserRating(UserRating rating, Long userId, Long ratingId){
+        User updatedUser = userRepository.findById(userId).get();
+        updatedUser.updateRating(rating, ratingId);
+        userRepository.save(updatedUser);
+    }
+
+    /*
+     * Delete rating from list
+     */
+    public void deleteUserRating(Long userId, Long ratingId) {
+        User ratingToRemvoe = userRepository.findById(userId).get();
+        ratingToRemvoe.deleteRating(userId, ratingId);
+        userRepository.save(ratingToRemvoe);
     }
 
 }
