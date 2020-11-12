@@ -63,7 +63,7 @@ public class DbInit implements CommandLineRunner {
 		Dish dish1 = new Dish("strawberry cake", chef1, null, null, BigDecimal.valueOf(10), false);
 		Dish dish2 = new Dish( "RED velvet cake", chef1, null, null, BigDecimal.valueOf(10.50), true);
 
-		// Add test ratings
+		// Add test dish ratings
 		DishRating rating1 = new DishRating(4.3, customer1);
 		rating1.setComments("I like red velvet cakes");
 		DishRating rating2 = new DishRating(2.5, customer2);
@@ -98,8 +98,10 @@ public class DbInit implements CommandLineRunner {
 		UserWarning strike2= new UserWarning(customer1, "2nd strike");
 		userWarningRepository.save(strike2);
 
-//		UserRating rating1 = new UserRating(4, customer1, deliverer1, dishOrder1);
-//		userRatingRepository.save(rating1);
+		// Add test user ratings
+		UserRating rating3 = new UserRating(1, deliverer1, order1);
+		customer1.addToRatings(rating3);
+		userRepository.saveAll(users);
 		
 		BigDecimal bDecimal = new BigDecimal ("32.2");
 		Transaction transaction1 = new Transaction(customer1, bDecimal ,"cookie");

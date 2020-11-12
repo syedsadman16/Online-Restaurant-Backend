@@ -40,6 +40,7 @@ public class User {
 	private String role;
 	private boolean closed;
 	private float accountBalance;
+	private int rating;
 
 	// Bidirectional Mapping
 
@@ -54,14 +55,6 @@ public class User {
 	@JsonIgnore
 	@OneToMany(mappedBy = "chef", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ChefJob> chefJobs = new ArrayList<>();
-
-	// @JsonIgnore
-	// @OneToOne(mappedBy = "critic", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	// private UserRating userRatingByCritic;
-
-	// @JsonIgnore
-	// @OneToOne(mappedBy = "victim", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	// private UserRating userRatingByVictim;
 
 	@JsonIgnore
 	@OneToOne(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -108,7 +101,11 @@ public class User {
 
 		if (role == "CUSTOMER" || role == "VIP" || role == "DELIVERER") {
 			ratingList = new ArrayList<>();
+			if(ratingList.size() > 0) {
+				this.rating = calculateAverageRating();
+			} 
 		}
+
 
 	}
 
@@ -190,8 +187,8 @@ public class User {
 		}
 	}
 
-	public double calculateAverageRating(){
-		double total = 0;
+	public int calculateAverageRating(){
+		int total = 0;
 		for(int i=0; i<ratingList.size(); i++){
 			total += ratingList.get(i).getRating();
 		}

@@ -38,20 +38,20 @@ public class UserRating {
       
     }
 
-    public UserRating(int rating, User critic, DishOrder order) {
+    public UserRating(int rating, User critic, Order order) {
         //this.id = id;
         this.rating = rating;
-        this.dishOrder = order;
         this.critic = critic;
+        this.order = order;
     }
 
 
-    public DishOrder getDishOrder() {
-        return dishOrder;
+    public Order getDishOrder() {
+        return order;
     }
 
-    public void setDishOrder(DishOrder dishOrder) {
-        this.dishOrder = dishOrder;
+    public void setDishOrder(Order order) {
+        this.order = order;
     }
 
     public User getCritic() {
@@ -78,11 +78,4 @@ public class UserRating {
         this.rating = rating;
     }
 
-    public DishOrder getOrder() {
-        return dishOrder;
-    }
-
-    public void setOrder(DishOrder order) {
-        this.dishOrder = order;
-    }
 }

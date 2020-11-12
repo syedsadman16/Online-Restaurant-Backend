@@ -2,12 +2,15 @@ package com.cs322.ors.controller;
 
 import com.cs322.ors.model.Dish;
 import com.cs322.ors.model.DishRating;
+import com.cs322.ors.model.User;
 import com.cs322.ors.model.UserRating;
+import com.cs322.ors.security.UserPrincipal;
 import com.cs322.ors.service.DishRatingService;
 import com.cs322.ors.service.UserRatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -20,33 +23,80 @@ public class RatingsController {
     @Autowired
     DishRatingService dishRatingService;
 
-    // /*
-    //  * Controller mappings for User Ratings
-    //  */
-    // @GetMapping("/users")
-    // @PreAuthorize("hasRole('MANAGER')")
-    // public List<UserRating> getAllUsersRating(){
-    //     return userRatingService.getAllUserRatings();
-    // }
+     //------------------------------------User Ratings----------------------------------------------------
 
-    // @PostMapping("/users/create")
-    // @PreAuthorize("hasAnyRole('CUSTOMER','VIP','DELIVERER')")
-    // public void createUserRating(@RequestBody UserRating userRating){
-    //     userRatingService.postUserRating(userRating);
-    // }
+    /*
+     * Controller mappings for User Ratings
+     * Only the manager can view all ratings for all users
+     */
+    @GetMapping("/users")
+    @PreAuthorize("hasRole('MANAGER')")
+    public List<User> getAllUsersRating(){
+        return userRatingService.getAllUserRatings();
+    }
 
-    // @PostMapping("/users/update")
-    // @PreAuthorize("hasAnyRole('CUSTOMER','VIP','DELIVERER', 'MANAGER')")
-    // public void updateUserRating(@RequestBody UserRating userRating){
-    //     userRatingService.editUserRating(userRating);
-    // }
+    /*
+     * Let current user get their own ratings
+     */ 
+    @GetMapping("/users/myRatings")
+    @PreAuthorize("isAuthenticated()")
+    public List<UserRating> getPersonalRatings(Authentication authUser){
+        User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
+        return userRatingService.getUsersRatings(currentUser.getId());
+    }
 
-    // @PostMapping("/users/delete")
-    // @PreAuthorize("hasAnyRole('CUSTOMER','VIP','DELIVERER', 'MANAGER')")
-    // public void deleteUserRating(@PathVariable Long id){
-    //     userRatingService.deleteUserRating(id);
-    // }
+    /*
+     * Let the manager view ratings for a single user
+     */
+    @GetMapping("/users/{userId}")
+    @PreAuthorize("hasRole('MANAGER')")
+    public List<UserRating> getSpecificUsersRatings(@PathVariable Long userId){
+        return userRatingService.getUsersRatings(userId);
+    }
 
+    /*
+     * Manager can get a specific rating 
+     */
+    @GetMapping("/users/{userId}/{ratingId}")
+    @PreAuthorize("hasRole('MANAGER')")
+    public UserRating getSpecificUsersRatings(@PathVariable Long userId, @PathVariable Long ratingId){
+        return userRatingService.getUserSingleRatings(userId, ratingId);
+    }
+
+
+    /*
+     * Customers and Delivery can create a rating
+     * @userId is user being rated
+     */
+    @PostMapping("/users/create/{userId}")
+    @PreAuthorize("hasAnyRole('CUSTOMER','VIP','DELIVERER')")
+    public void createUserRating(@RequestBody UserRating userRating, @PathVariable Long userId, Authentication authUser ){
+        User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
+        userRatingService.postUserRating(userId, userRating, currentUser );
+    }
+
+     /*
+     * Registered users and Manager can update ratings
+     */
+    @PostMapping("/users/update/{userId}/{ratingId}")
+    @PreAuthorize("hasAnyRole('CUSTOMER','VIP','DELIVERER', 'MANAGER')")
+    public void updateUserRating(@RequestBody UserRating userRating, @PathVariable Long userId, @PathVariable Long ratingId){
+        userRatingService.editUserRating(userRating, userId, ratingId);
+    }
+
+    /*
+     * Registered users and Manager can delete ratings
+     */
+    @PostMapping("/users/delete")
+    @PreAuthorize("hasAnyRole('CUSTOMER','VIP','DELIVERER', 'MANAGER')")
+    public void deleteUserRating(@PathVariable Long id, @PathVariable Long ratingId){
+        userRatingService.deleteUserRating(id, ratingId);
+    }
+
+
+    
+    //------------------------------------Dish Ratings----------------------------------------------------
+    
 
     /*
      * Controller mappings for Dish Ratings
