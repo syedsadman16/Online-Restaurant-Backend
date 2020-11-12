@@ -10,6 +10,6 @@ import com.cs322.ors.model.UserWarning;
 
 @Repository
 public interface UserWarningRepository extends JpaRepository<UserWarning, Long>{
-	List<UserWarning> findByCustomer_Id(long id);
-	void deleteByCustomer_Id(long id);
+	List<UserWarning> findByUser_Id(long id);
+	void deleteByUser_Id(long id);
 }

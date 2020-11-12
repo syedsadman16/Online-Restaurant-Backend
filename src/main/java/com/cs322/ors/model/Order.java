@@ -55,10 +55,6 @@ public class Order {
 	private List<DishOrder> dishOrder = new ArrayList<>();
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "chef", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<ChefJob> chefJobs = new ArrayList<>();
-
-	@JsonIgnore
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private DeliveryStatus deliveryStatus;
 

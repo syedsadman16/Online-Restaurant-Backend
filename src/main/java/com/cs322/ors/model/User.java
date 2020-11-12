@@ -48,7 +48,7 @@ public class User {
 	private List<Order> orders = new ArrayList<>();
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<UserWarning> userWarnings = new ArrayList<>();
 
 	@JsonIgnore

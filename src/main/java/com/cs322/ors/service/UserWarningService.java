@@ -21,13 +21,17 @@ public class UserWarningService {
 	public Optional<UserWarning> getWarningById(long warningId) {
 		return userWarningRepository.findById(warningId);
 	}
-
-	public int count(long customerId) {        //counts warnings per customer
-		List<UserWarning> customerWarnings = userWarningRepository.findByCustomer_Id(customerId);
-		return customerWarnings.size();
+	
+	public List<UserWarning> getWarningByUser(long userId){
+		return userWarningRepository.findByUser_Id(userId);
 	}
 
-	public void deleteAllByCustomer(long customerId) {		//deletes all warnings from a specific customer using their customer_id
-		userWarningRepository.deleteByCustomer_Id(customerId);
+	public int count(long userId) {        //counts warnings per user
+		List<UserWarning> userWarnings = userWarningRepository.findByUser_Id(userId);
+		return userWarnings.size();
+	}
+
+	public void deleteAllByUser(long userId) {		//deletes all warnings from a specific user using their user_id
+		userWarningRepository.deleteByUser_Id(userId);
 	}
 }
