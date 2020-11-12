@@ -10,21 +10,19 @@ import com.cs322.ors.model.User;
 @Service
 public class AccountStatusService {
 	
-	//@Autowired
-	//WarningService warningService;
+	@Autowired
+	UserWarningService userWarningService;
 	
 	@Autowired
 	UserService userService;
 	
 	public void updateStatus(User user) {
-		//int warnings = warningService.count(user.getId())
-		int warnings = 0;
+		int warnings = userWarningService.count(user.getId());
 		boolean isVIP = user.getRole() == "VIP";
 		boolean isCustomer = user.getRole() == "CUSTOMER" || isVIP;
 		if(isVIP && warnings == 2) {
 			user.setRole("CUSTOMER");
-			//warningService.deleteAll(user.getId())
-			warnings = 0;
+			userWarningService.deleteAllByCustomer(user.getId());
 			userService.updateUser(user);
 			
 		} 

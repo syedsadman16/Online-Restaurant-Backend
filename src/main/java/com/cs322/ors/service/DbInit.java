@@ -94,6 +94,9 @@ public class DbInit implements CommandLineRunner {
 
 		UserWarning strike1= new UserWarning(customer1, "1st strike");
 		userWarningRepository.save(strike1);
+		
+		UserWarning strike2= new UserWarning(customer1, "2nd strike");
+		userWarningRepository.save(strike2);
 
 //		UserRating rating1 = new UserRating(4, customer1, deliverer1, dishOrder1);
 //		userRatingRepository.save(rating1);
