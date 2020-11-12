@@ -14,6 +14,7 @@ public class DishRating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @OneToOne
     private User critic;
     private double rating;
     private String comments = "";

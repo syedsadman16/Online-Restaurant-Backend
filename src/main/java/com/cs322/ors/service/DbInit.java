@@ -43,6 +43,7 @@ public class DbInit implements CommandLineRunner {
 	TransactionRepository TransactionRepository;
 
 
+
 	@Override
 	public void run(String... args) throws Exception {
 
@@ -61,8 +62,16 @@ public class DbInit implements CommandLineRunner {
 		
 		Dish dish1 = new Dish("strawberry cake", chef1, null, null, BigDecimal.valueOf(10), false);
 		Dish dish2 = new Dish( "RED velvet cake", chef1, null, null, BigDecimal.valueOf(10.50), true);
+
+		// Add test ratings
+		DishRating rating1 = new DishRating(4.3, customer1);
+		rating1.setComments("I like red velvet cakes");
+		DishRating rating2 = new DishRating(2.5, customer2);
+		rating2.setComments("What a donut");
+		dish2.addToRatings(rating2);
+		dish2.addToRatings(rating1);
 		dishRepository.saveAll(Arrays.asList(dish1,dish2));
-		
+
 		Order order1 = new Order(customer1, 0);
 		orderRepository.save(order1);
 		
@@ -86,8 +95,8 @@ public class DbInit implements CommandLineRunner {
 		UserWarning strike1= new UserWarning(customer1, "1st strike");
 		userWarningRepository.save(strike1);
 
-		UserRating rating1 = new UserRating(4, customer1, deliverer1, dishOrder1);
-		userRatingRepository.save(rating1);
+//		UserRating rating1 = new UserRating(4, customer1, deliverer1, dishOrder1);
+//		userRatingRepository.save(rating1);
 		
 		BigDecimal bDecimal = new BigDecimal ("32.2");
 		Transaction transaction1 = new Transaction(customer1, bDecimal ,"cookie");

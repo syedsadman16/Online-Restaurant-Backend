@@ -87,10 +87,10 @@ public class User {
 	@OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private CustomerInfo customerInfo;
 
-
-	// Unidirectional 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<UserRating> rating;
+//
+//	// Unidirectional
+//	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//	private List<UserRating> rating;
 
 
 
@@ -149,13 +149,13 @@ public class User {
 		this.closed = closed;
 	}
 
-	public List<UserRating> getRating() {
-		return this.rating;
-	}
-
-	public void setRating(List<UserRating> rating) {
-		this.rating = rating;
-	}
+//	public List<UserRating> getRating() {
+//		return this.rating;
+//	}
+//
+//	public void setRating(List<UserRating> rating) {
+//		this.rating = rating;
+//	}
 
 
 	@Override

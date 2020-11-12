@@ -29,7 +29,7 @@ public class DishRatingService {
     /*
      * Returns Dish objects that each contain an array of ratings
      */
-    public List<Dish> getAllDishRatings(){
+    public List<Dish> getAllDishes(){
         return dishRepository.findAll();
     }
 

@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 @Entity
@@ -23,8 +24,9 @@ public class Dish {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
+
 	@ManyToOne(optional=false)
-	@JsonIgnore
+	@JsonIgnoreProperties({"username", "password", "role", "closed"})
 	private User chef;
 
 	// Unidirectional relations

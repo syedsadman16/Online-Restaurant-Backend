@@ -51,27 +51,32 @@ public class RatingsController {
     /*
      * Controller mappings for Dish Ratings
      */
-    @GetMapping("/dishes")
-    public List<DishRating> getAllDishRating(){
-        return dishRatingService.getAllDishRatings();
+    @RequestMapping("/dishes")
+    public List<Dish> getAllDishes(){
+        return dishRatingService.getAllDishes();
     }
 
-    @PostMapping("/dishes/create")
+    @RequestMapping("/dishes/{dishId}")
+    public List<DishRating> getOneDishRatings(@PathVariable Long dishId){
+        return dishRatingService.getDishRatings(dishId);
+    }
+
+    @PostMapping("/dishes/{dishId}/create")
     @PreAuthorize("hasAnyRole('CUSTOMER','VIP','MANAGER')")
-    public void createDishRating(@RequestBody DishRating dishRating){
-        dishRatingService.createDishRating(dishRating);
+    public void createDishRating(@RequestBody DishRating dishRating, @PathVariable Long dishId){
+        dishRatingService.createDishRating(dishRating, dishId);
     }
 
-    @PostMapping("/dishes/update")
+    @PostMapping("/dishes/{dishId}/update")
     @PreAuthorize("hasAnyRole('CUSTOMER','VIP','MANAGER')")
-    public void updateDishRating(@RequestBody DishRating dishRating){
-        dishRatingService.updateDishRating(dishRating);
+    public void updateDishRating(@RequestBody DishRating dishRating, @PathVariable Long dishId){
+        dishRatingService.updateDishRating(dishRating, dishId);
     }
 
-    @PostMapping("/dishes/delete")
+    @PostMapping("/dishes/{id}/delete/{dishId}")
     @PreAuthorize("hasAnyRole('CUSTOMER','VIP', 'MANAGER')")
-    public void deleteDishRating(@PathVariable Long id){
-        userRatingService.deleteUserRating(id);
+    public void deleteDishRating(@PathVariable Long id,  @PathVariable Long dishId){
+        dishRatingService.deleteDishRating(id, dishId);
     }
 
 
