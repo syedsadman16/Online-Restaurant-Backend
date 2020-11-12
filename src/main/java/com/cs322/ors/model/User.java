@@ -85,6 +85,10 @@ public class User {
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<UserRating> ratingList;
 
+	// Only for managers
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Claims> disputeList;
+
 
 	public User() {
 	}
@@ -106,6 +110,9 @@ public class User {
 			} 
 		}
 
+		if(role == "MANAGER"){
+			disputeList = new ArrayList<>();
+		}
 
 	}
 
@@ -195,7 +202,14 @@ public class User {
 		return total/ratingList.size();
 	}
 
+	public List<Claims> getDisputeList() {
+		return this.disputeList;
+	}
 
+	public void setDisputeList(List<Claims> disputeList) {
+		this.disputeList = disputeList;
+	}
+	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role + ", closed="
