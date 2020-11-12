@@ -38,13 +38,12 @@ public class UserRating {
       
     }
 
-    public UserRating(int rating, User critic, User victim, DishOrder order) {
+    public UserRating(int rating, User critic, DishOrder order) {
         //this.id = id;
         this.rating = rating;
         this.dishOrder = order;
         this.critic = critic;
     }
-
 
 
     public DishOrder getDishOrder() {

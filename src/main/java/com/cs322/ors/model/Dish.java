@@ -1,6 +1,7 @@
 package com.cs322.ors.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -50,6 +51,7 @@ public class Dish {
 		this.price = price;
 		this.name = name;
 		this.special = special;
+		rating = new ArrayList<DishRating>();
 	}
 
 
@@ -122,14 +124,51 @@ public class Dish {
 		this.name = name;
 	}
 
-	public List<DishRating> getRating() {
-		return this.rating;
+	public List<DishRating> getRatingList() {
+		return rating;
 	}
 
-	public void setRating(List<DishRating> rating) {
+	public DishRating getSpecificRating(Long id) {
+		DishRating current = new DishRating();
+		for(int i=0; i<rating.size(); i++){
+			if(rating.get(i).getId() == id){
+			current = rating.get(i);
+			}
+		}
+		return current;
+	}
+
+	public void addToRatings(DishRating newRating){
+		rating.add(newRating);
+	}
+
+	public void updateRating(DishRating newRating){
+		for(int i=0; i<rating.size(); i++){
+			if(rating.get(i).getId() == id){
+				rating.set(i, newRating);
+			}
+		}
+	}
+
+	public void setRatingList(List<DishRating> rating) {
 		this.rating = rating;
 	}
 
+	public double getAverageRating(){
+		double sum = 0;
+		for(int i=0; i<rating.size(); i++){
+			sum =+ rating.get(i).getRating();
+		}
+		return sum;
+	}
+
+	public void deleteRating(Long id){
+		for(int i=0; i<rating.size(); i++){
+			if(rating.get(i).getId() == id){
+				rating.remove(i);
+			}
+		}
+	}
 
 	@Override
 	public String toString() {

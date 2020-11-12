@@ -6,21 +6,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import com.cs322.ors.security.UserPrincipal;
+
 @Entity
 public class DishRating {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    private int rating;
+    private User critic;
+    private double rating;
     private String comments = "";
 
 	public DishRating() {
 	}
 
-    public DishRating(int rating) {
+    public DishRating(double rating, User critic) {
         this.rating = rating;
+        this.critic = critic;
     }
 
     public long getId() {
@@ -31,7 +34,7 @@ public class DishRating {
         this.id = id;
     }
 
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
@@ -45,6 +48,14 @@ public class DishRating {
 
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    public User getCritic() {
+        return this.critic;
+    }
+
+    public void setCritic(User critic) {
+        this.critic = critic;
     }
 
 }
