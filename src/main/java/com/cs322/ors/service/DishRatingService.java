@@ -58,9 +58,12 @@ public class DishRatingService {
         dishRepository.save(ratedDish);
     }
 
-    public void updateDishRating(DishRating updatedRating, long dishId){
+     /*
+     * Update a rating for a dish
+     */
+    public void updateDishRating(DishRating updatedRating, long dishId, long ratingId){
         Dish updatedDish = dishRepository.findById(dishId).get();
-        updatedDish.updateRating(updatedRating);
+        updatedDish.updateRating(updatedRating, ratingId);
         dishRepository.save(updatedDish);
     }
 
@@ -69,7 +72,7 @@ public class DishRatingService {
      */
     public void deleteDishRating(long dishId, long ratingId) {
         Dish deletedDish = dishRepository.findById(dishId).get();
-        deletedDish.deleteRating(ratingId);
+        deletedDish.deleteRating(dishId, ratingId);
         dishRepository.save(deletedDish);
     }
 

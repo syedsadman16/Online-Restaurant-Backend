@@ -40,6 +40,8 @@ public class Dish {
 	private String imageUrl;
 	private String name;
 	private boolean special;
+	private double averageRating;
+
 	
 	public Dish() {
 		
@@ -54,6 +56,7 @@ public class Dish {
 		this.name = name;
 		this.special = special;
 		rating = new ArrayList<DishRating>();
+		this.averageRating = getAverageRating();
 	}
 
 
@@ -144,9 +147,9 @@ public class Dish {
 		rating.add(newRating);
 	}
 
-	public void updateRating(DishRating newRating){
+	public void updateRating(DishRating newRating, Long ratingId){
 		for(int i=0; i<rating.size(); i++){
-			if(rating.get(i).getId() == id){
+			if(rating.get(i).getId() == ratingId){
 				rating.set(i, newRating);
 			}
 		}
@@ -159,14 +162,14 @@ public class Dish {
 	public double getAverageRating(){
 		double sum = 0;
 		for(int i=0; i<rating.size(); i++){
-			sum =+ rating.get(i).getRating();
+			sum += rating.get(i).getRating();
 		}
-		return sum;
+		return sum/rating.size();
 	}
 
-	public void deleteRating(Long id){
+	public void deleteRating(Long dishId, Long ratingId){
 		for(int i=0; i<rating.size(); i++){
-			if(rating.get(i).getId() == id){
+			if(rating.get(i).getId() == ratingId){
 				rating.remove(i);
 			}
 		}
