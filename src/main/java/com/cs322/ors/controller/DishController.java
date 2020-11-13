@@ -27,6 +27,11 @@ public class DishController {
 	public List<Dish> getAllDishes(){
 		return dishService.getAllDishes();
 	}
+	
+	@RequestMapping("/Menu/keyword/{keyword}")
+	public List<Dish> getAllDishesByKeyWord(@PathVariable String keyword){
+		return dishService.getAllDishesByWord(keyword);
+	}
 		
 	@RequestMapping("/Menu/{dishId}")
 	public Optional<Dish> getDish(@PathVariable long dishId) {

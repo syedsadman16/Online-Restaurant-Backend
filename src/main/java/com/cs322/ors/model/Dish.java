@@ -32,6 +32,9 @@ public class Dish {
 	// Unidirectional relations
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<DishRating> rating;
+	
+	@OneToMany(mappedBy = "dish",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<DishKeyWord> keyword;
 
 	
 	@Column(precision = 13, scale = 2)
@@ -127,6 +130,10 @@ public class Dish {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public List<DishKeyWord> getKeyWord() {
+		return keyword;
 	}
 
 	public List<DishRating> getRatingList() {
