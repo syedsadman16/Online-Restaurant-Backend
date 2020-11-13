@@ -7,6 +7,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name = "KeyWords")
 public class DishKeyWord {
@@ -18,9 +23,12 @@ public class DishKeyWord {
 	@Column(name = "Word")
 	private String keyWord;
 	
+	@JsonIdentityInfo(property = "id", generator = ObjectIdGenerators.PropertyGenerator.class)
+	@JsonIdentityReference(alwaysAsId = true)
 	@ManyToOne (optional = false)   //multiple dishes can be marked by same keyword	
 	private Dish dish;
 	
+	@JsonIgnore
 	@ManyToOne (optional = false)	// one chef can use many keywords
 	private User chef;
 
