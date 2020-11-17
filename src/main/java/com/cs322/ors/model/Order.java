@@ -52,7 +52,7 @@ public class Order {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<DishOrder> dishOrder = new ArrayList<>();
+	private List<DishOrder> dishOrders = new ArrayList<>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "chef", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -72,6 +72,16 @@ public class Order {
 		this.date = LocalDateTime.now();
 		this.completed = false;
 		this.cancelled = false;
+	}
+	
+	
+
+	public List<DishOrder> getDishOrders() {
+		return dishOrders;
+	}
+
+	public void setDishOrders(List<DishOrder> dishOrders) {
+		this.dishOrders = dishOrders;
 	}
 
 	public long getId() {
