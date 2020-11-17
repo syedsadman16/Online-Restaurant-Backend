@@ -19,6 +19,9 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User {
@@ -40,6 +43,7 @@ public class User {
 	private String role;
 	private boolean closed;
 	private float accountBalance;
+	private int rating;
 
 	// Bidirectional Mapping
 
@@ -48,20 +52,12 @@ public class User {
 	private List<Order> orders = new ArrayList<>();
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<UserWarning> userWarnings = new ArrayList<>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "chef", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ChefJob> chefJobs = new ArrayList<>();
-
-	// @JsonIgnore
-	// @OneToOne(mappedBy = "critic", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	// private UserRating userRatingByCritic;
-
-	// @JsonIgnore
-	// @OneToOne(mappedBy = "victim", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	// private UserRating userRatingByVictim;
 
 	@JsonIgnore
 	@OneToOne(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -87,11 +83,16 @@ public class User {
 	@OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private CustomerInfo customerInfo;
 
-//
-//	// Unidirectional
-//	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//	private List<UserRating> rating;
 
+	// Unidirectional
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany( cascade = CascadeType.ALL)
+	private List<UserRating> ratingList;
+
+	// Only for managers
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany( cascade = CascadeType.ALL)
+	private List<Claims> disputeList;
 
 
 	public User() {
@@ -105,6 +106,17 @@ public class User {
 
 		if (role == "CUSTOMER" || role == "VIP") {
 			this.accountBalance = 300; // 300 dollars given to customers by default
+		}
+
+		if (role == "CUSTOMER" || role == "VIP" || role == "DELIVERER") {
+			ratingList = new ArrayList<>();
+			if(ratingList.size() > 0) {
+				this.rating = calculateAverageRating();
+			} 
+		}
+
+		if(role == "MANAGER"){
+			disputeList = new ArrayList<>();
 		}
 
 	}
@@ -149,15 +161,60 @@ public class User {
 		this.closed = closed;
 	}
 
-//	public List<UserRating> getRating() {
-//		return this.rating;
-//	}
-//
-//	public void setRating(List<UserRating> rating) {
-//		this.rating = rating;
-//	}
+	public List<UserRating> getRating() {
+		return this.ratingList;
+	}
 
+	public void setRating(List<UserRating> rating) {
+		this.ratingList = rating;
+	}
 
+	public void addToRatings(UserRating uRating){
+		ratingList.add(uRating);
+	}
+
+	public UserRating getSingleUserRating(Long id) {
+		UserRating newRating = new UserRating();
+		for(int i=0; i<ratingList.size(); i++){
+			if(ratingList.get(i).getId() == id){
+			newRating = ratingList.get(i);
+			}
+		}
+		return newRating;
+	}
+
+	public void updateRating(UserRating newRating, Long ratingId){
+		for(int i=0; i<ratingList.size(); i++){
+			if(ratingList.get(i).getId() == ratingId){
+				ratingList.set(i, newRating);
+			}
+		}
+	}
+
+	public void deleteRating(Long dishId, Long ratingId){
+		for(int i=0; i<ratingList.size(); i++){
+			if(ratingList.get(i).getId() == ratingId){
+				ratingList.remove(i);
+			}
+		}
+	}
+
+	public int calculateAverageRating(){
+		int total = 0;
+		for(int i=0; i<ratingList.size(); i++){
+			total += ratingList.get(i).getRating();
+		}
+		return total/ratingList.size();
+	}
+
+	public List<Claims> getDisputeList() {
+		return this.disputeList;
+	}
+
+	public void setDisputeList(List<Claims> disputeList) {
+		this.disputeList = disputeList;
+	}
+	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role + ", closed="

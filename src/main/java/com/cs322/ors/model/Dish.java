@@ -32,6 +32,9 @@ public class Dish {
 	// Unidirectional relations
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<DishRating> rating;
+	
+	@OneToMany(mappedBy = "dish",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<DishKeyWord> keyword;
 
 	
 	@Column(precision = 13, scale = 2)
@@ -40,6 +43,8 @@ public class Dish {
 	private String imageUrl;
 	private String name;
 	private boolean special;
+	private double averageRating;
+
 	
 	public Dish() {
 		
@@ -54,6 +59,7 @@ public class Dish {
 		this.name = name;
 		this.special = special;
 		rating = new ArrayList<DishRating>();
+		this.averageRating = getAverageRating();
 	}
 
 
@@ -125,6 +131,10 @@ public class Dish {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public List<DishKeyWord> getKeyWord() {
+		return keyword;
+	}
 
 	public List<DishRating> getRatingList() {
 		return rating;
@@ -144,9 +154,9 @@ public class Dish {
 		rating.add(newRating);
 	}
 
-	public void updateRating(DishRating newRating){
+	public void updateRating(DishRating newRating, Long ratingId){
 		for(int i=0; i<rating.size(); i++){
-			if(rating.get(i).getId() == id){
+			if(rating.get(i).getId() == ratingId){
 				rating.set(i, newRating);
 			}
 		}
@@ -159,14 +169,14 @@ public class Dish {
 	public double getAverageRating(){
 		double sum = 0;
 		for(int i=0; i<rating.size(); i++){
-			sum =+ rating.get(i).getRating();
+			sum += rating.get(i).getRating();
 		}
-		return sum;
+		return sum/rating.size();
 	}
 
-	public void deleteRating(Long id){
+	public void deleteRating(Long dishId, Long ratingId){
 		for(int i=0; i<rating.size(); i++){
-			if(rating.get(i).getId() == id){
+			if(rating.get(i).getId() == ratingId){
 				rating.remove(i);
 			}
 		}

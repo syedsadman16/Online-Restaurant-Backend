@@ -22,7 +22,7 @@ public class AccountStatusService {
 		boolean isCustomer = user.getRole() == "CUSTOMER" || isVIP;
 		if(isVIP && warnings == 2) {
 			user.setRole("CUSTOMER");
-			userWarningService.deleteAllByCustomer(user.getId());
+			userWarningService.deleteAllByUser(user.getId());
 			userService.updateUser(user);
 			
 		} 

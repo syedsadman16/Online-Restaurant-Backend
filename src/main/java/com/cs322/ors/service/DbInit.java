@@ -42,7 +42,8 @@ public class DbInit implements CommandLineRunner {
 	@Autowired
 	TransactionRepository TransactionRepository;
 
-
+	@Autowired
+	DishKeyWordRepository dishKeyWordRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -63,7 +64,7 @@ public class DbInit implements CommandLineRunner {
 		Dish dish1 = new Dish("strawberry cake", chef1, null, null, BigDecimal.valueOf(10), false);
 		Dish dish2 = new Dish( "RED velvet cake", chef1, null, null, BigDecimal.valueOf(10.50), true);
 
-		// Add test ratings
+		// Add test dish ratings
 		DishRating rating1 = new DishRating(4.3, customer1);
 		rating1.setComments("I like red velvet cakes");
 		DishRating rating2 = new DishRating(2.5, customer2);
@@ -86,6 +87,7 @@ public class DbInit implements CommandLineRunner {
 		
 		ChefJob chefjob1 = new ChefJob(chef1, order2);
 		chefJobRepository.save(chefjob1);
+		
 		DishOrder dishOrder1 = new DishOrder(dish1, order1, 2);
 		dishOrderRepository.save(dishOrder1);
 
@@ -97,9 +99,20 @@ public class DbInit implements CommandLineRunner {
 		
 		UserWarning strike2= new UserWarning(customer1, "2nd strike");
 		userWarningRepository.save(strike2);
+		
+		DishKeyWord word1 = new DishKeyWord("Dessert",dish1,chef1);
+		dishKeyWordRepository.save(word1);
+		
+		DishKeyWord word2 = new DishKeyWord("Spicy",dish1,chef1);
+		dishKeyWordRepository.save(word2);
+		
+		DishKeyWord word3 = new DishKeyWord("Spicy",dish2,chef1);
+		dishKeyWordRepository.save(word3);
 
-//		UserRating rating1 = new UserRating(4, customer1, deliverer1, dishOrder1);
-//		userRatingRepository.save(rating1);
+		// Add test user ratings
+		UserRating rating3 = new UserRating(1, deliverer1, order1);
+		customer1.addToRatings(rating3);
+		userRepository.saveAll(users);
 		
 		BigDecimal bDecimal = new BigDecimal ("32.2");
 		Transaction transaction1 = new Transaction(customer1, bDecimal ,"cookie");

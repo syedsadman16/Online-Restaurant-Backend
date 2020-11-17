@@ -23,6 +23,10 @@ public class TransactionService {
 	public List<Transaction> getAllTransactions() {
 		return transactionRepository.findAll();
 	}
+	
+	public List<Transaction> getTransactionsbyCustomer(long id) {
+		return transactionRepository.findByUserid_id(id);
+	}
 
 	public Optional<Transaction> getTransactionById(long id) {
 		return transactionRepository.findById(id);

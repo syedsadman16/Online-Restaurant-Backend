@@ -15,15 +15,15 @@ public class UserWarning {
     private long id;
 
     @ManyToOne(optional = false)
-    private User customer;
+    private User user;
 
     private String message;
 
     public UserWarning() {}
     
-    public UserWarning(User customer, String message) {
+    public UserWarning(User user, String message) {
         super();
-        this.customer = customer;
+        this.user = user;
         this.message = message;
     }
 
@@ -44,17 +44,17 @@ public class UserWarning {
         this.message = message;
     }
 
-    public User getCustomer() {
-        return customer;
+    public User getUser() {
+        return user;
     }
 
-    public void setCustomer(User customer) {
-        this.customer = customer;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
     public String toString() {
-        return "UserWarning [customer=" + customer + ", id=" + id + ", message=" + message + "]";
+        return "UserWarning [user=" + user + ", id=" + id + ", message=" + message + "]";
     }
     
 

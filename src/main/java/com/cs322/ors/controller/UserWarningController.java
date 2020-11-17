@@ -28,11 +28,19 @@ public class UserWarningController {
 	@Autowired
 	public UserWarningService userWarningService;
 	
-	@GetMapping
-	@PreAuthorize("hasRole('MANAGER')")
-	public List<UserWarning> allWarnings(){
-		return userWarningService.getAllWarnings();
+									//users can only see their own warnings
+	@GetMapping  					//manager sees all warnings
+	@PreAuthorize("isAuthenticated()")
+	public List<UserWarning> getOrders(Authentication authUser){
+		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
+		if(currentUser.getRole() == "MANAGER") {
+			return userWarningService.getAllWarnings();
+		}else {
+			return userWarningService.getWarningByUser(currentUser.getId());
+		}
+		
 	}
+	
 	
 	@GetMapping("/{warningId}")	//Get warnings by id	
 	@PreAuthorize("isAuthenticated()") 			
@@ -41,7 +49,7 @@ public class UserWarningController {
 		Optional<UserWarning> warning = userWarningService.getWarningById(warningId);
 		if(warning.isPresent()) {
 			UserWarning theWarning= warning.get();
-			boolean isTheirs = theWarning.getCustomer().getId() == currentUser.getId();
+			boolean isTheirs = theWarning.getUser().getId() == currentUser.getId();
 			boolean isManager = currentUser.getRole() == "MANAGER"; 
 			if(isTheirs || isManager) {
 				return theWarning;
