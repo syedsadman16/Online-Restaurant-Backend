@@ -2,8 +2,10 @@ package com.cs322.ors.controller;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -20,112 +22,160 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
+import com.cs322.ors.model.Dish;
 import com.cs322.ors.model.DishOrder;
 import com.cs322.ors.model.Order;
+import com.cs322.ors.model.Transaction;
 import com.cs322.ors.model.User;
 import com.cs322.ors.security.UserPrincipal;
+import com.cs322.ors.service.DishService;
 import com.cs322.ors.service.OrderService;
+import com.cs322.ors.service.TransactionService;
+import com.cs322.ors.service.UserService;
+import com.cs322.ors.service.VipService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @RestController
 @RequestMapping("/api")
 public class OrderController {
-	
+
 	@Autowired
 	public OrderService orderService;
-	
-	@GetMapping("/Orders")   //Get all customer own orders or all orders 
+
+	@Autowired
+	public VipService vipService;
+
+	@Autowired
+	public TransactionService transactionService;
+
+	@Autowired
+	public UserService userService;
+
+	@Autowired
+	public DishService dishService;
+
+	@GetMapping("/Orders") // Get all customer own orders or all orders
 	@PreAuthorize("isAuthenticated()")
-	public List<Order> getOrders(Authentication authUser){
+	public List<Order> getOrders(Authentication authUser) {
 		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
-		if(currentUser.getRole() == "MANAGER") {
+		if (currentUser.getRole() == "MANAGER") {
 			return orderService.getAllOrders();
-		}else {
+		} else {
 			return orderService.getOrderByUser(currentUser.getId());
 		}
-		
+
 	}
-	
-	@GetMapping("/Orders/{orderId}")	//Get customers order by id	
-	@PreAuthorize("isAuthenticated()") 			
-	public Order getOrderWithId(@PathVariable long orderId, Authentication authUser, HttpServletResponse response){		
+
+	@GetMapping("/Orders/{orderId}") // Get customers order by id
+	@PreAuthorize("isAuthenticated()")
+	public Order getOrderWithId(@PathVariable long orderId, Authentication authUser) {
 		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
 		Optional<Order> order = orderService.getOrderById(orderId);
-		if(order.isPresent()) {
+		if (order.isPresent()) {
 			Order theOrder = order.get();
 			boolean isTheirs = theOrder.getCustomer().getId() == currentUser.getId();
-			boolean isManager = currentUser.getRole() == "MANAGER"; 
-			if(isTheirs || isManager) {
+			boolean isManager = currentUser.getRole() == "MANAGER";
+			if (isTheirs || isManager) {
 				return theOrder;
-			}else {
-				response.setStatus(HttpStatus.UNAUTHORIZED.value());
-				return null;
+			} else {
+				throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 			}
 		} else {
 			return null;
-		}		
+		}
 	}
 
 	@PostMapping("/Orders")
 	@PreAuthorize("hasAnyRole('CUSTOMER','VIP','MANAGER')")
-	public void makeOrder(@Valid @RequestBody Order order, Authentication authUser, HttpServletResponse response){		
+	public void makeOrder(@Valid @RequestBody JsonNode rawOrder, Authentication authUser) {
+
+		// Get json paramaters
+		int orderType = rawOrder.get("type").intValue();
+		ObjectMapper mapper = new ObjectMapper();
+		List<Map<String, Long>> rawDishOrder;
+		try {
+			rawDishOrder = mapper.readValue(rawOrder.get("dishes").toString(),
+					new TypeReference<List<Map<String, Long>>>() {
+					});
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		// Get user & their dishes for order
+		List<DishOrder> dishOrders = rawDishOrder.stream()
+				.map(obj -> new DishOrder(dishService.getDish(obj.get("id")).get(), obj.get("quantity").intValue()))
+				.collect(Collectors.toList());
 		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
-		boolean isVIP = currentUser.getRole() == "VIP"; 
-		boolean isCustomer = currentUser.getRole() == "CUSTOMER" || isVIP; 
-		List<DishOrder> dishesOrders =  order.getDishOrders();
-		boolean isDishesSpecial = dishesOrders.stream().anyMatch(dishesOrder -> dishesOrder.getDish().isSpecial() == true);
+		boolean isVIP = currentUser.getRole() == "VIP";
+		boolean isCustomer = currentUser.getRole() == "CUSTOMER" || isVIP;
+		boolean isDishesSpecial = dishOrders.stream().anyMatch(dishOrder -> dishOrder.getDish().isSpecial());
 		boolean canOrderDishTypes = (isVIP && isDishesSpecial) || (isCustomer && !isDishesSpecial);
-		if(canOrderDishTypes) {
-			orderService.makeOrder(order);
-			//TODO: Get sum of dishOrders to compare with user's balance. THe sum will also use DiscountService for the final amount. If we have enough money continue. Else error response.
-				//TODO: Make an transaction for the final amount.
-				//TODO: Manually update the user's balance by the final sum.
-			
-		}else {
-			response.setStatus(HttpStatus.UNAUTHORIZED.value(), "Can not order special dishes");
-		}	
-	}
-	
-	@PutMapping("/Orders/{orderId}")  //Update a customers order
-	@PreAuthorize("isAuthenticated()")
-	public void updateOrder(@Valid @RequestBody Order order,@PathVariable long orderId, Authentication authUser, HttpServletResponse response) {
-		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
-		Optional<Order> theOrder = orderService.getOrderById(orderId);
-		if(theOrder.isPresent()) {
-			Order theOrder2 = theOrder.get();
-			boolean isTheirs = theOrder2.getCustomer().getId() == currentUser.getId();
-			boolean isManager = currentUser.getRole() == "MANAGER"; 
-			if(isTheirs || isManager) {
-				orderService.updateOrder(order,orderId);
-			}else {
-				response.setStatus(HttpStatus.UNAUTHORIZED.value());				
+
+		// Check if customer can order.
+		if (canOrderDishTypes) {
+			// Get discounted sum of order
+			BigDecimal originalAmount = dishOrders.stream().map(
+					dishOrder -> dishOrder.getDish().getPrice().multiply(BigDecimal.valueOf(dishOrder.getQuantity())))
+					.reduce(BigDecimal.ZERO, BigDecimal::add);
+			BigDecimal newAmount = vipService.applyDiscount(originalAmount, currentUser);
+			BigDecimal currentBalance = currentUser.getAccountBalance();
+
+			// Check funds. Manually update customer balance and create a transaction for the order if possible.
+			if (currentBalance.compareTo(newAmount) == -1) {
+				throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Account don't have enough funds");
+			} else {
+				Order order = orderService.makeOrder(currentUser, dishOrders, orderType);
+				transactionService.createTransaction(
+						new Transaction(currentUser, newAmount, String.format("OrderId: %d", order.getId()), 0));
+				currentUser.setAccountBalance(currentBalance.subtract(newAmount));
+				userService.updateUser(currentUser);
 			}
-		}	
-		
+		} else {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not order special dishes");
+
+		}
 	}
-	
-	@DeleteMapping("/Orders/{orderId}")   //Delete a customers order
-	@PreAuthorize("isAuthenticated()") 	
-	public void deleteOrder(@PathVariable long orderId, Authentication authUser, HttpServletResponse response) {
+
+	@PutMapping("/Orders/{orderId}") // Update a customers order
+	@PreAuthorize("isAuthenticated()")
+	public void updateOrder(@Valid @RequestBody Order order, @PathVariable long orderId, Authentication authUser) {
 		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
 		Optional<Order> theOrder = orderService.getOrderById(orderId);
-		if(theOrder.isPresent()) {
+		if (theOrder.isPresent()) {
 			Order theOrder2 = theOrder.get();
 			boolean isTheirs = theOrder2.getCustomer().getId() == currentUser.getId();
-			boolean isManager = currentUser.getRole() == "MANAGER"; 
-			if(isTheirs || isManager) {
+			boolean isManager = currentUser.getRole() == "MANAGER";
+			if (isTheirs || isManager) {
+				orderService.updateOrder(order, orderId);
+			} else {
+				throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+
+			}
+		}
+
+	}
+
+	@DeleteMapping("/Orders/{orderId}") // Delete a customers order
+	@PreAuthorize("isAuthenticated()")
+	public void deleteOrder(@PathVariable long orderId, Authentication authUser) {
+		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
+		Optional<Order> theOrder = orderService.getOrderById(orderId);
+		if (theOrder.isPresent()) {
+			Order theOrder2 = theOrder.get();
+			boolean isTheirs = theOrder2.getCustomer().getId() == currentUser.getId();
+			boolean isManager = currentUser.getRole() == "MANAGER";
+			if (isTheirs || isManager) {
 				orderService.deleteOrder(orderId);
-			}else {
-				response.setStatus(HttpStatus.UNAUTHORIZED.value());				
+			} else {
+				throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+
 			}
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

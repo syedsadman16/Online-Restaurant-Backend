@@ -2,6 +2,7 @@ package com.cs322.ors.model;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,19 +18,30 @@ public class Transaction {
     @ManyToOne(optional = false)
     private User userid;
     
+    @Column(precision = 13, scale = 2)
     private BigDecimal amount;
+    private int type; // 0 = negative amount, 1 = positive amount
     private String description;
     
 
     public Transaction() {}
 
-    public Transaction(User userid, BigDecimal amount, String description) {
+    public Transaction(User userid, BigDecimal amount, String description, int type) {
         this.userid = userid;
         this.amount = amount;
         this.description = description;
     }
+    
 
-    public User getUserid() {
+    public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public User getUserid() {
         return userid;
     }
 

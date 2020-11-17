@@ -1,5 +1,6 @@
 package com.cs322.ors.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +43,9 @@ public class User {
 	@NotBlank(message = "Account type is mandatory")
 	private String role;
 	private boolean closed;
-	private float accountBalance;
+	
+	@Column(precision = 13, scale = 2)
+	private BigDecimal accountBalance;
 	private int rating;
 
 	// Bidirectional Mapping
@@ -105,8 +108,10 @@ public class User {
 		this.closed = false;
 
 		if (role == "CUSTOMER" || role == "VIP") {
-			this.accountBalance = 300; // 300 dollars given to customers by default
+			this.accountBalance = BigDecimal.valueOf(300); // 300 dollars given to customers by default
 		}
+		
+		
 
 		if (role == "CUSTOMER" || role == "VIP" || role == "DELIVERER") {
 			ratingList = new ArrayList<>();
@@ -119,6 +124,14 @@ public class User {
 			disputeList = new ArrayList<>();
 		}
 
+	}
+
+	public BigDecimal getAccountBalance() {
+		return accountBalance;
+	}
+
+	public void setAccountBalance(BigDecimal accountBalance) {
+		this.accountBalance = accountBalance;
 	}
 
 	public long getId() {

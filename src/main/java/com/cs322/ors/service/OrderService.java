@@ -2,12 +2,16 @@ package com.cs322.ors.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cs322.ors.db.OrderRepository;
+import com.cs322.ors.model.Dish;
+import com.cs322.ors.model.DishOrder;
 import com.cs322.ors.model.Order;
+import com.cs322.ors.model.User;
 
 @Service
 public class OrderService {
@@ -23,8 +27,16 @@ public class OrderService {
 		return orderRepository.findByCustomer_Id(id);
 	}
 
-	public void makeOrder(Order order) {
+//	public void makeOrder(Order order) {
+//		orderRepository.save(order);
+//	}
+
+	public Order makeOrder(User customer, List<DishOrder> dishOrders, int orderType) {
+		Order order = new Order(customer, orderType);
+		dishOrders.stream().forEach(dishOrder -> dishOrder.setOrder(order));
+		order.setDishOrders(dishOrders);		
 		orderRepository.save(order);
+		return order;
 	}
 
 	public void updateOrder(Order orderUpdate,long orderId) {

@@ -45,6 +45,12 @@ public class DishOrder {
 		this.quantity = quantity;
 	}
 
+	public DishOrder(Dish dish, int quantity) {
+		super();
+		this.dish = dish;
+		this.quantity = quantity;
+	}
+
 	public long getId() {
 		return id;
 	}

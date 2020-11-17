@@ -4,15 +4,20 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.cs322.ors.model.Order;
 import com.cs322.ors.model.Transaction;
 import com.cs322.ors.model.User;
 
+@Service
 public class VipService {
 	
 	@Autowired
 	OrderService orderService;
+	
+	@Autowired
+	UserService userService;
 	
 	@Autowired
 	TransactionService transactionService;
@@ -38,12 +43,15 @@ public class VipService {
 	public void checkAndSetVIP(User Customer) {
 		if (checkVIP(Customer) == true) {
 			Customer.setRole("VIP");
+			userService.updateUser(Customer);			
 		}
 	}
 	
-	public void applyDiscount(User Customer) {
-		if(Customer.getRole() == "VIP") {		//apply 10% discount to order.
-			
+	public BigDecimal applyDiscount(BigDecimal amount, User customer) {
+		BigDecimal discount = amount.multiply(BigDecimal.valueOf(0.1));
+		if(customer.getRole() == "VIP") {		//apply 10% discount to order.
+			amount = amount.subtract(discount);
 		}
+		return amount;
 	}
 }
