@@ -95,7 +95,7 @@ public class User {
 	// Only for managers
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany( cascade = CascadeType.ALL)
-	private List<Claims> disputeList;
+	private List<DeliveryJobs> deliveryJobs;
 
 
 	public User() {
@@ -120,8 +120,8 @@ public class User {
 			} 
 		}
 
-		if(role == "MANAGER"){
-			disputeList = new ArrayList<>();
+		if(role == "DELIVERER"){
+			deliveryJobs = new ArrayList<>();
 		}
 
 	}
@@ -220,12 +220,21 @@ public class User {
 		return total/ratingList.size();
 	}
 
-	public List<Claims> getDisputeList() {
-		return this.disputeList;
+	public List<DeliveryJobs> getDeliveryJobs() {
+		return this.deliveryJobs;
 	}
 
-	public void setDisputeList(List<Claims> disputeList) {
-		this.disputeList = disputeList;
+	public void replaceDeliveryJob(DeliveryJobs jobs){
+		for(int i=0; i<deliveryJobs.size(); i++){
+			if(deliveryJobs.get(i).getId() == jobs.getId()){
+				deliveryJobs.set(i, jobs);
+			}
+		}
+
+	}
+
+	public void setDisputeList(List<DeliveryJobs> deliveryJobs) {
+		this.deliveryJobs = deliveryJobs;
 	}
 	
 	@Override

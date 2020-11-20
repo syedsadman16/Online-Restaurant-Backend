@@ -58,6 +58,9 @@ public class Order {
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private DeliveryStatus deliveryStatus;
 
+	@OneToOne
+	private User deliveryPerson; 
+
 	public Order() {
 	}
 
@@ -126,6 +129,38 @@ public class Order {
 
 	public void setCancelled(boolean cancelled) {
 		this.cancelled = cancelled;
+	}
+
+	public boolean isCompleted() {
+		return completed;
+	}
+
+	public boolean isCancelled() {
+		return cancelled;
+	}
+
+	public ChefJob getChefJob() {
+		return chefJob;
+	}
+
+	public void setChefJob(ChefJob chefJob) {
+		this.chefJob = chefJob;
+	}
+
+	public DeliveryStatus getDeliveryStatus() {
+		return deliveryStatus;
+	}
+
+	public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
+		this.deliveryStatus = deliveryStatus;
+	}
+
+	public User getDeliveryPerson() {
+		return deliveryPerson;
+	}
+
+	public void setDeliveryPerson(User deliveryPerson) {
+		this.deliveryPerson = deliveryPerson;
 	}
 
 	@Override
