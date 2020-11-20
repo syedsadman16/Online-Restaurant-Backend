@@ -8,5 +8,5 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface DeliveryJobsRepository extends JpaRepository<DeliveryJobs, Long>{
-    List<DeliveryJobs> findByDeliveryJobsStatus(@Param(value = "status") int status);
+    List<DeliveryJobs> findByStatus(@Param(value = "status") int status);
 }

@@ -54,7 +54,7 @@ public class JobsController {
     }
 
 
-    @PostMapping("/delivery/updateJob/{jobId}")
+    @PostMapping("/delivery/updateJob")
     @PreAuthorize("hasAnyRole('MANAGER','CHEF')")
     public void updateDeliveryJob(@RequestBody DeliveryJobs updatedJob){
         deliveryJobsService.updateDeliveryJob(updatedJob);

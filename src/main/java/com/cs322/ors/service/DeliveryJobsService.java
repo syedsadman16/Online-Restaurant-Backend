@@ -29,7 +29,7 @@ public class DeliveryJobsService {
      * 0 - Available
      */
     public List<DeliveryJobs> getDeliveryByStatus(int status){
-        return deliveryJobsRepository.findByDeliveryJobsStatus(status);
+        return deliveryJobsRepository.findByStatus(status);
     }
 
     /*
