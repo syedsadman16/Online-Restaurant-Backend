@@ -1,5 +1,6 @@
 package com.cs322.ors.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,17 +30,13 @@ public class SalaryService {
 		salaryRepository.save(salary);
 	}
 
-	public void updateSalary(@Valid Salary salary, long salaryId) {
-		Optional<Salary> SalaryDB = this.salaryRepository.findById(salaryId);
+	public void updateSalary(BigDecimal Amount, long userId) {
+		List<Salary> SalaryDB = this.salaryRepository.findByUser_Id(userId);
 		
-		if (SalaryDB.isPresent()){
-			salary.setId(salaryId);
-			salaryRepository.save(salary);
+		if (SalaryDB.isEmpty() == false){
+			SalaryDB.get(0).setAmount(Amount);
+			salaryRepository.save(SalaryDB.get(0));
 		}
 		
-	}
-
-	public void deleteDish(long salaryId) {
-		salaryRepository.deleteById(salaryId);
 	}
 }

@@ -43,7 +43,6 @@ public class OrderService {
 		Optional<Order> OrderDB = this.orderRepository.findById(orderId);
 		
 		if(OrderDB.isPresent()) {
-			orderUpdate.setId(orderId);
 			orderRepository.save(orderUpdate);
 		}
 	}

@@ -1,5 +1,6 @@
 package com.cs322.ors.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -48,19 +49,10 @@ public class SalaryController {
 		salaryService.createSalary(salary);
 	}
 	
-	@PutMapping("/salary/{salaryId}")
+	@PutMapping("/salary/{userId}")
 	@PreAuthorize("hasRole('MANAGER')")  //only managers can update salaries
-	public void updateSalary(@Valid @RequestBody Salary salary,@PathVariable long salaryId) {
-		salaryService.updateSalary(salary,salaryId);
+	public void updateSalary(BigDecimal amount,@PathVariable long userId) {
+		salaryService.updateSalary(amount,userId);
 	}
 	
-	
-	@DeleteMapping("/salary/{salaryId}")
-	@PreAuthorize("hasRole('MANAGER')")  //only managers can delete salaries
-	public void deleteSalary(@PathVariable long salaryId) {
-		salaryService.deleteDish(salaryId);
-	}
-	
-	
-
 }
