@@ -3,6 +3,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -11,19 +12,20 @@ public class Salary {
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 private long id;
 
+private long amount;
+private String description;
+
 @OneToOne(optional = false)
 private User user;
 
-private long amount;
-private String description;
 
 public Salary() {
 }
 
-public Salary(User user, long amount, String description) {
-    this.user = user;
+public Salary(long amount, String description, User user) {
     this.amount = amount;
     this.description = description;
+    this.user = user;
 }
 
 

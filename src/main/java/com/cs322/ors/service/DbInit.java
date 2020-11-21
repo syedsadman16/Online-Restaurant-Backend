@@ -47,6 +47,9 @@ public class DbInit implements CommandLineRunner {
 
 	@Autowired
 	DeliveryJobsService deliveryJobsService;
+	
+	@Autowired
+	SalaryRepository salaryRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -112,6 +115,12 @@ public class DbInit implements CommandLineRunner {
 		
 		DishKeyWord word3 = new DishKeyWord("Spicy",dish2,chef1);
 		dishKeyWordRepository.save(word3);
+		
+		Salary salary1 = new Salary(80000, "Chief Chef",chef1);
+		salaryRepository.save(salary1);
+		
+		Salary salary2 = new Salary(30000,"Delivery Man",deliverer1);
+		salaryRepository.save(salary2);
 
 		// Add test user ratings
 		UserRating rating3 = new UserRating(1, deliverer1, order1);
