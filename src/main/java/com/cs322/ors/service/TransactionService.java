@@ -30,16 +30,10 @@ public class TransactionService {
 
 	public Optional<Transaction> getTransactionById(long id) {
 		return transactionRepository.findById(id);
-
     }
     
 	public void deleteTransaction(long id) {
-		Optional<Transaction> transactionDb = this.transactionRepository.findById(id);
-		if (transactionDb.isPresent()) {
-			transactionRepository.delete(transactionDb.get());
-		}
+		transactionRepository.deleteById(id);
     }
-    
-
 
 }
