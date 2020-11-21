@@ -45,8 +45,8 @@ public class DbInit implements CommandLineRunner {
 	@Autowired
 	DishKeyWordRepository dishKeyWordRepository;
 
-//	@Autowired
-//	DeliveryJobsService deliveryJobsService;
+	@Autowired
+	DeliveryJobsService deliveryJobsService;
 	
 	@Autowired
 	SalaryRepository salaryRepository;
@@ -123,9 +123,14 @@ public class DbInit implements CommandLineRunner {
 		Transaction transaction1 = new Transaction(customer1, BigDecimal.valueOf(32.20) ,"cookie", 0);
 		TransactionRepository.save(transaction1);
 
-	Salary s1 = new Salary(chef1, 1, "");
+		Salary s1 = new Salary(chef1, 1, "");
 		salaryRepository.save(s1);
-//		deliveryJobsService.addDeliveryJob(job2);
+		
+		// Delivery Jobs
+		DeliveryJobs job1 = new DeliveryJobs(order1);
+		DeliveryJobs job2 = new DeliveryJobs(order2);
+		deliveryJobsService.addDeliveryJob(job1);
+		deliveryJobsService.addDeliveryJob(job2);
 		
 
 	}
