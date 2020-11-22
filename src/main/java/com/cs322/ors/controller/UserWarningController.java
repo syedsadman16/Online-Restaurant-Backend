@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.cs322.ors.model.User;
 import com.cs322.ors.model.UserWarning;
@@ -22,8 +19,7 @@ import com.cs322.ors.service.UserWarningService;
 @RestController
 @RequestMapping("/api/Warning")
 public class UserWarningController {
-	
-	//  get /warning and /warning/warningid is below post put and delete should not be needed for now.
+
 	
 	@Autowired
 	public UserWarningService userWarningService;
@@ -39,6 +35,13 @@ public class UserWarningController {
 			return userWarningService.getWarningByUser(currentUser.getId());
 		}
 		
+	}
+
+	// Manager can add a new warning
+	@PostMapping
+	@PreAuthorize("hasRole('MANAGER')")
+	public void createWarning(UserWarning warning){
+		userWarningService.createWarning(warning);
 	}
 	
 	

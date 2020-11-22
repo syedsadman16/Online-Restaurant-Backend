@@ -1,5 +1,7 @@
 package com.cs322.ors.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -17,6 +19,7 @@ public class UserRating {
     private long id;
 
     private int rating;
+    private String comments;
 
     /*
      * Keep track of the User who submitted the rating
@@ -24,6 +27,7 @@ public class UserRating {
      * display the critic - only the critic and manager can 
      * update the rating 
      */
+    @JsonIgnore
     @OneToOne
     private User critic;
 
@@ -38,8 +42,8 @@ public class UserRating {
       
     }
 
-    public UserRating(int rating, User critic, Order order) {
-        //this.id = id;
+    public UserRating(int rating, String comments,  User critic, Order order) {
+        this.comments = comments;
         this.rating = rating;
         this.critic = critic;
         this.order = order;
@@ -78,4 +82,19 @@ public class UserRating {
         this.rating = rating;
     }
 
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 }

@@ -87,7 +87,7 @@ public class User {
 	private CustomerInfo customerInfo;
 
 
-	@JsonIgnore
+//	@JsonIgnore
 	// Unidirectional
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany( cascade = CascadeType.ALL)
@@ -111,18 +111,14 @@ public class User {
 		if (role == "CUSTOMER" || role == "VIP") {
 			this.accountBalance = BigDecimal.valueOf(300); // 300 dollars given to customers by default
 		}
-		
-		
-
-		if (role == "CUSTOMER" || role == "VIP" || role == "DELIVERER") {
-			ratingList = new ArrayList<>();
-			if(ratingList.size() > 0) {
-				this.rating = calculateAverageRating();
-			} 
-		}
 
 		if(role == "DELIVERER"){
 			deliveryJobs = new ArrayList<>();
+		}
+
+		ratingList = new ArrayList<>();
+		if(ratingList.size() > 0) {
+			this.rating = calculateAverageRating();
 		}
 
 	}

@@ -4,6 +4,7 @@ import com.cs322.ors.db.UserRatingRepository;
 import com.cs322.ors.db.UserRepository;
 import com.cs322.ors.model.User;
 import com.cs322.ors.model.UserRating;
+import com.cs322.ors.model.UserWarning;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -21,6 +22,8 @@ public class UserRatingService {
     // private UserRatingRepository userRatingRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserWarningService userWarningService;
 
     /*
      * View list of all ratings regardless of user type
@@ -50,9 +53,13 @@ public class UserRatingService {
      * First find the user that is being rated 
      * Next, create a new rating with the current user as the critic
      * Finally, save the new rating to the victims ratings list
+     * If rating is below 3, file it as a complaint
      */
     public void postUserRating(Long victimId, UserRating rating, User critic){
         User victim = userRepository.findById(victimId).get();
+        if(rating.getRating() < 3){
+            userWarningService.createWarning(new UserWarning(victim, rating.getComments()));
+        }
         UserRating newRating = rating;
         newRating.setCritic(critic);
         victim.addToRatings(newRating);

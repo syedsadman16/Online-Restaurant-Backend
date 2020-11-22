@@ -15,10 +15,13 @@ public class Claims {
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private long Id;
-    @OneToOne
+
+    @OneToOne(cascade=CascadeType.ALL)
     UserRating userRating;
+
     @OneToOne
     User victim;
+
     String message;
 
     public Claims() {}

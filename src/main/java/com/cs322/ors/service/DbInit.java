@@ -47,6 +47,9 @@ public class DbInit implements CommandLineRunner {
 
 	@Autowired
 	DeliveryJobsService deliveryJobsService;
+
+	@Autowired
+	ClaimsService claimsService;
 	
 	@Autowired
 	SalaryRepository salaryRepository;
@@ -116,7 +119,7 @@ public class DbInit implements CommandLineRunner {
 		dishKeyWordRepository.save(word3);
 
 		// Add test user ratings
-		UserRating rating3 = new UserRating(1, deliverer1, order1);
+		UserRating rating3 = new UserRating(1, "Customer was uncooperative", deliverer1, order1);
 		customer1.addToRatings(rating3);
 		userRepository.saveAll(users);
 		
@@ -134,7 +137,10 @@ public class DbInit implements CommandLineRunner {
 		DeliveryJobs job2 = new DeliveryJobs(order2);
 		deliveryJobsService.addDeliveryJob(job1);
 		deliveryJobsService.addDeliveryJob(job2);
-		
+
+		// Claims
+		Claims claim1 = new Claims(rating3, customer1, "Fake news");
+		claimsService.postClaim(claim1);
 
 	}
 }
