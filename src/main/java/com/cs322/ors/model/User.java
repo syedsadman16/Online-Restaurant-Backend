@@ -87,12 +87,13 @@ public class User {
 	private CustomerInfo customerInfo;
 
 
+	@JsonIgnore
 	// Unidirectional
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany( cascade = CascadeType.ALL)
 	private List<UserRating> ratingList;
 
-	// Only for managers
+	@JsonIgnore
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany( cascade = CascadeType.ALL)
 	private List<DeliveryJobs> deliveryJobs;
@@ -174,16 +175,24 @@ public class User {
 		this.closed = closed;
 	}
 
-	public List<UserRating> getRating() {
+	public List<UserRating> getRatingList() {
 		return this.ratingList;
 	}
 
-	public void setRating(List<UserRating> rating) {
+	public void setRatingList(List<UserRating> rating) {
 		this.ratingList = rating;
 	}
 
 	public void addToRatings(UserRating uRating){
 		ratingList.add(uRating);
+	}
+
+	public int getRating(){
+		return rating;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
 	}
 
 	public UserRating getSingleUserRating(Long id) {
@@ -233,7 +242,7 @@ public class User {
 
 	}
 
-	public void setDisputeList(List<DeliveryJobs> deliveryJobs) {
+	public void setDeliveryJob(List<DeliveryJobs> deliveryJobs) {
 		this.deliveryJobs = deliveryJobs;
 	}
 	

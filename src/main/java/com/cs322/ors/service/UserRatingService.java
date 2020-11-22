@@ -34,7 +34,7 @@ public class UserRatingService {
      */
     public List<UserRating> getUsersRatings(Long userId){
         User user = userRepository.findById(userId).get();
-        return user.getRating();
+        return user.getRatingList();
     }
 
     /*

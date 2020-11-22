@@ -17,13 +17,15 @@ public class Claims {
     private long Id;
     @OneToOne
     UserRating userRating;
+    @OneToOne
+    User victim;
     String message;
 
     public Claims() {}
 
-    public Claims( UserRating userRating, User plantiff, String message) {
+    public Claims( UserRating userRating, User victim, String message) {
         this.userRating = userRating;
-
+        this.victim = victim;
         this.message = message;
     }
 
@@ -51,6 +53,11 @@ public class Claims {
         this.message = message;
     }
 
-    
-    
+    public User getVictim() {
+        return victim;
+    }
+
+    public void setVictim(User victim) {
+        this.victim = victim;
+    }
 }
