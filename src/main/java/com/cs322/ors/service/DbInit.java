@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 public class DbInit implements CommandLineRunner {
 
 	@Autowired
+	UserService userService;
+	@Autowired
 	UserRepository userRepository;
 
 	@Autowired
@@ -67,7 +69,12 @@ public class DbInit implements CommandLineRunner {
 		User chef1 = new User("chef1", "chef1", "CHEF");
 		User deliverer1 = new User("deliverer1", "deliverer1", "DELIVERER");
 		List<User> users = Arrays.asList(manager, customer1, vip1, chef1, deliverer1,customer2);
-		userRepository.saveAll(users);
+		userService.createUser(customer1);
+		userService.createUser(customer2);
+		userService.createUser(vip1);
+		userService.createUser(chef1);
+		userService.createUser(deliverer1);
+
 		
 		Dish dish1 = new Dish("strawberry cake", chef1, null, null, BigDecimal.valueOf(10), false);
 		Dish dish2 = new Dish( "RED velvet cake", chef1, null, null, BigDecimal.valueOf(10.50), true);

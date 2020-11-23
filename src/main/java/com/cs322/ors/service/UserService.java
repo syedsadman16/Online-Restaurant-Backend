@@ -1,6 +1,8 @@
 package com.cs322.ors.service;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.cs322.ors.db.UserRepository;
 import com.cs322.ors.model.Dish;
+import com.cs322.ors.model.Transaction;
 import com.cs322.ors.model.User;
 
 @Service
@@ -20,9 +23,15 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
-
-	public User createUser(User user) {
-		return userRepository.save(user);
+	
+	public User createUser(User newUser) {	
+		boolean isVIP = newUser.getRole() == "VIP";
+		boolean isCustomer = newUser.getRole() == "CUSTOMER" || isVIP;	
+		if(isCustomer) {
+			Transaction bonus = new Transaction(newUser, BigDecimal.valueOf(300), "Sign up bonus", 1);
+			newUser.setTransactions(Arrays.asList(bonus));			
+		}
+		return userRepository.save(newUser);
 	}
 
 	public List<User> getAllUsers() {

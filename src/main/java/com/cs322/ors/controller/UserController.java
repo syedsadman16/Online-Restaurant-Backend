@@ -1,5 +1,7 @@
 package com.cs322.ors.controller;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,6 +25,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.cs322.ors.model.User;
 import com.cs322.ors.security.UserPrincipal;
+import com.cs322.ors.service.TransactionService;
 import com.cs322.ors.service.UserService;
 
 @RestController
@@ -31,6 +34,8 @@ public class UserController {
 
 	@Autowired
 	UserService userService;
+	@Autowired
+	TransactionService transactionService;
 
 	@GetMapping
 	@PreAuthorize("hasRole('MANAGER')")
@@ -54,6 +59,19 @@ public class UserController {
 
 	}
 
+	@GetMapping("/balance")
+	@PreAuthorize("hasAnyRole('CUSTOMER','VIP')")
+	public Map<String,BigDecimal>  getBalance(Authentication authUser) {
+		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
+		if (!currentUser.isClosed()) {
+			Map<String,BigDecimal> balance = new HashMap<>();
+			balance.put("balance", transactionService.getTransactionSumByCustomer(currentUser));
+			return balance;
+
+		}
+		throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Account closed");
+
+	}
 	@PatchMapping("/{id}")
 	@PreAuthorize("#id == principal.user.id OR hasRole('MANAGER')") // Users can only access their account OR manager
 	public User updateUserInfo(@PathVariable long id, @RequestBody Map<Object, Object> patchedUser,

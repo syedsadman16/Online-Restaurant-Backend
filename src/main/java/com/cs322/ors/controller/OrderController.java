@@ -92,7 +92,7 @@ public class OrderController {
 
 	@PostMapping("/Orders")
 	@PreAuthorize("hasAnyRole('CUSTOMER','VIP','MANAGER')")
-	public void makeOrder(@Valid @RequestBody JsonNode rawOrder, Authentication authUser) {
+	public void makeOrder(@Valid @RequestBody JsonNode rawOrder, Authentication authUser) throws Exception {
 
 		// Get json paramaters
 		int orderType = rawOrder.get("type").intValue();
@@ -123,19 +123,19 @@ public class OrderController {
 					dishOrder -> dishOrder.getDish().getPrice().multiply(BigDecimal.valueOf(dishOrder.getQuantity())))
 					.reduce(BigDecimal.ZERO, BigDecimal::add);
 			BigDecimal newAmount = vipService.applyDiscount(originalAmount, currentUser);
-			BigDecimal currentBalance = currentUser.getAccountBalance();
+			BigDecimal currentBalance = transactionService.getTransactionSumByCustomer(currentUser);
 
-			// Check funds. Manually update customer balance and create a transaction for the order if possible.
+			// Check funds. Create a transaction for the order if possible.
 			if (currentBalance.compareTo(newAmount) == -1) {
 				throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Account don't have enough funds");
 			} else {
 				Order order = orderService.makeOrder(currentUser, dishOrders, orderType);
 				transactionService.createTransaction(
 						new Transaction(currentUser, newAmount, String.format("OrderId: %d", order.getId()), 0));
-				currentUser.setAccountBalance(currentBalance.subtract(newAmount));
-				userService.updateUser(currentUser);
+
 			}
 		} else {
+			
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not order special dishes");
 
 		}

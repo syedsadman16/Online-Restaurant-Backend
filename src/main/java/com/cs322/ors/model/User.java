@@ -43,9 +43,7 @@ public class User {
 	@NotBlank(message = "Account type is mandatory")
 	private String role;
 	private boolean closed;
-	
-	@Column(precision = 13, scale = 2)
-	private BigDecimal accountBalance;
+
 	private int rating;
 
 	// Bidirectional Mapping
@@ -108,10 +106,6 @@ public class User {
 		this.role = role;
 		this.closed = false;
 
-		if (role == "CUSTOMER" || role == "VIP") {
-			this.accountBalance = BigDecimal.valueOf(300); // 300 dollars given to customers by default
-		}
-
 		if(role == "DELIVERER"){
 			deliveryJobs = new ArrayList<>();
 		}
@@ -123,13 +117,6 @@ public class User {
 
 	}
 
-	public BigDecimal getAccountBalance() {
-		return accountBalance;
-	}
-
-	public void setAccountBalance(BigDecimal accountBalance) {
-		this.accountBalance = accountBalance;
-	}
 
 	public long getId() {
 		return id;
@@ -242,6 +229,48 @@ public class User {
 		this.deliveryJobs = deliveryJobs;
 	}
 	
+
+	
+	public List<Transaction> getTransactions() {
+		return transactions;
+	}
+
+	public void setTransactions(List<Transaction> transactions) {
+		this.transactions = transactions;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+
+	public void setChefJobs(List<ChefJob> chefJobs) {
+		this.chefJobs = chefJobs;
+	}
+
+	public void setEmployeeInfo(EmployeeInfo employeeInfo) {
+		this.employeeInfo = employeeInfo;
+	}
+
+	public void setSalary(Salary salary) {
+		this.salary = salary;
+	}
+
+	public void setDishes(List<Dish> dishes) {
+		this.dishes = dishes;
+	}
+
+	public void setDishKeywords(List<DishKeyWord> dishKeywords) {
+		this.dishKeywords = dishKeywords;
+	}
+
+	public void setCustomerInfo(CustomerInfo customerInfo) {
+		this.customerInfo = customerInfo;
+	}
+
+	public void setDeliveryJobs(List<DeliveryJobs> deliveryJobs) {
+		this.deliveryJobs = deliveryJobs;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role + ", closed="
