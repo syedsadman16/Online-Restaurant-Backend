@@ -63,14 +63,21 @@ public class DbInit implements CommandLineRunner {
 
 		// DUMMY DATA
 		User customer1 = new User("customer1", "customer1", "CUSTOMER");
+		customer1.setVerified(true);
 		User customer2 = new User("customer2", "customer2", "CUSTOMER");
 		customer2.setClosed(true);
+		User customer3 = new User("customer3", "customer3", "CUSTOMER");
 		User vip1 = new User("vip1", "vip1", "VIP");
 		User chef1 = new User("chef1", "chef1", "CHEF");
 		User deliverer1 = new User("deliverer1", "deliverer1", "DELIVERER");
-		List<User> users = Arrays.asList(manager, customer1, vip1, chef1, deliverer1,customer2);
+		vip1.setVerified(true);
+		chef1.setVerified(true);
+		deliverer1.setVerified(true);
+
+		List<User> users = Arrays.asList(manager, customer1, vip1, chef1, deliverer1,customer2,customer3);
 		userService.createUser(customer1);
 		userService.createUser(customer2);
+		userService.createUser(customer3);
 		userService.createUser(vip1);
 		userService.createUser(chef1);
 		userService.createUser(deliverer1);

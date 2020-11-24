@@ -42,7 +42,9 @@ public class User {
 
 	@NotBlank(message = "Account type is mandatory")
 	private String role;
+	
 	private boolean closed;
+	private boolean verified;
 
 	private int rating;
 
@@ -105,6 +107,7 @@ public class User {
 		this.password = password;
 		this.role = role;
 		this.closed = false;
+		this.verified = role == "MANAGER" ? true : false;
 
 		if(role == "DELIVERER"){
 			deliveryJobs = new ArrayList<>();
@@ -156,6 +159,15 @@ public class User {
 
 	public void setClosed(boolean closed) {
 		this.closed = closed;
+	}
+
+	
+	public boolean isVerified() {
+		return verified;
+	}
+
+	public void setVerified(boolean verified) {
+		this.verified = verified;
 	}
 
 	public List<UserRating> getRatingList() {
