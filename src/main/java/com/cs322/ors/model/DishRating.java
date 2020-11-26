@@ -68,10 +68,6 @@ public class DishRating {
         this.critic = critic;
     }
 
-	public Dish getDish() {
-		return dish;
-	}
-
 	public void setDish(Dish dish) {
 		this.dish = dish;
 	}
