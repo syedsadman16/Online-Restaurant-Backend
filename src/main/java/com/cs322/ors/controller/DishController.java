@@ -23,7 +23,7 @@ public class DishController {
 	@Autowired
 	private DishService dishService;
 	
-	@RequestMapping("/Menu")
+	@RequestMapping("api/menu")
 	public List<Dish> getAllDishes(){
 		return dishService.getAllDishes();
 	}

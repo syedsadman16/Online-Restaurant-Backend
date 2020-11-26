@@ -17,7 +17,7 @@ import com.cs322.ors.security.UserPrincipal;
 import com.cs322.ors.service.UserWarningService;
 
 @RestController
-@RequestMapping("/api/Warning")
+@RequestMapping("/api/warning")
 public class UserWarningController {
 
 	

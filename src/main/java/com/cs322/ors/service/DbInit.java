@@ -143,7 +143,7 @@ public class DbInit implements CommandLineRunner {
 		customer1.addToRatings(rating3);
 		userRepository.saveAll(users);
 		
-		Transaction transaction1 = new Transaction(customer1, BigDecimal.valueOf(32.20) ,"cookie", 0);
+		Transaction transaction1 = new Transaction(customer1, BigDecimal.valueOf(32.20) ,"OrderId: 1", 0);
 		TransactionRepository.save(transaction1);
 
 		Salary s1 = new Salary(chef1, BigDecimal.valueOf(20000), "sous chef");

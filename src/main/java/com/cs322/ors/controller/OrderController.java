@@ -41,7 +41,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/orders")
 public class OrderController {
 
 	@Autowired
@@ -59,7 +59,7 @@ public class OrderController {
 	@Autowired
 	public DishService dishService;
 
-	@GetMapping("/Orders") // Get all customer own orders or all orders
+	@GetMapping// Get all customer own orders or all orders
 	@PreAuthorize("isAuthenticated()")
 	public List<Order> getOrders(Authentication authUser) {
 		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
@@ -71,7 +71,7 @@ public class OrderController {
 
 	}
 
-	@GetMapping("/Orders/{orderId}") // Get customers order by id
+	@GetMapping("/{orderId}") // Get customers order by id
 	@PreAuthorize("isAuthenticated()")
 	public Order getOrderWithId(@PathVariable long orderId, Authentication authUser) {
 		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
@@ -90,7 +90,7 @@ public class OrderController {
 		}
 	}
 
-	@PostMapping("/Orders")
+	@PostMapping
 	@PreAuthorize("hasAnyRole('CUSTOMER','VIP','MANAGER')")
 	public void makeOrder(@Valid @RequestBody JsonNode rawOrder, Authentication authUser) throws Exception {
 
@@ -141,7 +141,7 @@ public class OrderController {
 		}
 	}
 
-	@PutMapping("/Orders/{orderId}") // Update a customers order
+	@PutMapping("/{orderId}") // Update a customers order
 	@PreAuthorize("isAuthenticated()")
 	public void updateOrder(@Valid @RequestBody Order order, @PathVariable long orderId, Authentication authUser) {
 		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
@@ -160,7 +160,7 @@ public class OrderController {
 
 	}
 
-	@DeleteMapping("/Orders/{orderId}") // Delete a customers order
+	@DeleteMapping("/{orderId}") // Delete a customers order
 	@PreAuthorize("isAuthenticated()")
 	public void deleteOrder(@PathVariable long orderId, Authentication authUser) {
 		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
