@@ -57,6 +57,10 @@ public class Order {
 	@JsonIgnore
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private DeliveryStatus deliveryStatus;
+	
+	@JsonIgnore
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private DeliveryJobs deliveryJobs;
 
 	@OneToOne
 	private User deliveryPerson; 

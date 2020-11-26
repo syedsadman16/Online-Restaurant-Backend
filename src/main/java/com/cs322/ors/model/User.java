@@ -93,6 +93,15 @@ public class User {
 	@JsonIgnore
 	@OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private CustomerInfo customerInfo;
+	
+	@JsonIgnore
+	@OneToOne(mappedBy = "critic", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private DishRating dishRating;
+	
+	@JsonIgnore
+	@OneToOne(mappedBy = "victim", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Claims claims;
+
 
 
 //	@JsonIgnore
