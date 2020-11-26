@@ -94,12 +94,12 @@ public class DbInit implements CommandLineRunner {
 		Dish dish3 = new Dish( "RED velvet cake", chef1, null, null, BigDecimal.valueOf(10.50), false);
 
 		// Add test dish ratings
-		DishRating rating1 = new DishRating(4.3, customer1);
+		DishRating rating1 = new DishRating(4.3, customer1,dish2);
 		rating1.setComments("I like red velvet cakes");
-		DishRating rating2 = new DishRating(2.5, customer2);
+		DishRating rating2 = new DishRating(2.5, customer2,dish2);
 		rating2.setComments("What a donut");
-		dish2.addToRatings(rating2);
-		dish2.addToRatings(rating1);
+//		dish2.addToRatings(rating2);
+//		dish2.addToRatings(rating1);
 		dishRepository.saveAll(Arrays.asList(dish1,dish2,dish3));
 
 		Order order1 = new Order(customer1, 0);

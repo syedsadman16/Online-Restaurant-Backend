@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import com.cs322.ors.security.UserPrincipal;
@@ -16,7 +18,11 @@ public class DishRating {
     private long id;
     
     @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User critic;
+    
+    @ManyToOne
+    private Dish dish;
     
     private double rating;
     private String comments = "";
@@ -24,9 +30,10 @@ public class DishRating {
 	public DishRating() {
 	}
 
-    public DishRating(double rating, User critic) {
+    public DishRating(double rating, User critic, Dish dish) {
         this.rating = rating;
         this.critic = critic;
+        this.dish = dish;
     }
 
     public long getId() {
