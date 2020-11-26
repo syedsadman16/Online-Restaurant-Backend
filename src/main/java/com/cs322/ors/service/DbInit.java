@@ -24,6 +24,12 @@ public class DbInit implements CommandLineRunner {
 	OrderRepository orderRepository;
 	
 	@Autowired
+	DiscussionRepository discussionRepository;
+	
+	@Autowired
+	CommentRepository commentRepository;
+	
+	@Autowired
 	ChefJobRepository chefJobRepository;
 	
 	@Autowired
@@ -155,6 +161,13 @@ public class DbInit implements CommandLineRunner {
 		// Claims
 		Claims claim1 = new Claims(rating3, customer1, "Fake news");
 		claimsService.postClaim(claim1);
-
+		
+		//Discussions
+		Discussion discussion1 = new Discussion(customer1, "Who the best chef in here?");
+		discussionRepository.save(discussion1);
+		Comment comment1 = new Comment(discussion1, customer2, "These nuts"); 
+		commentRepository.save(comment1);
+		
+		
 	}
 }
