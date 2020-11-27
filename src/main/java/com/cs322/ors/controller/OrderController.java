@@ -24,12 +24,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.cs322.ors.model.DeliveryJobs;
 import com.cs322.ors.model.Dish;
 import com.cs322.ors.model.DishOrder;
 import com.cs322.ors.model.Order;
 import com.cs322.ors.model.Transaction;
 import com.cs322.ors.model.User;
 import com.cs322.ors.security.UserPrincipal;
+import com.cs322.ors.service.DeliveryJobsService;
 import com.cs322.ors.service.DishService;
 import com.cs322.ors.service.OrderService;
 import com.cs322.ors.service.TransactionService;
@@ -59,6 +61,9 @@ public class OrderController {
 	@Autowired
 	public DishService dishService;
 
+	@Autowired
+	public DeliveryJobsService deliveryJobsService;
+	
 	@GetMapping// Get all customer own orders or all orders
 	@PreAuthorize("isAuthenticated()")
 	public List<Order> getOrders(Authentication authUser) {
@@ -125,13 +130,17 @@ public class OrderController {
 			BigDecimal newAmount = vipService.applyDiscount(originalAmount, currentUser);
 			BigDecimal currentBalance = transactionService.getTransactionSumByCustomer(currentUser);
 
-			// Check funds. Create a transaction for the order if possible.
+			// Check funds. Create a transaction & jobs for the order if possible.
 			if (currentBalance.compareTo(newAmount) == -1) {
 				throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Account don't have enough funds");
-			} else {
+			} else {			
 				Order order = orderService.makeOrder(currentUser, dishOrders, orderType);
 				transactionService.createTransaction(
 						new Transaction(currentUser, newAmount, String.format("OrderId: %d", order.getId()), 0));
+				//TODO: Make job for chef
+				if(order.getType() == 1) {
+					deliveryJobsService.addDeliveryJob(new DeliveryJobs(order));
+				}
 
 			}
 		} else {

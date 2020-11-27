@@ -26,7 +26,7 @@ public class DiscussionService {
 	private DiscussionRepository discussionRepository;
 	
 	@Autowired
-	private CommentService commentService;
+	private CensorService censorService;
 	
 	public List<Discussion> getAllDiscussions() {
 		return discussionRepository.findAll();
@@ -37,7 +37,8 @@ public class DiscussionService {
 //		return discussionRepository.save(discussion);
 //	}
 	
-	public Discussion createDiscussion(Discussion discussion) {	
+	public Discussion createDiscussion(Discussion discussion, User user) {	
+		discussion.setTopic(censorService.censor(discussion.getTopic(), user));
 		return discussionRepository.save(discussion);
 	}
 

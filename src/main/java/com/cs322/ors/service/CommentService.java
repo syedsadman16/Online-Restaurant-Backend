@@ -16,11 +16,15 @@ public class CommentService {
 	@Autowired
 	CommentRepository commentRepository;
 
+	@Autowired
+	private CensorService censorService;
+	
 	public List<Comment> getCommentsForDiscussion(long discussionId) {
 		return commentRepository.findByDiscussion_Id(discussionId);
 	}
 
-	public Comment createComment(Comment comment) {
+	public Comment createComment(Comment comment, User user) {
+		comment.setMessage(censorService.censor(comment.getMessage(), user));
 		return commentRepository.save(comment);
 	}
 }

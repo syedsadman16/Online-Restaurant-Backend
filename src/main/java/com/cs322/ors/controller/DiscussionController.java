@@ -30,7 +30,7 @@ public class DiscussionController {
 	public Discussion createDiscussion(@RequestBody Discussion discussion, Authentication authUser){
 		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
 		discussion.setCreator(currentUser);
-		return discussionService.createDiscussion( discussion );
+		return discussionService.createDiscussion(discussion, currentUser);
 
 	}
 	

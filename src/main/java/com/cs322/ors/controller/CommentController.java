@@ -30,7 +30,7 @@ public class CommentController {
 	public Comment createComment(@RequestBody Comment comment, Authentication authUser){
 		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
 		comment.setCommenter(currentUser);
-		return commentService.createComment(comment );
+		return commentService.createComment(comment, currentUser);
 	}
 	
 	@GetMapping("/{discussionId}")

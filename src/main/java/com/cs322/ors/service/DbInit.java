@@ -27,7 +27,7 @@ public class DbInit implements CommandLineRunner {
 	DiscussionRepository discussionRepository;
 	
 	@Autowired
-	CommentRepository commentRepository;
+	CommentService commentService;
 	
 	@Autowired
 	ChefJobRepository chefJobRepository;
@@ -122,12 +122,14 @@ public class DbInit implements CommandLineRunner {
 
 		TabooWord tabooWord1 = new TabooWord("Jackass");
 		tabooWordsRepository.save(tabooWord1);
+		
+
 
 		UserWarning strike1= new UserWarning(customer1, "1st strike");
 		userWarningRepository.save(strike1);
 		
-		UserWarning strike2= new UserWarning(customer1, "2nd strike");
-		userWarningRepository.save(strike2);
+//		UserWarning strike2= new UserWarning(customer1, "2nd strike");
+//		userWarningRepository.save(strike2); 
 		
 		DishKeyWord word1 = new DishKeyWord("Dessert",dish1,chef1);
 		dishKeyWordRepository.save(word1);
@@ -165,8 +167,8 @@ public class DbInit implements CommandLineRunner {
 		//Discussions
 		Discussion discussion1 = new Discussion(customer1, "Who the best chef in here?");
 		discussionRepository.save(discussion1);
-		Comment comment1 = new Comment(discussion1, customer2, "These nuts"); 
-		commentRepository.save(comment1);
+		Comment comment1 = new Comment(discussion1, customer2, "You ackass"); 
+		commentService.createComment(comment1, customer2);
 		
 		
 	}

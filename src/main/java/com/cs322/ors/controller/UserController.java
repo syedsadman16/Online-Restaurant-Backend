@@ -52,11 +52,7 @@ public class UserController {
 	@PreAuthorize("#id == principal.user.id OR hasRole('MANAGER')") // Users can only access their account OR manager
 	public Optional<User> accessUserInfo(@PathVariable long id, Authentication authUser) {
 		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
-		if (!currentUser.isClosed()) {
-			return userService.getUserById(id);
-		}
-		throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Account closed");
-
+		return userService.getUserById(id);
 	}
 
 	@GetMapping("/balance")
