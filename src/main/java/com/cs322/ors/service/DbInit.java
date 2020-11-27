@@ -75,9 +75,11 @@ public class DbInit implements CommandLineRunner {
 		User customer3 = new User("customer3", "customer3", "CUSTOMER");
 		User vip1 = new User("vip1", "vip1", "VIP");
 		User chef1 = new User("chef1", "chef1", "CHEF");
+		User chef2 = new User("chef2", "chef2", "CHEF");
 		User deliverer1 = new User("deliverer1", "deliverer1", "DELIVERER");
 		vip1.setVerified(true);
 		chef1.setVerified(true);
+		chef2.setVerified(true);
 		deliverer1.setVerified(true);
 
 		List<User> users = Arrays.asList(manager, customer1, vip1, chef1, deliverer1,customer2,customer3);
@@ -86,6 +88,7 @@ public class DbInit implements CommandLineRunner {
 		userService.createUser(customer3);
 		userService.createUser(vip1);
 		userService.createUser(chef1);
+		userService.createUser(chef2);
 		userService.createUser(deliverer1);
 
 		
@@ -116,6 +119,13 @@ public class DbInit implements CommandLineRunner {
 		
 		ChefJob chefjob1 = new ChefJob(chef1, order2);
 		chefJobRepository.save(chefjob1);
+		
+		ChefJob chefjob2 = new ChefJob(chef2, order1);
+		chefJobRepository.save(chefjob2);
+		
+		ChefJob chefjob3 = new ChefJob(chef2, order4);
+		chefjob3.setCompleted(true);
+		chefJobRepository.save(chefjob3);
 		
 		DishOrder dishOrder1 = new DishOrder(dish1, order1, 2);
 		dishOrderRepository.save(dishOrder1);

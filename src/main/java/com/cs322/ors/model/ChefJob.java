@@ -20,7 +20,6 @@ public class ChefJob {
 	private long id;
 	
 	@ManyToOne
-	@JoinColumn(name = "chef_id")
 	private User chef;	
 	
 	@OneToOne(optional = false)

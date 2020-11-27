@@ -67,7 +67,7 @@ public class User {
 	private List<UserWarning> userWarnings = new ArrayList<>();
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "chef", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "chef", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<ChefJob> chefJobs = new ArrayList<>();
 
 	@JsonIgnore
