@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.cs322.ors.model.ChefJob;
 import com.cs322.ors.model.DeliveryJobs;
 import com.cs322.ors.model.Dish;
 import com.cs322.ors.model.DishOrder;
@@ -31,6 +32,7 @@ import com.cs322.ors.model.Order;
 import com.cs322.ors.model.Transaction;
 import com.cs322.ors.model.User;
 import com.cs322.ors.security.UserPrincipal;
+import com.cs322.ors.service.ChefJobService;
 import com.cs322.ors.service.DeliveryJobsService;
 import com.cs322.ors.service.DishService;
 import com.cs322.ors.service.OrderService;
@@ -63,6 +65,9 @@ public class OrderController {
 
 	@Autowired
 	public DeliveryJobsService deliveryJobsService;
+	
+	@Autowired
+	public ChefJobService chefJobService;
 	
 	@GetMapping// Get all customer own orders or all orders
 	@PreAuthorize("isAuthenticated()")
@@ -138,6 +143,8 @@ public class OrderController {
 				transactionService.createTransaction(
 						new Transaction(currentUser, newAmount, String.format("OrderId: %d", order.getId()), 0));
 				//TODO: Make job for chef
+				//chefJobService.addChefJob(new ChefJob(user, order));
+				
 				if(order.getType() == 1) {
 					deliveryJobsService.addDeliveryJob(new DeliveryJobs(order));
 				}

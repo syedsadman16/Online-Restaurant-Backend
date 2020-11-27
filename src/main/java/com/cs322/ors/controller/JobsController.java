@@ -1,8 +1,10 @@
 package com.cs322.ors.controller;
 
+import com.cs322.ors.model.ChefJob;
 import com.cs322.ors.model.DeliveryJobs;
 import com.cs322.ors.model.User;
 import com.cs322.ors.security.UserPrincipal;
+import com.cs322.ors.service.ChefJobService;
 import com.cs322.ors.service.DeliveryJobsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,6 +21,9 @@ public class JobsController {
 
     @Autowired
     DeliveryJobsService deliveryJobsService;
+    
+    @Autowired
+    ChefJobService chefJobService;
 
     @GetMapping("/delivery")
     @PreAuthorize("hasRole('MANAGER')")
@@ -65,6 +70,42 @@ public class JobsController {
     public void removeDeliveryJob(@PathVariable Long jobId){
         deliveryJobsService.deleteDeliveryJob(jobId);
     }
-
+    
+//     ------------------------------------------------------  ChefJob Controller ---------------------------------//
+    
+    
+    @GetMapping("/chefJob")
+    @PreAuthorize("hasRole('MANAGER')")
+    public List<ChefJob> getAllChefJobs(){
+        return chefJobService.getAllchefjobs();
+    }
+    
+    
+    @GetMapping("/chefJob/{status}")    //get by if status is completed or not
+    @PreAuthorize("hasAnyRole('MANAGER','CHEF')")
+    public List<ChefJob> getChefJobsByStatus(@PathVariable("status") boolean status, Authentication authUser){
+    	User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
+    	
+		if (currentUser.getRole() == "MANAGER") {   
+	        return chefJobService.getChefJobByStatus(status);
+		} else {
+			return chefJobService.getChefJobByUserAndStatus(currentUser.getId(),status); 
+		}
+    }
+    
+    @PutMapping("/chefJob/{id}")
+    @PreAuthorize("hasAnyRole('MANAGER','CHEF')")
+    public void updateStatus(@PathVariable long id) {
+    	chefJobService.updateCompletionStatus(id);
+    }
+    
+   //in case delete is needed 
+   @DeleteMapping("/chefJob/{id}")
+   @PreAuthorize("hasAnyRole('MANAGER','CHEF')")
+   public void deleteJob(@PathVariable long id) {
+	   chefJobService.deleteJob(id);
+   }
+   
+    
 
 }

@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
@@ -22,9 +23,10 @@ public class ChefJob {
 	@JoinColumn(name = "chef_id")
 	private User chef;	
 	
-	@OneToOne
-	@JoinColumn(name = "order_id", referencedColumnName = "id")
+	@OneToOne(optional = false)
+	@JsonIdentityReference(alwaysAsId = true)
 	private Order order;	
+	
 	private boolean completed;
 	
 	public ChefJob() {}
