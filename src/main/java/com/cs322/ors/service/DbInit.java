@@ -89,9 +89,9 @@ public class DbInit implements CommandLineRunner {
 		userService.createUser(deliverer1);
 
 		
-		Dish dish1 = new Dish("strawberry cake", chef1, null, null, BigDecimal.valueOf(10), false);
-		Dish dish2 = new Dish( "RED velvet cake", chef1, null, null, BigDecimal.valueOf(10.50), true);
-		Dish dish3 = new Dish( "RED velvet cake", chef1, null, null, BigDecimal.valueOf(10.50), false);
+		Dish dish1 = new Dish("strawberry cake", chef1, "Strawberry falvored cake", null, BigDecimal.valueOf(10), false);
+		Dish dish2 = new Dish( "RED velvet cake", chef1, "choclate layered cake", null, BigDecimal.valueOf(10.50), true);
+		Dish dish3 = new Dish( "Tiramisu cake", chef1, "coffee falvored", null, BigDecimal.valueOf(10.50), false);
 
 		// Add test dish ratings
 		DishRating rating1 = new DishRating(4.3, customer1,dish2);
