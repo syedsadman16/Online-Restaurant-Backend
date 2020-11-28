@@ -110,7 +110,7 @@ public class User {
 
 //	@JsonIgnore
 	// Unidirectional
-	@OneToMany(mappedBy = "critic", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "critic", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<UserRating> ratingList;
 
