@@ -10,6 +10,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import com.cs322.ors.security.UserPrincipal;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 public class DishRating {
@@ -17,8 +20,10 @@ public class DishRating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    
-    @OneToOne
+
+
+    @ManyToOne
+    @JsonIgnoreProperties({"username", "password", "role", "closed"})
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User critic;
     
