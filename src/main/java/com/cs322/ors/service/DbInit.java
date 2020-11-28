@@ -151,11 +151,20 @@ public class DbInit implements CommandLineRunner {
 		DishKeyWord word2 = new DishKeyWord("Spicy",dish1,chef1);
 		dishKeyWordRepository.save(word2);
 		
-		DishKeyWord word3 = new DishKeyWord("Spicy",dish2,chef1);
+		DishKeyWord word3 = new DishKeyWord("Mousse",dish2,chef1);
 		dishKeyWordRepository.save(word3);
 		
 		DishKeyWord word4 = new DishKeyWord("Cake",dish3,chef1);
 		dishKeyWordRepository.save(word4);
+
+		DishKeyWord word5 = new DishKeyWord("Cheesecake",dish4,chef1);
+		dishKeyWordRepository.save(word5);
+
+		DishKeyWord word6 = new DishKeyWord("Pie",dish5,chef1);
+		dishKeyWordRepository.save(word6);
+
+		DishKeyWord word7 = new DishKeyWord("Shake",dish5,chef1);
+		dishKeyWordRepository.save(word7);
 
 		// Add test user ratings
 		UserRating rating3 = new UserRating(1, "Customer was uncooperative", deliverer1, order1);
