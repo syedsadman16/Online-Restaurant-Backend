@@ -98,8 +98,8 @@ public class User {
 	private CustomerInfo customerInfo;
 	
 	@JsonIgnore
-	@OneToOne(mappedBy = "critic", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private DishRating dishRating;
+	@OneToMany(mappedBy = "critic", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<DishRating> dishRating;
 	
 	
 	@JsonIgnore

@@ -25,7 +25,7 @@ public class DishOrder {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@ManyToOne(optional = false)
+	@ManyToOne
 	private Dish dish;	
 	
 	@ManyToOne
