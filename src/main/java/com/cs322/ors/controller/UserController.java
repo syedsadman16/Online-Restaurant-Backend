@@ -48,10 +48,10 @@ public class UserController {
 		return userService.createUser(newUser);
 	}
 
-	@GetMapping("/{role}")
-	public List<User> findByRole(@PathVariable("role") String role){
-		return userService.findUserByRole(role);
-	}
+//	@GetMapping("/{role}")
+//	public List<User> findByRole(@PathVariable("role") String role){
+//		return userService.findUserByRole(role);
+//	}
 
 	@GetMapping("/{id}")
 	@PreAuthorize("#id == principal.user.id OR hasRole('MANAGER')") // Users can only access their account OR manager
