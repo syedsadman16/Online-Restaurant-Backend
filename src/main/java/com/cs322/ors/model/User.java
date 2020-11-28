@@ -102,6 +102,12 @@ public class User {
 	private DishRating dishRating;
 	
 	@JsonIgnore
+	@OneToOne(mappedBy = "critic",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private UserRating userRating;
+	
+	
+	@JsonIgnore
 	@OneToOne(mappedBy = "victim", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Claims claims;
 

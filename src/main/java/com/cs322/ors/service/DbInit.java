@@ -83,6 +83,7 @@ public class DbInit implements CommandLineRunner {
 		deliverer1.setVerified(true);
 
 		List<User> users = Arrays.asList(manager, customer1, vip1, chef1, deliverer1,customer2,customer3);
+		userService.createUser(manager);
 		userService.createUser(customer1);
 		userService.createUser(customer2);
 		userService.createUser(customer3);
@@ -155,8 +156,9 @@ public class DbInit implements CommandLineRunner {
 
 		// Add test user ratings
 		UserRating rating3 = new UserRating(1, "Customer was uncooperative", deliverer1, order1);
+		//userRatingRepository.save(rating3);
 		customer1.addToRatings(rating3);
-		userRepository.saveAll(users);
+		//userRepository.saveAll(users);
 		
 		Transaction transaction1 = new Transaction(customer1, BigDecimal.valueOf(32.20) ,"OrderId: 1", 0);
 		TransactionRepository.save(transaction1);
