@@ -21,7 +21,7 @@ public class AccountStatusService {
 	
 	public void updateStatus(User user) {
 		int warnings = userWarningService.count(user.getId());
-		vipService.checkVIP(user);
+		vipService.checkAndSetVIP(user);
 		boolean isVIP = user.getRole() == "VIP";
 		boolean isCustomer = user.getRole() == "CUSTOMER" || isVIP;
 		if(isVIP && warnings == 2) {

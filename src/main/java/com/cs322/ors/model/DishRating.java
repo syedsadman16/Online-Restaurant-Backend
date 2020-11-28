@@ -1,5 +1,6 @@
 package com.cs322.ors.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,6 +23,7 @@ public class DishRating {
     private User critic;
     
     @ManyToOne
+    @JoinColumn
     private Dish dish;
     
     private double rating;

@@ -33,7 +33,7 @@ public class Dish {
 	private User chef;
 
 	// Unidirectional relations
-	@OneToMany(mappedBy = "dish", fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(mappedBy = "dish", cascade = CascadeType.ALL,fetch = FetchType.LAZY, orphanRemoval = true)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<DishRating> rating;
 	
