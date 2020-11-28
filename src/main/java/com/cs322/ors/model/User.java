@@ -107,10 +107,10 @@ public class User {
 	private Claims claims;
 
 
-
 //	@JsonIgnore
 	// Unidirectional
 	@OneToMany(mappedBy = "critic", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<UserRating> ratingList;
 

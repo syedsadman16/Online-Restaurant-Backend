@@ -60,12 +60,23 @@ public class DbInit implements CommandLineRunner {
 	ClaimsService claimsService;
 	
 	@Autowired
-	SalaryRepository salaryRepository;
+	TableRepository tableRepository;
+	
+	
 	@Override
 	public void run(String... args) throws Exception {
 
 		// REAL DATA NEEDED TO INITIALIZE APPLICATION
 		User manager = new User("manager", "manager", "MANAGER");
+		RestaurantTable table1 = new RestaurantTable();
+		RestaurantTable table2 = new RestaurantTable();
+		RestaurantTable table3 = new RestaurantTable();
+		RestaurantTable table4 = new RestaurantTable();
+		RestaurantTable table5 = new RestaurantTable();
+		List<RestaurantTable> tables = Arrays.asList(table1,table2,table3,table4,table5);
+		userService.createUser(manager);
+		tableRepository.saveAll(tables);
+		
 
 		// DUMMY DATA
 		User customer1 = new User("customer1", "customer1", "CUSTOMER");
@@ -82,8 +93,6 @@ public class DbInit implements CommandLineRunner {
 		chef2.setVerified(true);
 		deliverer1.setVerified(true);
 
-		List<User> users = Arrays.asList(manager, customer1, vip1, chef1, deliverer1,customer2,customer3);
-		userService.createUser(manager);
 		userService.createUser(customer1);
 		userService.createUser(customer2);
 		userService.createUser(customer3);
