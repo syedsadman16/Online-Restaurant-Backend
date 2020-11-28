@@ -43,7 +43,7 @@ public class Dish {
 	private String imageUrl;
 	private String name;
 	private boolean special;
-	private double averageRating;
+
 
 	
 	public Dish() {
@@ -59,7 +59,7 @@ public class Dish {
 		this.name = name;
 		this.special = special;
 		rating = new ArrayList<DishRating>();
-		this.averageRating = getAverageRating();
+
 	}
 
 
