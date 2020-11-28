@@ -156,17 +156,17 @@ public class DbInit implements CommandLineRunner {
 
 		// Add test user ratings
 		UserRating rating3 = new UserRating(1, "Customer was uncooperative", deliverer1, order1);
-		//userRatingRepository.save(rating3);
+//		//userRatingRepository.save(rating3);
 		customer1.addToRatings(rating3);
 		//userRepository.saveAll(users);
 		
 		Transaction transaction1 = new Transaction(customer1, BigDecimal.valueOf(32.20) ,"OrderId: 1", 0);
 		TransactionRepository.save(transaction1);
 
-//		Salary s1 = new Salary(chef1, BigDecimal.valueOf(20000), "sous chef");
+//		Salary s1 = new Salary(chef1, BigDecimal.valueOf(20000));
 //		salaryRepository.save(s1);
-		
-//		Salary s2 = new Salary(deliverer1, BigDecimal.valueOf(10000), "delivery man");
+//		
+//		Salary s2 = new Salary(deliverer1, BigDecimal.valueOf(10000));
 //		salaryRepository.save(s2);
 		
 		// Delivery Jobs

@@ -2,6 +2,9 @@ package com.cs322.ors.model;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import antlr.collections.List;
 
 /*
@@ -17,6 +20,8 @@ public class Claims {
     private long Id;
 
     @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "userRating_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     UserRating userRating;
 
     @OneToOne

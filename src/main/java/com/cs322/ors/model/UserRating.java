@@ -3,6 +3,10 @@ package com.cs322.ors.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.util.List;
 
 /*
@@ -28,8 +32,11 @@ public class UserRating {
      * update the rating 
      */
     @JsonIgnore
-    @OneToOne
+    @ManyToOne
     private User critic;
+    
+    @OneToOne
+    private Claims claims;
 
     /*
      * Keep track of the order that rating was made for

@@ -101,11 +101,6 @@ public class User {
 	@OneToOne(mappedBy = "critic", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private DishRating dishRating;
 	
-	@JsonIgnore
-	@OneToOne(mappedBy = "critic",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private UserRating userRating;
-	
 	
 	@JsonIgnore
 	@OneToOne(mappedBy = "victim", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -115,8 +110,8 @@ public class User {
 
 //	@JsonIgnore
 	// Unidirectional
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@OneToMany( cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "critic", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<UserRating> ratingList;
 
 	@JsonIgnore
