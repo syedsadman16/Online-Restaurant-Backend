@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.cs322.ors.db.UserRepository;
 import com.cs322.ors.model.Dish;
+import com.cs322.ors.model.Salary;
 import com.cs322.ors.model.Transaction;
 import com.cs322.ors.model.User;
 
@@ -26,10 +27,16 @@ public class UserService {
 	
 	public User createUser(User newUser) {	
 		boolean isVIP = newUser.getRole() == "VIP";
+		boolean isManager = newUser.getRole() == "MANAGER";
 		boolean isCustomer = newUser.getRole() == "CUSTOMER" || isVIP;	
+		
 		if(isCustomer) {
 			Transaction bonus = new Transaction(newUser, BigDecimal.valueOf(300), "Sign up bonus", 1);
 			newUser.setTransactions(Arrays.asList(bonus));			
+		}
+		if(!isCustomer && !isManager) {
+			Salary initialSalary = new Salary(newUser, BigDecimal.valueOf(30000));
+			newUser.setSalary(initialSalary);
 		}
 		return userRepository.save(newUser);
 	}

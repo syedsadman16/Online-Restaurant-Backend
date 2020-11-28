@@ -23,15 +23,13 @@ private long id;
 private User user;
 
 private BigDecimal amount;
-private String description;
 
 public Salary() {
 }
 
-public Salary(User user, BigDecimal amount, String description) {
+public Salary(User user, BigDecimal amount) {
     this.user = user;
     this.amount = amount;
-    this.description = description;
 }
 
 
@@ -59,19 +57,14 @@ public void setAmount(BigDecimal amount) {
     this.amount = amount;
 }
 
-public String getDescription() {
-    return description;
-}
-
-public void setDescription(String description) {
-    this.description = description;
-}
-
-
 @Override
 public String toString() {
-    return "Salary [amount=" + amount + ", description=" + description + ", id=" + id + ", user=" + user + "]";
+	return "Salary [id=" + id + ", user=" + user + ", amount=" + amount + "]";
 }
+
+
+
+
 
 
 

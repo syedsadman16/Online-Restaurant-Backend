@@ -158,8 +158,8 @@ public class DbInit implements CommandLineRunner {
 		Transaction transaction1 = new Transaction(customer1, BigDecimal.valueOf(32.20) ,"OrderId: 1", 0);
 		TransactionRepository.save(transaction1);
 
-		Salary s1 = new Salary(chef1, BigDecimal.valueOf(20000), "sous chef");
-		salaryRepository.save(s1);
+//		Salary s1 = new Salary(chef1, BigDecimal.valueOf(20000), "sous chef");
+//		salaryRepository.save(s1);
 		
 //		Salary s2 = new Salary(deliverer1, BigDecimal.valueOf(10000), "delivery man");
 //		salaryRepository.save(s2);
