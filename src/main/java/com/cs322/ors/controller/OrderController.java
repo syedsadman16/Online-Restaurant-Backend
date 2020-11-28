@@ -143,7 +143,7 @@ public class OrderController {
 				transactionService.createTransaction(
 						new Transaction(currentUser, newAmount, String.format("OrderId: %d", order.getId()), 0));
 				//TODO: Make job for chef
-				//chefJobService.addChefJob(new ChefJob(user, order));
+				chefJobService.addChefJob(new ChefJob(dishOrders.get(0).getDish().getChef(), order));
 				
 				if(order.getType() == 1) {
 					deliveryJobsService.addDeliveryJob(new DeliveryJobs(order));
