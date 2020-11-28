@@ -32,10 +32,11 @@ public class DishRating {
 	public DishRating() {
 	}
 
-    public DishRating(double rating, User critic, Dish dish) {
+    public DishRating(double rating, String comment, User critic, Dish dish) {
         this.rating = rating;
         this.critic = critic;
         this.dish = dish;
+        this.comments = comment;
     }
 
     public long getId() {

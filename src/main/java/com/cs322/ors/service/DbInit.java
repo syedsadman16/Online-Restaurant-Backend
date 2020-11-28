@@ -96,15 +96,18 @@ public class DbInit implements CommandLineRunner {
 		Dish dish1 = new Dish("strawberry cake", chef1, "Strawberry falvored cake", null, BigDecimal.valueOf(10), false);
 		Dish dish2 = new Dish( "RED velvet cake", chef1, "choclate layered cake", null, BigDecimal.valueOf(10.50), true);
 		Dish dish3 = new Dish( "Tiramisu cake", chef1, "coffee falvored", null, BigDecimal.valueOf(10.50), false);
+		Dish dish4 = new Dish( "Hershey Pie", chef1, "Chocolate mousse layered with brownies and topped with whipped cream", null, BigDecimal.valueOf(8.75), false);
+		Dish dish5 = new Dish( "Boston Cream Mousse Cheesecake", chef1, "Cheesecake combination: cool, creamy custard nestled in fluffy cake & topped with bittersweet chocolate", null, BigDecimal.valueOf(11.25), true);
 
 		// Add test dish ratings
-		DishRating rating1 = new DishRating(4.3, customer1,dish2);
-		rating1.setComments("I like red velvet cakes");
-		DishRating rating2 = new DishRating(2.5, customer2,dish2);
-		rating2.setComments("What a donut");
+		DishRating rating1 = new DishRating(4.3, "I like red velvet cakes" ,customer1,dish2);
+		DishRating rating2 = new DishRating(2.5, "Too much red, not enough velvet", customer2,dish2);
 		dish2.addToRatings(rating2);
 		dish2.addToRatings(rating1);
-		dishRepository.saveAll(Arrays.asList(dish1,dish2,dish3));
+		dish1.addToRatings(new DishRating(4,"It the fruit that counts", customer2, dish1));
+		dish4.addToRatings(new DishRating(1,"Diabetes", customer2, dish4));
+		dish5.addToRatings(new DishRating(5,"Taste of paradise", customer1, dish5));
+		dishRepository.saveAll(Arrays.asList(dish1,dish2,dish3, dish4, dish5));
 
 		Order order1 = new Order(customer1, 0);
 		orderRepository.save(order1);

@@ -35,7 +35,7 @@ public class Dish {
 	// Unidirectional relations
 	@OneToMany(mappedBy = "dish", cascade = CascadeType.ALL,fetch = FetchType.LAZY, orphanRemoval = true)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<DishRating> rating;
+	private List<DishRating> rating = new ArrayList<DishRating>();;
 	
 	@OneToMany(mappedBy = "dish", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<DishOrder> dishOrder;
@@ -50,7 +50,7 @@ public class Dish {
 	private String imageUrl;
 	private String name;
 	private boolean special;
-
+	private double averageRating;
 
 	
 	public Dish() {
@@ -65,8 +65,7 @@ public class Dish {
 		this.price = price;
 		this.name = name;
 		this.special = special;
-		rating = new ArrayList<DishRating>();
-
+		this.averageRating = getAverageRating();
 	}
 
 
@@ -175,6 +174,9 @@ public class Dish {
 
 	public double getAverageRating(){
 		double sum = 0;
+		if(rating.size() == 0)
+			return 0;
+
 		for(int i=0; i<rating.size(); i++){
 			sum += rating.get(i).getRating();
 		}
