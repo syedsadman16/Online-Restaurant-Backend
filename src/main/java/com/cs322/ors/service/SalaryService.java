@@ -30,11 +30,11 @@ public class SalaryService {
 		salaryRepository.save(salary);
 	}
 
-	public void updateSalary(BigDecimal Amount, long userId) {
+	public void updateSalary(BigDecimal amount, long userId) {
 		List<Salary> SalaryDB = this.salaryRepository.findByUser_Id(userId);
 		
 		if (SalaryDB.isEmpty() == false){
-			SalaryDB.get(0).setAmount(Amount);
+			SalaryDB.get(0).setAmount(amount);
 			salaryRepository.save(SalaryDB.get(0));
 		}
 		

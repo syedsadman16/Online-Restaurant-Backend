@@ -51,8 +51,8 @@ public class SalaryController {
 	
 	@PutMapping("/salary/{userId}")
 	@PreAuthorize("hasRole('MANAGER')")  //only managers can update salaries
-	public void updateSalary(BigDecimal amount,@PathVariable long userId) {
-		salaryService.updateSalary(amount,userId);
+	public void updateSalary(@RequestBody Salary salary,@PathVariable long userId) {
+		salaryService.updateSalary(salary.getAmount(),userId);
 	}
 	
 }
