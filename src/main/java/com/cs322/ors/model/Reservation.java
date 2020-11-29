@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -24,16 +25,20 @@ public class Reservation {
 	@Embedded
 	private TimeSlot timeSlot;
 
-	public TimeSlot getTimeSlot() {
-		return timeSlot;
-	}
 	
     @ManyToOne( optional = false)
     private User customer;
 
+    @OneToOne( optional = false)
+    private Order order;
+    
     @ManyToOne(optional = false)
     private RestaurantTable table;
 
+	public TimeSlot getTimeSlot() {
+		return timeSlot;
+	}
+	
 	public void setTimeSlot(TimeSlot timeSlot) {
 		this.timeSlot = timeSlot;
 	}
@@ -62,13 +67,15 @@ public class Reservation {
 		this.table = table;
 	}
 
-	public Reservation(TimeSlot timeSlot, User customer, RestaurantTable table) {
+	public Reservation(TimeSlot timeSlot, User customer, Order order, RestaurantTable table) {
 		super();
 		this.timeSlot = timeSlot;
 		this.customer = customer;
+		this.order = order;
 		this.table = table;
 	}
-	
+
+
 	
 	
 	

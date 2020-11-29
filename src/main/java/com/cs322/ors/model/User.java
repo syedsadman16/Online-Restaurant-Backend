@@ -106,6 +106,9 @@ public class User {
 	@OneToOne(mappedBy = "victim", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Claims claims;
 
+	@JsonIgnore
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<Reservation> reservation;
 
 //	@JsonIgnore
 	// Unidirectional

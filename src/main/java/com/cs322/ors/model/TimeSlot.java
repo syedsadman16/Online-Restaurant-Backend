@@ -7,11 +7,21 @@ import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+
 @Embeddable
 public class TimeSlot {
+	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
+	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	 @Column(name = "TIME_FROM")
 	private LocalDateTime from;
 	
+	 @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+	 @JsonSerialize(using = LocalDateTimeSerializer.class)
 	@Column(name = "TIME_TO")
     private LocalDateTime to;
 
@@ -38,7 +48,6 @@ public class TimeSlot {
 		this.from = from;
 		this.to = to;
 	}
-    
     
 
 }

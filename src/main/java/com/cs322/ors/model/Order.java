@@ -65,6 +65,10 @@ public class Order {
 	@JsonIgnore
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private UserRating userRating;
+	
+	@JsonIgnore
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private Reservation reservation;
 
 	@OneToOne
 	private User deliveryPerson; 
@@ -122,7 +126,7 @@ public class Order {
 	public void setType(int type) {
 		this.type = type;
 	}
-
+	
 	public boolean getCompleted() {
 		return completed;
 	}

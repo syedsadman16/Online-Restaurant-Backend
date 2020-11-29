@@ -26,13 +26,6 @@ public class ReservationController {
 	@Autowired
 	ReservationService reservationService;
 
-	@PostMapping
-	@PreAuthorize("hasAnyRole('CUSTOMER', 'VIP')")
-	public Reservation createReservation(@RequestBody Reservation reservation, Authentication authUser){
-		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
-		reservation.setCustomer(currentUser);
-		return reservationService.createReservation(reservation);
-	}
 	
 	@GetMapping
 	@PreAuthorize("hasAnyRole('CUSTOMER', 'VIP')")

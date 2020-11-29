@@ -29,6 +29,9 @@ import com.cs322.ors.model.DeliveryJobs;
 import com.cs322.ors.model.Dish;
 import com.cs322.ors.model.DishOrder;
 import com.cs322.ors.model.Order;
+import com.cs322.ors.model.Reservation;
+import com.cs322.ors.model.RestaurantTable;
+import com.cs322.ors.model.TimeSlot;
 import com.cs322.ors.model.Transaction;
 import com.cs322.ors.model.User;
 import com.cs322.ors.security.UserPrincipal;
@@ -36,6 +39,7 @@ import com.cs322.ors.service.ChefJobService;
 import com.cs322.ors.service.DeliveryJobsService;
 import com.cs322.ors.service.DishService;
 import com.cs322.ors.service.OrderService;
+import com.cs322.ors.service.ReservationService;
 import com.cs322.ors.service.TransactionService;
 import com.cs322.ors.service.UserService;
 import com.cs322.ors.service.VipService;
@@ -68,6 +72,9 @@ public class OrderController {
 	
 	@Autowired
 	public ChefJobService chefJobService;
+	
+	@Autowired
+	public ReservationService reservationService;
 	
 	@GetMapping// Get all customer own orders or all orders
 	@PreAuthorize("isAuthenticated()")
@@ -108,11 +115,17 @@ public class OrderController {
 		int orderType = rawOrder.get("type").intValue();
 		ObjectMapper mapper = new ObjectMapper();
 		List<Map<String, Long>> rawDishOrder;
+		TimeSlot timeSlot;
+		RestaurantTable table;
 		try {
 			rawDishOrder = mapper.readValue(rawOrder.get("dishes").toString(),
 					new TypeReference<List<Map<String, Long>>>() {
 					});
+			table = mapper.treeToValue(rawOrder.get("table"), RestaurantTable.class);
+			timeSlot = mapper.treeToValue(rawOrder.get("timeSlot"), TimeSlot.class);
+			
 		} catch (Exception e) {
+			System.err.println(e);
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
@@ -142,11 +155,16 @@ public class OrderController {
 				Order order = orderService.makeOrder(currentUser, dishOrders, orderType);
 				transactionService.createTransaction(
 						new Transaction(currentUser, newAmount, String.format("OrderId: %d", order.getId()), 0));
-				//TODO: Make job for chef
+				
 				chefJobService.addChefJob(new ChefJob(dishOrders.get(0).getDish().getChef(), order));
 				
 				if(order.getType() == 1) {
 					deliveryJobsService.addDeliveryJob(new DeliveryJobs(order));
+				}
+				if(order.getType() == 2) {
+					//TODO: Fix this
+					reservationService.createReservation(new Reservation(timeSlot, currentUser, order, table));
+
 				}
 
 			}
