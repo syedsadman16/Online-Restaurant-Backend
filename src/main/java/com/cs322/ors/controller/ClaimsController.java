@@ -27,7 +27,7 @@ public class ClaimsController {
      * Registered users can view their pending claims
      */
     @GetMapping
-    @PreAuthorize("isAuthorized()")
+    @PreAuthorize("isAuthenticated()")
     public List<Claims> getAllClaims(Authentication authUser){
         User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
         if(currentUser.getRole() == "MANAGER" ){
