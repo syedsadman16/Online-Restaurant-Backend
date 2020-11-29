@@ -28,6 +28,9 @@ public class DishService {
 		return dishRepository.findAll();
 	}
 
+	public List<Dish>getDishesbyChef(long chefId){
+		return dishRepository.findByChef_id(chefId);
+	}
 	public Optional<Dish> getDish(long Id) {
 		return dishRepository.findById(Id);
 	}

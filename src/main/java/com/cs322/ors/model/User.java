@@ -115,7 +115,6 @@ public class User {
 	private List<UserRating> ratingList;
 
 	@JsonIgnore
-	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany( cascade = CascadeType.ALL)
 	private List<DeliveryJobs> deliveryJobs;
 
