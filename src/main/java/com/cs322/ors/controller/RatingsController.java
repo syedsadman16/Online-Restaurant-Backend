@@ -5,8 +5,11 @@ import com.cs322.ors.model.DishRating;
 import com.cs322.ors.model.User;
 import com.cs322.ors.model.UserRating;
 import com.cs322.ors.security.UserPrincipal;
+import com.cs322.ors.service.ChefStatusService;
 import com.cs322.ors.service.DishRatingService;
 import com.cs322.ors.service.UserRatingService;
+import com.cs322.ors.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +23,15 @@ public class RatingsController {
 
     @Autowired
     UserRatingService userRatingService;
+    
     @Autowired
     DishRatingService dishRatingService;
+    
+    @Autowired
+    ChefStatusService chefStatusService;
+    
+    @Autowired
+    UserService	userService;
 
      //------------------------------------User Ratings----------------------------------------------------
 
@@ -34,7 +44,12 @@ public class RatingsController {
     public List<User> getAllUsersRating(){
         return userRatingService.getAllUserRatings();
     }
-
+    
+    @GetMapping("/chef/{id}")
+    @PreAuthorize("hasRole('MANAGER','CHEF')")
+    public double getAverageChefRating(@PathVariable long id) {
+    	return chefStatusService.averageRating(userService.getUserById(id).get()).get(0);
+    }
     /*
      * Let current user get their own ratings
      */ 
