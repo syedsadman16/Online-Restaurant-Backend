@@ -26,7 +26,7 @@ public class JobsController {
     ChefJobService chefJobService;
 
     @GetMapping("/delivery")
-    @PreAuthorize("hasRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER','CHEF','DELIVERER')")
     public List<DeliveryJobs> getAllDeliveryJobs(){
         return deliveryJobsService.getAllDeliveryJobs();
     }
