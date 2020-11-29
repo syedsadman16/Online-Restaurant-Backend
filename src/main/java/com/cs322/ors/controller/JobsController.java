@@ -65,11 +65,19 @@ public class JobsController {
         deliveryJobsService.updateDeliveryJob(updatedJob);
     }
 
+    @PostMapping("/delivery/completed/{jobId}")
+    @PreAuthorize("hasAnyRole('MANAGER','DELIVERER')")
+    public void completedDelivery(@PathVariable Long jobId){
+        deliveryJobsService.deliveryJobCompleted(jobId);
+    }
+
     @DeleteMapping("/delivery/removeJob/{jobId}")
     @PreAuthorize("hasAnyRole('MANAGER','CHEF')")
     public void removeDeliveryJob(@PathVariable Long jobId){
         deliveryJobsService.deleteDeliveryJob(jobId);
     }
+
+
     
 //     ------------------------------------------------------  ChefJob Controller ---------------------------------//
     
