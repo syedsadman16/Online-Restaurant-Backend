@@ -114,8 +114,9 @@ public class User {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<UserRating> ratingList;
 
-	@JsonIgnore
-	@OneToMany( cascade = CascadeType.ALL)
+	//@JsonIgnore
+	@OneToMany( cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<DeliveryJobs> deliveryJobs;
 
 
