@@ -48,7 +48,7 @@ public class User {
 	private boolean closed;
 	private boolean verified;
 
-	private int rating;
+	private double rating;
 
 	// Bidirectional Mapping
 
@@ -106,7 +106,7 @@ public class User {
 	@OneToMany(mappedBy = "critic", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<UserRating> ratingList;
+	private List<UserRating> ratingList = new ArrayList<>();;
 
 	//@JsonIgnore
 	@OneToMany( cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
@@ -123,15 +123,12 @@ public class User {
 		this.role = role;
 		this.closed = false;
 		this.verified = role == "MANAGER" ? true : false;
+		this.rating = calculateAverageRating();
 
 		if(role == "DELIVERER"){
 			deliveryJobs = new ArrayList<>();
 		}
 
-		ratingList = new ArrayList<>();
-		if(ratingList.size() > 0) {
-			this.rating = calculateAverageRating();
-		}
 
 	}
 
@@ -197,11 +194,11 @@ public class User {
 		ratingList.add(uRating);
 	}
 
-	public int getRating(){
+	public double getRating(){
 		return rating;
 	}
 
-	public void setRating(int rating) {
+	public void setRating(double rating) {
 		this.rating = rating;
 	}
 
@@ -223,7 +220,7 @@ public class User {
 		}
 	}
 
-	public void deleteRating(Long dishId, Long ratingId){
+	public void deleteRating(Long ratingId){
 		for(int i=0; i<ratingList.size(); i++){
 			if(ratingList.get(i).getId() == ratingId){
 				ratingList.remove(i);
@@ -231,8 +228,8 @@ public class User {
 		}
 	}
 
-	public int calculateAverageRating(){
-		int total = 0;
+	public double calculateAverageRating(){
+		double total = 0;
 
 		if(ratingList.size() == 0){
 			return 0;

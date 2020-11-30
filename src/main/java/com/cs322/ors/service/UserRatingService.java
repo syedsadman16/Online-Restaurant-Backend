@@ -77,11 +77,13 @@ public class UserRatingService {
 
     /*
      * Delete rating from list
+     * Userid to find the user that contains the unwanted rating
+     * Ratingid is used to search users list and remove it
      */
     public void deleteUserRating(Long userId, Long ratingId) {
-        User ratingToRemvoe = userRepository.findById(userId).get();
-        ratingToRemvoe.deleteRating(userId, ratingId);
-        userRepository.save(ratingToRemvoe);
+        User userWithRating = userRepository.findById(userId).get();
+        userWithRating.deleteRating(ratingId);
+        userRepository.save(userWithRating);
     }
 
 }

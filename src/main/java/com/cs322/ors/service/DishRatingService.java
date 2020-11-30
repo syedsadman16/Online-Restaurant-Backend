@@ -69,10 +69,12 @@ public class DishRatingService {
 
     /*
      * Deletes rating from list in Dish object
+     * Dishid to find the dish that contains the  rating
+     * Ratingid is used to search ratings list and remove it
      */
     public void deleteDishRating(long dishId, long ratingId) {
         Dish deletedDish = dishRepository.findById(dishId).get();
-        deletedDish.deleteRating(dishId, ratingId);
+        deletedDish.deleteRating(ratingId);
         dishRepository.save(deletedDish);
     }
 

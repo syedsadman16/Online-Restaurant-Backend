@@ -102,10 +102,10 @@ public class RatingsController {
     /*
      * Registered users and Manager can delete ratings
      */
-    @PostMapping("/users/delete")
-    @PreAuthorize("hasAnyRole('CUSTOMER','VIP','DELIVERER', 'MANAGER')")
-    public void deleteUserRating(@PathVariable Long id, @PathVariable Long ratingId){
-        userRatingService.deleteUserRating(id, ratingId);
+    @DeleteMapping("/users/{userId}/{ratingId}")
+    @PreAuthorize("hasAnyRole('CUSTOMER','VIP','DELIVERER','MANAGER')")
+    public void deleteUserRating(@PathVariable Long userId, @PathVariable Long ratingId){
+        userRatingService.deleteUserRating(userId, ratingId);
     }
 
 
@@ -160,10 +160,10 @@ public class RatingsController {
      /*
      * Remove rating for dish
      */
-    @DeleteMapping("/dishes/{id}/delete/{dishId}")
+    @DeleteMapping("/dishes/{dishId}/{ratingId}")
     @PreAuthorize("hasAnyRole('CUSTOMER','VIP', 'MANAGER')")
-    public void deleteDishRating(@PathVariable Long id,  @PathVariable Long dishId){
-        dishRatingService.deleteDishRating(id, dishId);
+    public void deleteDishRating(@PathVariable Long dishId,  @PathVariable Long ratingId){
+        dishRatingService.deleteDishRating(dishId, ratingId);
     }
 
 

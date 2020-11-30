@@ -183,7 +183,7 @@ public class Dish {
 		return sum/rating.size();
 	}
 
-	public void deleteRating(Long dishId, Long ratingId){
+	public void deleteRating(Long ratingId){
 		for(int i=0; i<rating.size(); i++){
 			if(rating.get(i).getId() == ratingId){
 				rating.remove(i);
