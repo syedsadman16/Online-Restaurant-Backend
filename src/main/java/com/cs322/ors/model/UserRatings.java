@@ -20,8 +20,9 @@ public class UserRatings {
     @JoinColumn(name="order_id")
     private Order order;
 
-//    @OneToOne
-//    private Claims claims;
+    @OneToOne(mappedBy = "userRatings", cascade = CascadeType.ALL  ,orphanRemoval = true, fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Claims claims;
 
     private double rating;
     private String comments = "";
@@ -77,11 +78,7 @@ public class UserRatings {
         this.order = order;
     }
 
-//    public Claims getClaims() {
-//        return claims;
-//    }
-//
-//    public void setClaims(Claims claims) {
-//        this.claims = claims;
-//    }
+    public void setClaims(Claims claims) {
+        this.claims = claims;
+    }
 }

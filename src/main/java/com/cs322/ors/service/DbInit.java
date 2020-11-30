@@ -179,6 +179,9 @@ public class DbInit implements CommandLineRunner {
 		UserRatings rating3 = new UserRatings(2.1, "Customer upset over missing drink", customer1, order1);
 		userRatingsRepository.save(rating3);
 
+		UserRatings rating4 = new UserRatings(0.9, " missing ", customer2, order2);
+		userRatingsRepository.save(rating4);
+
 		Transaction transaction1 = new Transaction(customer1, BigDecimal.valueOf(32.20) ,"OrderId: 1", 0);
 		TransactionRepository.save(transaction1);
 
@@ -194,10 +197,14 @@ public class DbInit implements CommandLineRunner {
 		deliveryJobsService.addDeliveryJob(job1);
 		deliveryJobsService.addDeliveryJob(job2);
 
-////		// Claims
+		// Claims
 		Claims claim1 = new Claims(rating3, customer1, "Fake news");
 		claimsService.postClaim(claim1);
-		
+
+		Claims claim2 = new Claims(rating4, customer2, "Fake ");
+		claimsService.postClaim(claim2);
+
+
 		//Discussions
 		Discussion discussion1 = new Discussion(customer1, "Who the best chef in here?");
 		discussionRepository.save(discussion1);

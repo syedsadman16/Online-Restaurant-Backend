@@ -40,17 +40,6 @@ public class ClaimsController {
 
 
     /*
-     * Logged in as manager, pass in a claimId to dismiss and
-     * update user in service
-     */
-    @PostMapping("/dismissClaim/{claimId}")
-    @PreAuthorize("hasRole('MANAGER')")
-    public void dismissClaim(@PathVariable Long claimId){
-        claimsService.dismissClaim(claimId);
-    }
-
-
-    /*
      * Deny the users claim and set it as a warning
      */
     @PostMapping("/denyClaim/{claimId}")

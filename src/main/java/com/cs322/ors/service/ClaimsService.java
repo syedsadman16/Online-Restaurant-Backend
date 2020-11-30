@@ -35,23 +35,10 @@ public class ClaimsService {
     }
 
 
-    /*
-     * If manager decides to dismiss a claim, first find the user making the claim. Then, get
-     * the UserRating from the claim and remove it from the users Rating list. Recalculate the
-     * users average rating and  save tem to the userRepository. FInally, delete the claim from
-     * the claims table
-     */
-    public void dismissClaim(Long claimId){
-/*        User user = claimsRepository.findById(claimId).get().getVictim();*/
-//        UserRatings dismissedRating = claimsRepository.findById(claimId).get().getUserRating();
-//        Long ratingId = dismissedRating.getId();
-//        userRatingsService.deleteUserRatings(ratingId);
-        deleteClaim(claimId);
-    }
 
 
     /*
-     * Manager can decline a claim and set it as a warning
+     * Manager can deny a claim and set it as a warning
      */
     public void convertToWarning(Long claimId, String message) {
         User user = claimsRepository.findById(claimId).get().getVictim();

@@ -96,6 +96,14 @@ public class User {
 	@OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private CustomerInfo customerInfo;
 
+	@JsonIgnore
+	@OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<UserRatings> userRatings;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "victim", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private List<Claims> claims;
 
 	//@JsonIgnore
 	@OneToMany( cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
