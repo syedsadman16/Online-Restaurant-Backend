@@ -45,7 +45,7 @@ public class ClaimsController {
      */
     @PostMapping("/dismissClaim/{claimId}")
     @PreAuthorize("hasRole('MANAGER')")
-    public void dismissCLaim(@PathVariable Long claimId){
+    public void dismissClaim(@PathVariable Long claimId){
         claimsService.dismissClaim(claimId);
     }
 
@@ -79,9 +79,9 @@ public class ClaimsController {
         claimsService.updateClaim(updatedClaim);
     }
 
-    @DeleteMapping("/deleteClaim/{id}")
-    @PreAuthorize("isAuthenticated()")
-    public void updateClaim(@PathVariable Long id){
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('MANAGER')")
+    public void deleteClaim(@PathVariable Long id){
         claimsService.deleteClaim(id);
     }
 

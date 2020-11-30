@@ -71,8 +71,8 @@ public class JobsController {
         deliveryJobsService.deliveryJobCompleted(jobId);
     }
 
-    @DeleteMapping("/delivery/removeJob/{jobId}")
-    @PreAuthorize("hasAnyRole('MANAGER','CHEF')")
+    @DeleteMapping("/delivery/{jobId}")
+    @PreAuthorize("hasAnyRole('MANAGER','CHEF', 'DELIVERER')")
     public void removeDeliveryJob(@PathVariable Long jobId){
         deliveryJobsService.deleteDeliveryJob(jobId);
     }

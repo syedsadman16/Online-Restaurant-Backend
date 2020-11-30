@@ -90,7 +90,7 @@ public class DeliveryJobsService {
         deleteOrder.setDeliveryPerson(null);
         orderService.updateOrder(deleteOrder, deleteJob.getOrder().getId());
 
-        deliveryJobsRepository.deleteById(id);
+        deliveryJobsRepository.delete(deleteJob);
     }
 
     /*
@@ -125,7 +125,7 @@ public class DeliveryJobsService {
 
         //Save to tables
         orderService.updateOrder(completedOrder, completedJobs.getOrder().getId());
-        deliveryJobsRepository.deleteById(id);
+        deliveryJobsRepository.delete(completedJobs);
     }
 
 }

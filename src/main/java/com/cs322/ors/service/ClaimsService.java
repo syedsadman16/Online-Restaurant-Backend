@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClaimsService {
@@ -62,6 +63,7 @@ public class ClaimsService {
             message = "Your request to dispute a review has been declined. This is a warning";
         }
         userWarningService.createWarning(new UserWarning(user, message));
+        deleteClaim(claimId);
     }
 
 
@@ -83,7 +85,7 @@ public class ClaimsService {
       * Delete
       */
     public void deleteClaim(Long id){
-        Claims claim = claimsRepository.findById(id).get();
-        claimsRepository.delete(claim);
+        Optional<Claims> claim = this.claimsRepository.findById(id);
+        claimsRepository.delete(claim.get());
     }
 }

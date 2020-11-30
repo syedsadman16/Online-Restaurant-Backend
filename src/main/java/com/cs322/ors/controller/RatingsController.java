@@ -46,7 +46,7 @@ public class RatingsController {
     }
     
     @GetMapping("/chef/{id}")
-    @PreAuthorize("hasRole('MANAGER','CHEF')")
+    @PreAuthorize("hasAnyRole('MANAGER','CHEF')")
     public double getAverageChefRating(@PathVariable long id) {
     	return chefStatusService.averageRating(userService.getUserById(id).get()).get(0);
     }
