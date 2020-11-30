@@ -45,9 +45,6 @@ public class DbInit implements CommandLineRunner {
 	UserWarningRepository userWarningRepository;
 
 	@Autowired
-	UserRatingRepository userRatingRepository;
-
-	@Autowired
 	TransactionRepository TransactionRepository;
 
 	@Autowired
@@ -61,6 +58,9 @@ public class DbInit implements CommandLineRunner {
 	
 	@Autowired
 	TableRepository tableRepository;
+
+	@Autowired
+	UserRatingsRepository userRatingsRepository;
 	
 	
 	@Override
@@ -175,12 +175,10 @@ public class DbInit implements CommandLineRunner {
 		DishKeyWord word7 = new DishKeyWord("Shake",dish5,chef1);
 		dishKeyWordRepository.save(word7);
 
-		// Add test user ratings
-		UserRating rating3 = new UserRating(1, "Customer was uncooperative", deliverer1, order1);
-//		//userRatingRepository.save(rating3);
-		customer1.addToRatings(rating3);
-		//userRepository.saveAll(users);
-		
+
+		UserRatings rating3 = new UserRatings(2.1, "Customer upset over missing drink", customer1, order1);
+		userRatingsRepository.save(rating3);
+
 		Transaction transaction1 = new Transaction(customer1, BigDecimal.valueOf(32.20) ,"OrderId: 1", 0);
 		TransactionRepository.save(transaction1);
 
@@ -196,9 +194,9 @@ public class DbInit implements CommandLineRunner {
 		deliveryJobsService.addDeliveryJob(job1);
 		deliveryJobsService.addDeliveryJob(job2);
 
-		// Claims
-		Claims claim1 = new Claims(rating3, customer1, "Fake news");
-		claimsService.postClaim(claim1);
+////		// Claims
+//		Claims claim1 = new Claims(rating3, customer1, "Fake news");
+//		claimsService.postClaim(claim1);
 		
 		//Discussions
 		Discussion discussion1 = new Discussion(customer1, "Who the best chef in here?");

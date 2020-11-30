@@ -22,6 +22,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "`ORDER`")
@@ -64,7 +66,8 @@ public class Order {
 	
 	@JsonIgnore
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private UserRating userRating;
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private UserRatings userRating;
 
 	@OneToOne
 	private User deliveryPerson; 

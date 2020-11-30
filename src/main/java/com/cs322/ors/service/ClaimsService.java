@@ -2,10 +2,7 @@ package com.cs322.ors.service;
 
 
 import com.cs322.ors.db.ClaimsRepository;
-import com.cs322.ors.model.Claims;
-import com.cs322.ors.model.User;
-import com.cs322.ors.model.UserRating;
-import com.cs322.ors.model.UserWarning;
+import com.cs322.ors.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,11 +42,11 @@ public class ClaimsService {
      * the claims table
      */
     public void dismissClaim(Long claimId){
-        User user = claimsRepository.findById(claimId).get().getVictim();
-        UserRating dismissedRating = claimsRepository.findById(claimId).get().getUserRating();
-        user.getRatingList().remove(dismissedRating);
-        user.setRating(user.calculateAverageRating());
-        userService.updateUser(user);
+/*        User user = claimsRepository.findById(claimId).get().getVictim();*/
+        UserRatings dismissedRating = claimsRepository.findById(claimId).get().getUserRating();
+//        user.getRatingList().remove(dismissedRating);
+//        user.setRating(user.calculateAverageRating());
+//        userService.updateUser(user);
         deleteClaim(claimId);
     }
 

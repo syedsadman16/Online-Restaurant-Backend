@@ -48,7 +48,7 @@ public class User {
 	private boolean closed;
 	private boolean verified;
 
-	private double rating;
+//	private double rating;
 
 	// Bidirectional Mapping
 
@@ -96,17 +96,19 @@ public class User {
 	@JsonIgnore
 	@OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private CustomerInfo customerInfo;
-	
-	@JsonIgnore
-	@OneToMany(mappedBy = "critic", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<DishRating> dishRating;
 
-//	@JsonIgnore
-	// Unidirectional
-	@OneToMany(mappedBy = "critic", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+	@OneToMany(mappedBy = "person", cascade = CascadeType.ALL,fetch = FetchType.LAZY, orphanRemoval = true)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<UserRating> ratingList = new ArrayList<>();;
+	private List<UserRatings> userRatings = new ArrayList<UserRatings>();;
+
+////	@JsonIgnore
+//	// Unidirectional
+//	@OneToMany(mappedBy = "critic", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+//	@LazyCollection(LazyCollectionOption.FALSE)
+//	@OnDelete(action = OnDeleteAction.CASCADE)
+//	private List<UserRating> ratingList = new ArrayList<>();
 
 	//@JsonIgnore
 	@OneToMany( cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
@@ -123,7 +125,7 @@ public class User {
 		this.role = role;
 		this.closed = false;
 		this.verified = role == "MANAGER" ? true : false;
-		this.rating = calculateAverageRating();
+//		this.rating = calculateAverageRating();
 
 		if(role == "DELIVERER"){
 			deliveryJobs = new ArrayList<>();
@@ -182,64 +184,64 @@ public class User {
 		this.verified = verified;
 	}
 
-	public List<UserRating> getRatingList() {
-		return this.ratingList;
-	}
-
-	public void setRatingList(List<UserRating> rating) {
-		this.ratingList = rating;
-	}
-
-	public void addToRatings(UserRating uRating){
-		ratingList.add(uRating);
-	}
-
-	public double getRating(){
-		return rating;
-	}
-
-	public void setRating(double rating) {
-		this.rating = rating;
-	}
-
-	public UserRating getSingleUserRating(Long id) {
-		UserRating newRating = new UserRating();
-		for(int i=0; i<ratingList.size(); i++){
-			if(ratingList.get(i).getId() == id){
-			newRating = ratingList.get(i);
-			}
-		}
-		return newRating;
-	}
-
-	public void updateRating(UserRating newRating, Long ratingId){
-		for(int i=0; i<ratingList.size(); i++){
-			if(ratingList.get(i).getId() == ratingId){
-				ratingList.set(i, newRating);
-			}
-		}
-	}
-
-	public void deleteRating(Long ratingId){
-		for(int i=0; i<ratingList.size(); i++){
-			if(ratingList.get(i).getId() == ratingId){
-				ratingList.remove(i);
-			}
-		}
-	}
-
-	public double calculateAverageRating(){
-		double total = 0;
-
-		if(ratingList.size() == 0){
-			return 0;
-		}
-
-		for(int i=0; i<ratingList.size(); i++){
-			total += ratingList.get(i).getRating();
-		}
-		return total/ratingList.size();
-	}
+//	public List<UserRating> getRatingList() {
+//		return this.ratingList;
+//	}
+//
+//	public void setRatingList(List<UserRating> rating) {
+//		this.ratingList = rating;
+//	}
+//
+//	public void addToRatings(UserRating uRating){
+//		ratingList.add(uRating);
+//	}
+//
+//	public double getRating(){
+//		return rating;
+//	}
+//
+//	public void setRating(double rating) {
+//		this.rating = rating;
+//	}
+//
+//	public UserRating getSingleUserRating(Long id) {
+//		UserRating newRating = new UserRating();
+//		for(int i=0; i<ratingList.size(); i++){
+//			if(ratingList.get(i).getId() == id){
+//			newRating = ratingList.get(i);
+//			}
+//		}
+//		return newRating;
+//	}
+//
+//	public void updateRating(UserRating newRating, Long ratingId){
+//		for(int i=0; i<ratingList.size(); i++){
+//			if(ratingList.get(i).getId() == ratingId){
+//				ratingList.set(i, newRating);
+//			}
+//		}
+//	}
+//
+//	public void deleteRating(Long ratingId){
+//		for(int i=0; i<ratingList.size(); i++){
+//			if(ratingList.get(i).getId() == ratingId){
+//				ratingList.remove(i);
+//			}
+//		}
+//	}
+//
+//	public double calculateAverageRating(){
+//		double total = 0;
+//
+//		if(ratingList.size() == 0){
+//			return 0;
+//		}
+//
+//		for(int i=0; i<ratingList.size(); i++){
+//			total += ratingList.get(i).getRating();
+//		}
+//		return total/ratingList.size();
+//	}
 
 	public List<DeliveryJobs> getDeliveryJobs() {
 		return this.deliveryJobs;
