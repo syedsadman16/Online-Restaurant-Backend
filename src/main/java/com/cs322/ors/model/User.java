@@ -100,12 +100,6 @@ public class User {
 	@JsonIgnore
 	@OneToMany(mappedBy = "critic", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<DishRating> dishRating;
-	
-	
-	@JsonIgnore
-	@OneToOne(mappedBy = "victim", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Claims claims;
-
 
 //	@JsonIgnore
 	// Unidirectional
@@ -239,6 +233,11 @@ public class User {
 
 	public int calculateAverageRating(){
 		int total = 0;
+
+		if(ratingList.size() == 0){
+			return 0;
+		}
+
 		for(int i=0; i<ratingList.size(); i++){
 			total += ratingList.get(i).getRating();
 		}
