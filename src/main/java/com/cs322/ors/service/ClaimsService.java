@@ -15,7 +15,7 @@ public class ClaimsService {
     @Autowired
     private ClaimsRepository claimsRepository;
     @Autowired
-    private UserService userService;
+    private UserRatingsService userRatingsService;
     @Autowired
     private UserWarningService userWarningService;
 
@@ -43,10 +43,9 @@ public class ClaimsService {
      */
     public void dismissClaim(Long claimId){
 /*        User user = claimsRepository.findById(claimId).get().getVictim();*/
-        UserRatings dismissedRating = claimsRepository.findById(claimId).get().getUserRating();
-//        user.getRatingList().remove(dismissedRating);
-//        user.setRating(user.calculateAverageRating());
-//        userService.updateUser(user);
+//        UserRatings dismissedRating = claimsRepository.findById(claimId).get().getUserRating();
+//        Long ratingId = dismissedRating.getId();
+//        userRatingsService.deleteUserRatings(ratingId);
         deleteClaim(claimId);
     }
 

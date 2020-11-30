@@ -63,11 +63,7 @@ public class Order {
 	@JsonIgnore
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private DeliveryJobs deliveryJobs;
-	
-	@JsonIgnore
-	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private UserRatings userRating;
+
 
 	@OneToOne
 	private User deliveryPerson; 
@@ -83,7 +79,6 @@ public class Order {
 		this.completed = false;
 		this.cancelled = false;
 	}
-	
 	
 
 	public List<DishOrder> getDishOrders() {

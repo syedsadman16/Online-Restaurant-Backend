@@ -19,12 +19,9 @@ public class Claims {
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private long Id;
-
-
-    @JsonIgnore
-    @OneToOne(mappedBy = "claims", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    UserRatings userRatings;
+//
+//    @OneToOne
+//    UserRatings userRatings;
 
     @OneToOne
     User victim;
@@ -34,7 +31,7 @@ public class Claims {
     public Claims() {}
 
     public Claims( UserRatings userRating, User victim, String message) {
-        this.userRatings = userRating;
+        //this.userRatings = userRating;
         this.victim = victim;
         this.message = message;
     }
@@ -47,13 +44,13 @@ public class Claims {
         this.Id = Id;
     }
 
-    public UserRatings getUserRating() {
-        return this.userRatings;
-    }
-
-    public void setUserRating(UserRatings userRating) {
-        this.userRatings = userRating;
-    }
+//    public UserRatings getUserRating() {
+//       // return this.userRatings;
+//    }
+//
+//    public void setUserRating(UserRatings userRating) {
+//       // this.userRatings = userRating;
+//    }
 
     public String getMessage() {
         return this.message;

@@ -195,8 +195,8 @@ public class DbInit implements CommandLineRunner {
 		deliveryJobsService.addDeliveryJob(job2);
 
 ////		// Claims
-//		Claims claim1 = new Claims(rating3, customer1, "Fake news");
-//		claimsService.postClaim(claim1);
+		Claims claim1 = new Claims(rating3, customer1, "Fake news");
+		claimsService.postClaim(claim1);
 		
 		//Discussions
 		Discussion discussion1 = new Discussion(customer1, "Who the best chef in here?");

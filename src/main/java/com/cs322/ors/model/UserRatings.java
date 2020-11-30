@@ -1,5 +1,8 @@
 package com.cs322.ors.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,16 +13,15 @@ public class UserRatings {
     private long id;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name="person_id")
     private User person;
 
     @OneToOne
-    @JoinColumn
+    @JoinColumn(name="order_id")
     private Order order;
 
-    @OneToOne
-    @JoinColumn
-    private Claims claims;
+//    @OneToOne
+//    private Claims claims;
 
     private double rating;
     private String comments = "";
@@ -75,11 +77,11 @@ public class UserRatings {
         this.order = order;
     }
 
-    public Claims getClaims() {
-        return claims;
-    }
-
-    public void setClaims(Claims claims) {
-        this.claims = claims;
-    }
+//    public Claims getClaims() {
+//        return claims;
+//    }
+//
+//    public void setClaims(Claims claims) {
+//        this.claims = claims;
+//    }
 }

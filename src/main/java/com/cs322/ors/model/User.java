@@ -48,7 +48,6 @@ public class User {
 	private boolean closed;
 	private boolean verified;
 
-//	private double rating;
 
 	// Bidirectional Mapping
 
@@ -98,26 +97,13 @@ public class User {
 	private CustomerInfo customerInfo;
 
 
-	@OneToMany(mappedBy = "person", cascade = CascadeType.ALL,fetch = FetchType.LAZY, orphanRemoval = true)
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<UserRatings> userRatings = new ArrayList<UserRatings>();;
-
-////	@JsonIgnore
-//	// Unidirectional
-//	@OneToMany(mappedBy = "critic", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-//	@LazyCollection(LazyCollectionOption.FALSE)
-//	@OnDelete(action = OnDeleteAction.CASCADE)
-//	private List<UserRating> ratingList = new ArrayList<>();
-
 	//@JsonIgnore
 	@OneToMany( cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<DeliveryJobs> deliveryJobs;
 
 
-	public User() {
-	}
+	public User() { }
 
 	public User(String username, String password, String role) {
 		this.username = username;
@@ -125,15 +111,11 @@ public class User {
 		this.role = role;
 		this.closed = false;
 		this.verified = role == "MANAGER" ? true : false;
-//		this.rating = calculateAverageRating();
 
 		if(role == "DELIVERER"){
 			deliveryJobs = new ArrayList<>();
 		}
-
-
 	}
-
 
 	public long getId() {
 		return id;
@@ -175,7 +157,6 @@ public class User {
 		this.closed = closed;
 	}
 
-	
 	public boolean isVerified() {
 		return verified;
 	}
@@ -183,65 +164,6 @@ public class User {
 	public void setVerified(boolean verified) {
 		this.verified = verified;
 	}
-
-//	public List<UserRating> getRatingList() {
-//		return this.ratingList;
-//	}
-//
-//	public void setRatingList(List<UserRating> rating) {
-//		this.ratingList = rating;
-//	}
-//
-//	public void addToRatings(UserRating uRating){
-//		ratingList.add(uRating);
-//	}
-//
-//	public double getRating(){
-//		return rating;
-//	}
-//
-//	public void setRating(double rating) {
-//		this.rating = rating;
-//	}
-//
-//	public UserRating getSingleUserRating(Long id) {
-//		UserRating newRating = new UserRating();
-//		for(int i=0; i<ratingList.size(); i++){
-//			if(ratingList.get(i).getId() == id){
-//			newRating = ratingList.get(i);
-//			}
-//		}
-//		return newRating;
-//	}
-//
-//	public void updateRating(UserRating newRating, Long ratingId){
-//		for(int i=0; i<ratingList.size(); i++){
-//			if(ratingList.get(i).getId() == ratingId){
-//				ratingList.set(i, newRating);
-//			}
-//		}
-//	}
-//
-//	public void deleteRating(Long ratingId){
-//		for(int i=0; i<ratingList.size(); i++){
-//			if(ratingList.get(i).getId() == ratingId){
-//				ratingList.remove(i);
-//			}
-//		}
-//	}
-//
-//	public double calculateAverageRating(){
-//		double total = 0;
-//
-//		if(ratingList.size() == 0){
-//			return 0;
-//		}
-//
-//		for(int i=0; i<ratingList.size(); i++){
-//			total += ratingList.get(i).getRating();
-//		}
-//		return total/ratingList.size();
-//	}
 
 	public List<DeliveryJobs> getDeliveryJobs() {
 		return this.deliveryJobs;
@@ -253,14 +175,11 @@ public class User {
 				deliveryJobs.set(i, jobs);
 			}
 		}
-
 	}
 
 	public void setDeliveryJob(List<DeliveryJobs> deliveryJobs) {
 		this.deliveryJobs = deliveryJobs;
 	}
-	
-
 	
 	public List<Transaction> getTransactions() {
 		return transactions;
