@@ -38,10 +38,11 @@ public class DishController {
 		return dishService.getDish(dishId);
 	}
 	
-	@PreAuthorize("hasAnyRole('CHEF', 'MANAGER')")
-	@RequestMapping(method = RequestMethod.POST, value = "/Menu")
-	public void addDish(@Valid @RequestBody Dish dish) {
-		dishService.addDish(dish);
+//	@PreAuthorize("hasAnyRole('CHEF', 'MANAGER')")
+	@RequestMapping(method = RequestMethod.POST, value = "api/menu")
+	public Dish addDish(@Valid @RequestBody Dish dish) {
+		return dishService.addDish(dish);
+	
 	}
 	
 	@PreAuthorize("hasAnyRole('CHEF', 'MANAGER')")

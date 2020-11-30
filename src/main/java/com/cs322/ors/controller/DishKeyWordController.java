@@ -50,11 +50,11 @@ public class DishKeyWordController {
 	@PreAuthorize("hasAnyRole('CHEF','MANAGER')")
 	public void createKeyWord(@Valid @RequestBody DishKeyWord keyword, Authentication authUser, HttpServletResponse response) {
 		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
-		boolean isChef = keyword.getDish().getChef().getId() == currentUser.getId();   //checking if the person assigning a keyword is the same chef as the person who created the dish.
-		boolean isManager = currentUser.getRole() == "MANAGER";
-		if (isChef || isManager ) {
+//		boolean isChef = keyword.getDish().getChef().getId() == currentUser.getId();   //checking if the person assigning a keyword is the same chef as the person who created the dish.
+//		boolean isManager = currentUser.getRole() == "MANAGER";
+//		if (isChef || isManager ) {
 			dishKeyWordService.createWord(keyword);
-		}
+//		}
 	}
 
 	

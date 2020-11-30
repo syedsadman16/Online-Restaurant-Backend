@@ -35,8 +35,8 @@ public class DishService {
 		return dishRepository.findById(Id);
 	}
 
-	public void addDish(Dish dish) {
-		dishRepository.save(dish);
+	public Dish addDish(Dish dish) {
+		return dishRepository.save(dish);
 	}
 
 	public void updateDish(Dish dish,long Id) {
