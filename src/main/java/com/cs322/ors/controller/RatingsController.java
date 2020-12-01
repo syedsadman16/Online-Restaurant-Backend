@@ -23,6 +23,9 @@ public class RatingsController {
 
     @Autowired
     ChefStatusService chefStatusService;
+    
+    @Autowired
+    UserService userService;
 
 
      //------------------------------------User Ratings----------------------------------------------------
@@ -114,6 +117,13 @@ public class RatingsController {
      /*
      * Update rating for Dish
      */
+    
+    @GetMapping("/chef/{id}")
+    @PreAuthorize("hasAnyRole('MANAGER','CHEF')")
+    public double getAverageChefRating(@PathVariable long id) {
+    	return chefStatusService.averageRating(userService.getUserById(id).get()).get(0);
+    }
+    
     @PostMapping("/dishes/{dishId}/update/{ratingId}")
     @PreAuthorize("hasAnyRole('CUSTOMER','VIP','MANAGER')")
     public void updateDishRating(@RequestBody DishRating dishRating, @PathVariable Long dishId, @PathVariable Long ratingId){
