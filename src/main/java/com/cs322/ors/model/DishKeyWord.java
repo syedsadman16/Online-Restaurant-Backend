@@ -23,7 +23,6 @@ public class DishKeyWord {
 	@ManyToOne   //multiple dishes can be marked by same keyword
 	private Dish dish;
 	
-	@JsonIgnore
 	@ManyToOne (optional = false)	// one chef can use many keywords
 	private User chef;
 
