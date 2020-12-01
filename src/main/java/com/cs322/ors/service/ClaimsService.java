@@ -28,13 +28,19 @@ public class ClaimsService {
 
 
     /*
+     * Return a claim based on ID
+     */
+    public Claims getClaimById(Long claimId){
+        return claimsRepository.findById(claimId).get();
+    }
+
+
+    /*
      * User can view their own claims
      */
     public List<Claims> getUsersClaims(User user){
         return claimsRepository.findByVictim(user);
     }
-
-
 
 
     /*
@@ -68,7 +74,7 @@ public class ClaimsService {
       * Delete
       */
     public void deleteClaim(Long id){
-        Optional<Claims> claim = this.claimsRepository.findById(id);
-        claimsRepository.delete(claim.get());
+        claimsRepository.findById(id).get().setUserRating(null);
+        claimsRepository.delete(claimsRepository.findById(id).get());
     }
 }

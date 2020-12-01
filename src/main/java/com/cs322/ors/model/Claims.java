@@ -22,7 +22,8 @@ public class Claims {
     private long Id;
 
     @OneToOne
-    @JoinColumn
+    @JoinColumn(name = "claims_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     UserRatings userRatings;
 
     @ManyToOne
