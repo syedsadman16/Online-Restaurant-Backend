@@ -93,6 +93,11 @@ public class User {
 	private List<DishKeyWord> dishKeywords = new ArrayList<>();
 
 	@JsonIgnore
+	@OneToMany(mappedBy = "critic", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private List<DishRating> dishRating = new ArrayList<>();
+	
+	@JsonIgnore
 	@OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private CustomerInfo customerInfo;
 
