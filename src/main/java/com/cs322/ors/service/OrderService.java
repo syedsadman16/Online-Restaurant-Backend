@@ -64,6 +64,15 @@ public class OrderService {
 	public Optional<Order> getOrderById(long orderId) {
 		return orderRepository.findById(orderId);
 	}
+
+	public void setCompleted(long id) {
+		Optional <Order> orderDB = orderRepository.findById(id);
+		
+		if (orderDB.isPresent()) {
+			orderDB.get().setCompleted(true);
+			orderRepository.save(orderDB.get());
+		}
+	}
 	
 	
 

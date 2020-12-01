@@ -105,8 +105,8 @@ public class DbInit implements CommandLineRunner {
 		Dish dish1 = new Dish("strawberry cake", chef1, "Strawberry falvored cake", null, BigDecimal.valueOf(10), false);
 		Dish dish2 = new Dish( "RED velvet cake", chef1, "choclate layered cake", null, BigDecimal.valueOf(10.50), true);
 		Dish dish3 = new Dish( "Tiramisu cake", chef1, "coffee falvored", null, BigDecimal.valueOf(10.50), false);
-		Dish dish4 = new Dish( "Hershey Pie", chef1, "Chocolate mousse layered with brownies and topped with whipped cream", null, BigDecimal.valueOf(8.75), false);
-		Dish dish5 = new Dish( "Boston Cream Mousse Cheesecake", chef1, "Cheesecake combination: cool, creamy custard nestled in fluffy cake & topped with bittersweet chocolate", null, BigDecimal.valueOf(11.25), true);
+		Dish dish4 = new Dish( "Hershey Pie", chef2, "Chocolate mousse layered with brownies and topped with whipped cream", null, BigDecimal.valueOf(8.75), false);
+		Dish dish5 = new Dish( "Boston Cream Mousse Cheesecake", chef2, "Cheesecake combination: cool, creamy custard nestled in fluffy cake & topped with bittersweet chocolate", null, BigDecimal.valueOf(11.25), true);
 
 		// Add test dish ratings
 		DishRating rating1 = new DishRating(4.3, "I like red velvet cakes" ,customer1,dish2);
@@ -130,18 +130,24 @@ public class DbInit implements CommandLineRunner {
 		Order order4 = new Order(customer1, 0);
 		orderRepository.save(order4);	
 		
-		ChefJob chefjob1 = new ChefJob(chef1, order2);
+		ChefJob chefjob1 = new ChefJob(chef1, order1);
 		chefJobRepository.save(chefjob1);
 		
-		ChefJob chefjob2 = new ChefJob(chef2, order1);
+		ChefJob chefjob2 = new ChefJob(chef2, order2);
 		chefJobRepository.save(chefjob2);
 		
 		ChefJob chefjob3 = new ChefJob(chef2, order4);
-		chefjob3.setCompleted(true);
+//		chefjob3.setCompleted(true);
 		chefJobRepository.save(chefjob3);
 		
 		DishOrder dishOrder1 = new DishOrder(dish1, order1, 2);
 		dishOrderRepository.save(dishOrder1);
+		
+		DishOrder dishOrder2 = new DishOrder(dish4, order2, 3);
+		dishOrderRepository.save(dishOrder2);
+		
+		DishOrder dishOrder3 = new DishOrder(dish5, order4, 3);
+		dishOrderRepository.save(dishOrder3);
 
 		TabooWord tabooWord1 = new TabooWord("Jackass");
 		tabooWordsRepository.save(tabooWord1);

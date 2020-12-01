@@ -83,7 +83,7 @@ public class JobsController {
     
     
     @GetMapping("/chefJob")
-    @PreAuthorize("hasRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER','CHEF')")
     public List<ChefJob> getAllChefJobs(){
         return chefJobService.getAllchefjobs();
     }
@@ -101,7 +101,7 @@ public class JobsController {
 		}
     }
     
-    @PutMapping("/chefJob/{id}")
+    @PostMapping("/chefJob/{id}")
     @PreAuthorize("hasAnyRole('MANAGER','CHEF')")
     public void updateStatus(@PathVariable long id) {
     	chefJobService.updateCompletionStatus(id);

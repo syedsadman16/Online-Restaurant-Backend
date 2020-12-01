@@ -17,8 +17,8 @@ public class Salary {
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 private long id;
 
-@JsonIdentityInfo(property = "id", generator = ObjectIdGenerators.PropertyGenerator.class)
-@JsonIdentityReference(alwaysAsId = true)
+//@JsonIdentityInfo(property = "id", generator = ObjectIdGenerators.PropertyGenerator.class)
+//@JsonIdentityReference(alwaysAsId = true)
 @OneToOne(optional = false)
 private User user;
 
