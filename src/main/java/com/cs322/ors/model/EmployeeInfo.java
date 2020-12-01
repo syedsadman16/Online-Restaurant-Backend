@@ -13,7 +13,9 @@ public class EmployeeInfo{
     private long id;
     
     @OneToOne(optional = false)
-    private User userId;
+    private User user;
+    private String name;
+    private String address;
 
     private boolean fired;
     private boolean demotion;
@@ -21,10 +23,10 @@ public class EmployeeInfo{
 	public EmployeeInfo() {
 	}
 
-    public EmployeeInfo(User userId, boolean fired, boolean demotion) {
-        this.userId = userId;
-        this.fired = fired;
-        this.demotion = demotion;
+    public EmployeeInfo(String address, String name, User user) {
+        this.user = user;
+        this.address = address;
+        this.name = name;
     }
 
     public long getId() {
@@ -35,12 +37,12 @@ public class EmployeeInfo{
         this.id = id;
     }
 
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public boolean isFired() {
@@ -61,7 +63,7 @@ public class EmployeeInfo{
 
     @Override
     public String toString() {
-        return "EmployeeInfo [demotion=" + demotion + ", fired=" + fired + ", id=" + id + ", userId=" + userId + "]";
+        return "EmployeeInfo [demotion=" + demotion + ", fired=" + fired + ", id=" + id + ", user=" + user + "]";
     }
 
     

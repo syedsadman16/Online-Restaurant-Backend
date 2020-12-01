@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.cs322.ors.model.CustomerInfo;
+import com.cs322.ors.model.EmployeeInfo;
 import com.cs322.ors.model.User;
 import com.cs322.ors.security.UserPrincipal;
 import com.cs322.ors.service.TransactionService;
@@ -44,8 +46,11 @@ public class UserController {
 	}
 
 	@PostMapping
-	public User createAccount(@Valid @RequestBody User newUser) {
-		return userService.createUser(newUser);
+	public User createAccount( @RequestBody Map<String,String> newUser, Authentication authUser) {
+		User user = new User(newUser.get("username"), newUser.get("password"), newUser.get("role"));
+		CustomerInfo customerInfo  = new CustomerInfo(newUser.get("address"), newUser.get("name"),user);
+		EmployeeInfo employeeInfo  = new EmployeeInfo(newUser.get("address"), newUser.get("name"),user);		
+		return userService.createUser(user, customerInfo, employeeInfo);
 	}
 
 	@GetMapping("roles/{role}")
