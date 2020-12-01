@@ -2,9 +2,11 @@ package com.cs322.ors.controller;
 
 import com.cs322.ors.model.Claims;
 import com.cs322.ors.model.User;
+import com.cs322.ors.model.UserRatings;
 import com.cs322.ors.model.UserWarning;
 import com.cs322.ors.security.UserPrincipal;
 import com.cs322.ors.service.ClaimsService;
+import com.cs322.ors.service.UserRatingsService;
 import com.cs322.ors.service.UserWarningService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,6 +23,8 @@ public class ClaimsController {
     private ClaimsService claimsService;
     @Autowired
     private UserWarningService userWarningService;
+    @Autowired
+    private UserRatingsService userRatingsService;
 
     /*
      * Manager can view all the claims for any user
@@ -37,16 +41,13 @@ public class ClaimsController {
         }
     }
 
-
-
     /*
-     * Logged in as manager, pass in a claimId to dismiss and
-     * update user in service
+     * Accept the claim and remove the rating - this will also delete the claim
      */
-    @PostMapping("/dismissClaim/{claimId}")
+    @PostMapping("/approveClaim/{claimId}")
     @PreAuthorize("hasRole('MANAGER')")
-    public void dismissClaim(@PathVariable Long claimId){
-        claimsService.dismissClaim(claimId);
+    public void denyClaimToWarning(@PathVariable Long claimId){
+        userRatingsService.deleteUserRatings(claimsService.getClaimById(claimId).getUserRating().getId());
     }
 
 
@@ -58,7 +59,6 @@ public class ClaimsController {
     public void denyClaimToWarning(@PathVariable Long claimId, @RequestBody UserWarning warning){
         claimsService.convertToWarning(claimId, warning.getMessage());
     }
-
 
     /*
      * Registered users can submit a claim for a rating by specifying

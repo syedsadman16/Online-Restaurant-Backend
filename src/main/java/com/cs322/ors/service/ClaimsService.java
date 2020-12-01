@@ -2,10 +2,7 @@ package com.cs322.ors.service;
 
 
 import com.cs322.ors.db.ClaimsRepository;
-import com.cs322.ors.model.Claims;
-import com.cs322.ors.model.User;
-import com.cs322.ors.model.UserRating;
-import com.cs322.ors.model.UserWarning;
+import com.cs322.ors.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +15,7 @@ public class ClaimsService {
     @Autowired
     private ClaimsRepository claimsRepository;
     @Autowired
-    private UserService userService;
+    private UserRatingsService userRatingsService;
     @Autowired
     private UserWarningService userWarningService;
 
@@ -31,6 +28,14 @@ public class ClaimsService {
 
 
     /*
+     * Return a claim based on ID
+     */
+    public Claims getClaimById(Long claimId){
+        return claimsRepository.findById(claimId).get();
+    }
+
+
+    /*
      * User can view their own claims
      */
     public List<Claims> getUsersClaims(User user){
@@ -39,23 +44,7 @@ public class ClaimsService {
 
 
     /*
-     * If manager decides to dismiss a claim, first find the user making the claim. Then, get
-     * the UserRating from the claim and remove it from the users Rating list. Recalculate the
-     * users average rating and  save tem to the userRepository. FInally, delete the claim from
-     * the claims table
-     */
-    public void dismissClaim(Long claimId){
-        User user = claimsRepository.findById(claimId).get().getVictim();
-        UserRating dismissedRating = claimsRepository.findById(claimId).get().getUserRating();
-        user.getRatingList().remove(dismissedRating);
-        user.setRating(user.calculateAverageRating());
-        userService.updateUser(user);
-        deleteClaim(claimId);
-    }
-
-
-    /*
-     * Manager can decline a claim and set it as a warning
+     * Manager can deny a claim and set it as a warning
      */
     public void convertToWarning(Long claimId, String message) {
         User user = claimsRepository.findById(claimId).get().getVictim();
@@ -85,7 +74,7 @@ public class ClaimsService {
       * Delete
       */
     public void deleteClaim(Long id){
-        Optional<Claims> claim = this.claimsRepository.findById(id);
-        claimsRepository.delete(claim.get());
+        claimsRepository.findById(id).get().setUserRating(null);
+        claimsRepository.delete(claimsRepository.findById(id).get());
     }
 }
