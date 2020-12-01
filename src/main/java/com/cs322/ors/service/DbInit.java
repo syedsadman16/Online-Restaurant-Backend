@@ -102,11 +102,11 @@ public class DbInit implements CommandLineRunner {
 		userService.createUser(deliverer1, null, new EmployeeInfo("address", "name", deliverer1));
 
 		
-		Dish dish1 = new Dish("strawberry cake", chef1, "Strawberry falvored cake", null, BigDecimal.valueOf(10), false);
-		Dish dish2 = new Dish( "RED velvet cake", chef1, "choclate layered cake", null, BigDecimal.valueOf(10.50), true);
-		Dish dish3 = new Dish( "Tiramisu cake", chef1, "coffee falvored", null, BigDecimal.valueOf(10.50), false);
-		Dish dish4 = new Dish( "Hershey Pie", chef2, "Chocolate mousse layered with brownies and topped with whipped cream", null, BigDecimal.valueOf(8.75), false);
-		Dish dish5 = new Dish( "Boston Cream Mousse Cheesecake", chef2, "Cheesecake combination: cool, creamy custard nestled in fluffy cake & topped with bittersweet chocolate", null, BigDecimal.valueOf(11.25), true);
+		Dish dish1 = new Dish("strawberry cake", chef1, "Strawberry falvored cake", "https://aclassictwist.com/wp-content/uploads/2020/08/Fresh-Strawberry-Cake-with-Strawberry-Frosting-3.jpg", BigDecimal.valueOf(10), false);
+		Dish dish2 = new Dish( "RED velvet cake", chef1, "choclate layered cake", "https://www.savingdessert.com/wp-content/uploads/2018/12/Red-Velvet-Cake-4-480x270.jpg", BigDecimal.valueOf(10.50), true);
+		Dish dish3 = new Dish( "Tiramisu cake", chef1, "coffee falvored", "https://www.alicaspepperpot.com/wp-content/uploads/2017/12/DSC_0058-2-1024x683.jpg", BigDecimal.valueOf(10.50), false);
+		Dish dish4 = new Dish( "Hershey Pie", chef2, "Chocolate mousse layered with brownies and topped with whipped cream", "https://i.ytimg.com/vi/zXT5Bjr9l5Y/maxresdefault.jpg", BigDecimal.valueOf(8.75), false);
+		Dish dish5 = new Dish( "Boston Cream Mousse Cheesecake", chef2, "Cheesecake combination: cool, creamy custard nestled in fluffy cake & topped with bittersweet chocolate", "https://cdn.discordapp.com/attachments/753683675643772973/783163947024384020/unknown.png", BigDecimal.valueOf(11.25), true);
 
 		// Add test dish ratings
 		DishRating rating1 = new DishRating(4.3, "I like red velvet cakes" ,customer1,dish2);
