@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 
 import com.cs322.ors.db.UserRepository;
+import com.cs322.ors.model.CustomerInfo;
 import com.cs322.ors.model.Dish;
+import com.cs322.ors.model.EmployeeInfo;
 import com.cs322.ors.model.Salary;
 import com.cs322.ors.model.Transaction;
 import com.cs322.ors.model.User;
@@ -25,18 +27,21 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	public User createUser(User newUser) {	
-		boolean isVIP = newUser.getRole() == "VIP";
-		boolean isManager = newUser.getRole() == "MANAGER";
-		boolean isCustomer = newUser.getRole() == "CUSTOMER" || isVIP;	
-		
+	public User createUser(User newUser, CustomerInfo customerInfo, EmployeeInfo employeeInfo) {	
+		boolean isVIP = newUser.getRole().equals("VIP");
+		boolean isManager = newUser.getRole().equals("MANAGER");
+		boolean isCustomer = newUser.getRole().equals("CUSTOMER") || isVIP;	
+
 		if(isCustomer) {
 			Transaction bonus = new Transaction(newUser, BigDecimal.valueOf(300), "Sign up bonus", 1);
-			newUser.setTransactions(Arrays.asList(bonus));			
+			newUser.setTransactions(Arrays.asList(bonus));	
+			newUser.setCustomerInfo(customerInfo);
+			
 		}
 		if(!isCustomer && !isManager) {
 			Salary initialSalary = new Salary(newUser, BigDecimal.valueOf(30000));
 			newUser.setSalary(initialSalary);
+			newUser.setEmployeeInfo(employeeInfo);
 		}
 		return userRepository.save(newUser);
 	}

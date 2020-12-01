@@ -74,7 +74,7 @@ public class DbInit implements CommandLineRunner {
 		RestaurantTable table4 = new RestaurantTable();
 		RestaurantTable table5 = new RestaurantTable();
 		List<RestaurantTable> tables = Arrays.asList(table1,table2,table3,table4,table5);
-		userService.createUser(manager);
+		userService.createUser(manager, null, null);
 		tableRepository.saveAll(tables);
 		
 
@@ -93,13 +93,13 @@ public class DbInit implements CommandLineRunner {
 		chef2.setVerified(true);
 		deliverer1.setVerified(true);
 
-		userService.createUser(customer1);
-		userService.createUser(customer2);
-		userService.createUser(customer3);
-		userService.createUser(vip1);
-		userService.createUser(chef1);
-		userService.createUser(chef2);
-		userService.createUser(deliverer1);
+		userService.createUser(customer1, new CustomerInfo("address", "name", customer1), null);
+		userService.createUser(customer2,  new CustomerInfo("address", "name", customer2), null);
+		userService.createUser(customer3,  new CustomerInfo("address", "name", customer3), null);
+		userService.createUser(vip1,  new CustomerInfo("address", "name", vip1), null);
+		userService.createUser(chef1, null, new EmployeeInfo("address", "name", chef1)); 
+		userService.createUser(chef2, null, new EmployeeInfo("address", "name", chef2));
+		userService.createUser(deliverer1, null, new EmployeeInfo("address", "name", deliverer1));
 
 		
 		Dish dish1 = new Dish("strawberry cake", chef1, "Strawberry falvored cake", null, BigDecimal.valueOf(10), false);

@@ -74,7 +74,7 @@ public class User {
 	private List<ChefJob> chefJobs = new ArrayList<>();
 
 	@JsonIgnore
-	@OneToOne(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private EmployeeInfo employeeInfo;
 
 	@JsonIgnore
@@ -101,12 +101,10 @@ public class User {
 	@OneToMany(mappedBy = "critic", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<DishRating> dishRating;
 
-//	@JsonIgnore
+	@JsonIgnore
 	// Unidirectional
 	@OneToMany(mappedBy = "critic", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<UserRating> ratingList = new ArrayList<>();;
+	private List<UserRating> ratingList;
 
 	//@JsonIgnore
 	@OneToMany( cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
@@ -223,9 +221,10 @@ public class User {
 	public void deleteRating(Long ratingId){
 		for(int i=0; i<ratingList.size(); i++){
 			if(ratingList.get(i).getId() == ratingId){
-				ratingList.remove(i);
+				ratingList.set(i, null);
 			}
 		}
+		//setRatingList(rating);
 	}
 
 	public double calculateAverageRating(){
@@ -252,6 +251,11 @@ public class User {
 			}
 		}
 
+	}
+	
+
+	public List<Order> getOrders() {
+		return orders;
 	}
 
 	public void setDeliveryJob(List<DeliveryJobs> deliveryJobs) {
