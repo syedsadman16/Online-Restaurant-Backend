@@ -17,11 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -63,7 +59,9 @@ public class Order {
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private DeliveryJobs deliveryJobs;
 
-
+//	@JsonIdentityInfo(property = "id", generator = ObjectIdGenerators.PropertyGenerator.class)
+////	@JsonIdentityReference(alwaysAsId = true)
+@JsonIgnoreProperties({"id", "password", "role", "closed", "deliveryJobs"})
 	@OneToOne
 	private User deliveryPerson; 
 

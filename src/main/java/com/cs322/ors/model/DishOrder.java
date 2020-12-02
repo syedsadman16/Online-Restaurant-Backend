@@ -27,7 +27,8 @@ public class DishOrder {
 	
 	@ManyToOne
 	private Dish dish;	
-	
+
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "order_id")
 	private Order order;
