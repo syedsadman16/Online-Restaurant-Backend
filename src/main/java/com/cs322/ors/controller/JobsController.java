@@ -44,7 +44,7 @@ public class JobsController {
     }
 
     @PostMapping("/delivery/acceptJob/{jobId}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('DELIVERER')")
     public void acceptDeliveryJob(@PathVariable Long jobId, Authentication authUser){
         User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
         if(currentUser.getRole() == "DELIVERER") {
@@ -65,17 +65,25 @@ public class JobsController {
         deliveryJobsService.updateDeliveryJob(updatedJob);
     }
 
-    @DeleteMapping("/delivery/removeJob/{jobId}")
-    @PreAuthorize("hasAnyRole('MANAGER','CHEF')")
+    @PostMapping("/delivery/completed/{jobId}")
+    @PreAuthorize("hasAnyRole('MANAGER','DELIVERER')")
+    public void completedDelivery(@PathVariable Long jobId){
+        deliveryJobsService.deliveryJobCompleted(jobId);
+    }
+
+    @DeleteMapping("/delivery/{jobId}")
+    @PreAuthorize("hasAnyRole('MANAGER','CHEF', 'DELIVERER')")
     public void removeDeliveryJob(@PathVariable Long jobId){
         deliveryJobsService.deleteDeliveryJob(jobId);
     }
+
+
     
 //     ------------------------------------------------------  ChefJob Controller ---------------------------------//
     
     
     @GetMapping("/chefJob")
-    @PreAuthorize("hasRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER','CHEF')")
     public List<ChefJob> getAllChefJobs(){
         return chefJobService.getAllchefjobs();
     }
@@ -93,7 +101,7 @@ public class JobsController {
 		}
     }
     
-    @PutMapping("/chefJob/{id}")
+    @PostMapping("/chefJob/{id}")
     @PreAuthorize("hasAnyRole('MANAGER','CHEF')")
     public void updateStatus(@PathVariable long id) {
     	chefJobService.updateCompletionStatus(id);

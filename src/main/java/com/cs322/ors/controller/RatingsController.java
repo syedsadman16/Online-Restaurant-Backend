@@ -1,14 +1,8 @@
 package com.cs322.ors.controller;
 
-import com.cs322.ors.model.Dish;
-import com.cs322.ors.model.DishRating;
-import com.cs322.ors.model.User;
-import com.cs322.ors.model.UserRating;
+import com.cs322.ors.model.*;
 import com.cs322.ors.security.UserPrincipal;
-import com.cs322.ors.service.ChefStatusService;
-import com.cs322.ors.service.DishRatingService;
-import com.cs322.ors.service.UserRatingService;
-import com.cs322.ors.service.UserService;
+import com.cs322.ors.service.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,91 +16,63 @@ import java.util.List;
 public class RatingsController {
 
     @Autowired
-    UserRatingService userRatingService;
-    
-    @Autowired
     DishRatingService dishRatingService;
-    
+
+    @Autowired
+    UserRatingsService userRatingsService;
+
     @Autowired
     ChefStatusService chefStatusService;
     
     @Autowired
-    UserService	userService;
+    UserService userService;
+
 
      //------------------------------------User Ratings----------------------------------------------------
 
-    /*
-     * Controller mappings for User Ratings
-     * Only the manager can view all ratings for all users
-     */
     @GetMapping("/users")
     @PreAuthorize("hasRole('MANAGER')")
-    public List<User> getAllUsersRating(){
-        return userRatingService.getAllUserRatings();
+    public List<UserRatings> getAllUserRatings() {
+        return userRatingsService.getAllUserRatings();
     }
-    
-    @GetMapping("/chef/{id}")
-    @PreAuthorize("hasRole('MANAGER','CHEF')")
-    public double getAverageChefRating(@PathVariable long id) {
-    	return chefStatusService.averageRating(userService.getUserById(id).get()).get(0);
+
+    @GetMapping("/users/{personId}")
+    @PreAuthorize("hasRole('MANAGER')")
+    public List<UserRatings> getPersonsUserRatings(@PathVariable Long personId) {
+        return userRatingsService.getAllUserRatingsByPerson(personId);
     }
-    /*
-     * Let current user get their own ratings
-     */ 
-    @GetMapping("/users/myRatings")
+
+    @GetMapping("/users/me")
     @PreAuthorize("isAuthenticated()")
-    public List<UserRating> getPersonalRatings(Authentication authUser){
+    public List<UserRatings> getMyUserRatings(Authentication authUser) {
         User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
-        return userRatingService.getUsersRatings(currentUser.getId());
+        return userRatingsService.getAllUserRatingsByPerson(currentUser.getId());
     }
 
-    /*
-     * Let the manager view ratings for a single user
-     */
-    @GetMapping("/users/{userId}")
+    @GetMapping("/users/getAverage/{personId}")
     @PreAuthorize("hasRole('MANAGER')")
-    public List<UserRating> getSpecificUsersRatings(@PathVariable Long userId){
-        return userRatingService.getUsersRatings(userId);
+    public double getAverageUserRatings(@PathVariable Long personId) {
+        return userRatingsService.calculateAverageRatings(personId);
     }
 
-    /*
-     * Manager can get a specific rating 
-     */
-    @GetMapping("/users/{userId}/{ratingId}")
+    @PostMapping("/users/add")
+    @PreAuthorize("hasAnyRole('CUSTOMER','VIP','DELIVERER', 'MANAGER')")
+    public void addNewUserRatings(@RequestBody UserRatings userRatings) {
+        userRatingsService.addUserRatings(userRatings);
+    }
+
+    @PostMapping("/users/update")
     @PreAuthorize("hasRole('MANAGER')")
-    public UserRating getSpecificUsersRatings(@PathVariable Long userId, @PathVariable Long ratingId){
-        return userRatingService.getUserSingleRatings(userId, ratingId);
+    public void updateUserRatings(@RequestBody UserRatings updatedUserRatings) {
+        userRatingsService.updateUserRatings(updatedUserRatings);
     }
 
-
-    /*
-     * Customers and Delivery can create a rating
-     * @userId is user being rated
-     */
-    @PostMapping("/users/create/{userId}")
-    @PreAuthorize("hasAnyRole('CUSTOMER','VIP','DELIVERER')")
-    public void createUserRating(@RequestBody UserRating userRating, @PathVariable Long userId, Authentication authUser ){
-        User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
-        userRatingService.postUserRating(userId, userRating, currentUser );
+    @DeleteMapping("/users/{ratingsId}")
+    @PreAuthorize("hasRole('MANAGER')")
+    public void deleteUserRatings(@PathVariable Long ratingsId) {
+        userRatingsService.deleteUserRatings(ratingsId);
     }
 
-     /*
-     * Registered users and Manager can update ratings
-     */
-    @PostMapping("/users/update/{userId}/{ratingId}")
-    @PreAuthorize("hasAnyRole('CUSTOMER','VIP','DELIVERER', 'MANAGER')")
-    public void updateUserRating(@RequestBody UserRating userRating, @PathVariable Long userId, @PathVariable Long ratingId){
-        userRatingService.editUserRating(userRating, userId, ratingId);
-    }
-
-    /*
-     * Registered users and Manager can delete ratings
-     */
-    @PostMapping("/users/delete")
-    @PreAuthorize("hasAnyRole('CUSTOMER','VIP','DELIVERER', 'MANAGER')")
-    public void deleteUserRating(@PathVariable Long id, @PathVariable Long ratingId){
-        userRatingService.deleteUserRating(id, ratingId);
-    }
 
 
     
@@ -151,6 +117,13 @@ public class RatingsController {
      /*
      * Update rating for Dish
      */
+    
+    @GetMapping("/chef/{id}")
+    @PreAuthorize("hasAnyRole('MANAGER','CHEF')")
+    public double getAverageChefRating(@PathVariable long id) {
+    	return chefStatusService.averageRating(userService.getUserById(id).get()).get(0);
+    }
+    
     @PostMapping("/dishes/{dishId}/update/{ratingId}")
     @PreAuthorize("hasAnyRole('CUSTOMER','VIP','MANAGER')")
     public void updateDishRating(@RequestBody DishRating dishRating, @PathVariable Long dishId, @PathVariable Long ratingId){
@@ -160,10 +133,10 @@ public class RatingsController {
      /*
      * Remove rating for dish
      */
-    @DeleteMapping("/dishes/{id}/delete/{dishId}")
+    @DeleteMapping("/dishes/{dishId}/{ratingId}")
     @PreAuthorize("hasAnyRole('CUSTOMER','VIP', 'MANAGER')")
-    public void deleteDishRating(@PathVariable Long id,  @PathVariable Long dishId){
-        dishRatingService.deleteDishRating(id, dishId);
+    public void deleteDishRating(@PathVariable Long dishId,  @PathVariable Long ratingId){
+        dishRatingService.deleteDishRating(dishId, ratingId);
     }
 
 

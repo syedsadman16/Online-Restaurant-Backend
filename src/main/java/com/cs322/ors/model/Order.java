@@ -17,11 +17,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "`ORDER`")
@@ -50,7 +48,6 @@ public class Order {
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private ChefJob chefJob;
 
-	@JsonIgnore
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<DishOrder> dishOrders = new ArrayList<>();
 
@@ -70,6 +67,9 @@ public class Order {
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private Reservation reservation;
 
+//	@JsonIdentityInfo(property = "id", generator = ObjectIdGenerators.PropertyGenerator.class)
+////	@JsonIdentityReference(alwaysAsId = true)
+@JsonIgnoreProperties({"id", "password", "role", "closed", "deliveryJobs"})
 	@OneToOne
 	private User deliveryPerson; 
 
@@ -84,7 +84,6 @@ public class Order {
 		this.completed = false;
 		this.cancelled = false;
 	}
-	
 	
 
 	public List<DishOrder> getDishOrders() {

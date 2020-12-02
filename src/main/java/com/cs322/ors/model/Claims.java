@@ -2,6 +2,8 @@ package com.cs322.ors.model;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.ManyToAny;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -19,20 +21,20 @@ public class Claims {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private long Id;
 
-    @OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name = "userRating_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    UserRating userRating;
-
     @OneToOne
+    @JoinColumn(name = "claims_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    UserRatings userRatings;
+
+    @ManyToOne
     User victim;
 
     String message;
 
     public Claims() {}
 
-    public Claims( UserRating userRating, User victim, String message) {
-        this.userRating = userRating;
+    public Claims( UserRatings userRating, User victim, String message) {
+        this.userRatings = userRating;
         this.victim = victim;
         this.message = message;
     }
@@ -45,12 +47,12 @@ public class Claims {
         this.Id = Id;
     }
 
-    public UserRating getUserRating() {
-        return this.userRating;
+    public UserRatings getUserRating() {
+        return this.userRatings;
     }
 
-    public void setUserRating(UserRating userRating) {
-        this.userRating = userRating;
+    public void setUserRating(UserRatings userRating) {
+        this.userRatings = userRating;
     }
 
     public String getMessage() {

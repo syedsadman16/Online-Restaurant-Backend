@@ -45,9 +45,6 @@ public class DbInit implements CommandLineRunner {
 	UserWarningRepository userWarningRepository;
 
 	@Autowired
-	UserRatingRepository userRatingRepository;
-
-	@Autowired
 	TransactionRepository TransactionRepository;
 
 	@Autowired
@@ -61,6 +58,9 @@ public class DbInit implements CommandLineRunner {
 	
 	@Autowired
 	TableRepository tableRepository;
+
+	@Autowired
+	UserRatingsRepository userRatingsRepository;
 	
 	
 	@Override
@@ -74,7 +74,7 @@ public class DbInit implements CommandLineRunner {
 		RestaurantTable table4 = new RestaurantTable();
 		RestaurantTable table5 = new RestaurantTable();
 		List<RestaurantTable> tables = Arrays.asList(table1,table2,table3,table4,table5);
-		userService.createUser(manager);
+		userService.createUser(manager, null, null);
 		tableRepository.saveAll(tables);
 		
 
@@ -93,20 +93,20 @@ public class DbInit implements CommandLineRunner {
 		chef2.setVerified(true);
 		deliverer1.setVerified(true);
 
-		userService.createUser(customer1);
-		userService.createUser(customer2);
-		userService.createUser(customer3);
-		userService.createUser(vip1);
-		userService.createUser(chef1);
-		userService.createUser(chef2);
-		userService.createUser(deliverer1);
+		userService.createUser(customer1, new CustomerInfo("address", "name", customer1), null);
+		userService.createUser(customer2,  new CustomerInfo("address", "name", customer2), null);
+		userService.createUser(customer3,  new CustomerInfo("address", "name", customer3), null);
+		userService.createUser(vip1,  new CustomerInfo("address", "name", vip1), null);
+		userService.createUser(chef1, null, new EmployeeInfo("address", "name", chef1)); 
+		userService.createUser(chef2, null, new EmployeeInfo("address", "name", chef2));
+		userService.createUser(deliverer1, null, new EmployeeInfo("address", "name", deliverer1));
 
 		
-		Dish dish1 = new Dish("strawberry cake", chef1, "Strawberry falvored cake", null, BigDecimal.valueOf(10), false);
-		Dish dish2 = new Dish( "RED velvet cake", chef1, "choclate layered cake", null, BigDecimal.valueOf(10.50), true);
-		Dish dish3 = new Dish( "Tiramisu cake", chef1, "coffee falvored", null, BigDecimal.valueOf(10.50), false);
-		Dish dish4 = new Dish( "Hershey Pie", chef1, "Chocolate mousse layered with brownies and topped with whipped cream", null, BigDecimal.valueOf(8.75), false);
-		Dish dish5 = new Dish( "Boston Cream Mousse Cheesecake", chef1, "Cheesecake combination: cool, creamy custard nestled in fluffy cake & topped with bittersweet chocolate", null, BigDecimal.valueOf(11.25), true);
+		Dish dish1 = new Dish("strawberry cake", chef1, "Strawberry falvored cake", "https://aclassictwist.com/wp-content/uploads/2020/08/Fresh-Strawberry-Cake-with-Strawberry-Frosting-3.jpg", BigDecimal.valueOf(10), false);
+		Dish dish2 = new Dish( "RED velvet cake", chef1, "choclate layered cake", "https://www.savingdessert.com/wp-content/uploads/2018/12/Red-Velvet-Cake-4-480x270.jpg", BigDecimal.valueOf(10.50), true);
+		Dish dish3 = new Dish( "Tiramisu cake", chef1, "coffee falvored", "https://www.alicaspepperpot.com/wp-content/uploads/2017/12/DSC_0058-2-1024x683.jpg", BigDecimal.valueOf(10.50), false);
+		Dish dish4 = new Dish( "Hershey Pie", chef2, "Chocolate mousse layered with brownies and topped with whipped cream", "https://i.ytimg.com/vi/zXT5Bjr9l5Y/maxresdefault.jpg", BigDecimal.valueOf(8.75), false);
+		Dish dish5 = new Dish( "Boston Cream Mousse Cheesecake", chef2, "Cheesecake combination: cool, creamy custard nestled in fluffy cake & topped with bittersweet chocolate", "https://cdn.discordapp.com/attachments/753683675643772973/783163947024384020/unknown.png", BigDecimal.valueOf(11.25), true);
 
 		// Add test dish ratings
 		DishRating rating1 = new DishRating(4.3, "I like red velvet cakes" ,customer1,dish2);
@@ -130,18 +130,24 @@ public class DbInit implements CommandLineRunner {
 		Order order4 = new Order(customer1, 0);
 		orderRepository.save(order4);	
 		
-		ChefJob chefjob1 = new ChefJob(chef1, order2);
+		ChefJob chefjob1 = new ChefJob(chef1, order1);
 		chefJobRepository.save(chefjob1);
 		
-		ChefJob chefjob2 = new ChefJob(chef2, order1);
+		ChefJob chefjob2 = new ChefJob(chef2, order2);
 		chefJobRepository.save(chefjob2);
 		
 		ChefJob chefjob3 = new ChefJob(chef2, order4);
-		chefjob3.setCompleted(true);
+//		chefjob3.setCompleted(true);
 		chefJobRepository.save(chefjob3);
 		
 		DishOrder dishOrder1 = new DishOrder(dish1, order1, 2);
 		dishOrderRepository.save(dishOrder1);
+		
+		DishOrder dishOrder2 = new DishOrder(dish4, order2, 3);
+		dishOrderRepository.save(dishOrder2);
+		
+		DishOrder dishOrder3 = new DishOrder(dish5, order4, 3);
+		dishOrderRepository.save(dishOrder3);
 
 		TabooWord tabooWord1 = new TabooWord("Jackass");
 		tabooWordsRepository.save(tabooWord1);
@@ -175,12 +181,13 @@ public class DbInit implements CommandLineRunner {
 		DishKeyWord word7 = new DishKeyWord("Shake",dish5,chef1);
 		dishKeyWordRepository.save(word7);
 
-		// Add test user ratings
-		UserRating rating3 = new UserRating(1, "Customer was uncooperative", deliverer1, order1);
-//		//userRatingRepository.save(rating3);
-		customer1.addToRatings(rating3);
-		//userRepository.saveAll(users);
-		
+
+		UserRatings rating3 = new UserRatings(2.1, "Customer upset over missing drink", customer1, order1);
+		userRatingsRepository.save(rating3);
+
+		UserRatings rating4 = new UserRatings(0.9, " missing ", customer2, order2);
+		userRatingsRepository.save(rating4);
+
 		Transaction transaction1 = new Transaction(customer1, BigDecimal.valueOf(32.20) ,"OrderId: 1", 0);
 		TransactionRepository.save(transaction1);
 
@@ -199,7 +206,11 @@ public class DbInit implements CommandLineRunner {
 		// Claims
 		Claims claim1 = new Claims(rating3, customer1, "Fake news");
 		claimsService.postClaim(claim1);
-		
+
+		Claims claim2 = new Claims(rating4, customer2, "Fake ");
+		claimsService.postClaim(claim2);
+
+
 		//Discussions
 		Discussion discussion1 = new Discussion(customer1, "Who the best chef in here?");
 		discussionRepository.save(discussion1);

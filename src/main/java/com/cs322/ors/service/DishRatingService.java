@@ -1,16 +1,12 @@
 package com.cs322.ors.service;
 
-import com.cs322.ors.db.DishRatingRepository;
 import com.cs322.ors.db.DishRepository;
 import com.cs322.ors.model.Dish;
 import com.cs322.ors.model.DishRating;
-import com.cs322.ors.model.TabooWord;
-import com.cs322.ors.model.UserRating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 /*
  * Handle all the crud methods of a dish rating. Can be accessed using id
@@ -69,10 +65,12 @@ public class DishRatingService {
 
     /*
      * Deletes rating from list in Dish object
+     * Dishid to find the dish that contains the  rating
+     * Ratingid is used to search ratings list and remove it
      */
     public void deleteDishRating(long dishId, long ratingId) {
         Dish deletedDish = dishRepository.findById(dishId).get();
-        deletedDish.deleteRating(dishId, ratingId);
+        deletedDish.deleteRating(ratingId);
         dishRepository.save(deletedDish);
     }
 

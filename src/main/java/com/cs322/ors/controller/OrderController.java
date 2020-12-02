@@ -174,7 +174,14 @@ public class OrderController {
 
 		}
 	}
-
+	
+	@PostMapping("/{orderId}")
+	@PreAuthorize("isAuthenticated()")
+	public void setCompleted(@PathVariable long orderId) {
+		orderService.setCompleted(orderId);
+	}
+	
+	
 	@PutMapping("/{orderId}") // Update a customers order
 	@PreAuthorize("isAuthenticated()")
 	public void updateOrder(@Valid @RequestBody Order order, @PathVariable long orderId, Authentication authUser) {

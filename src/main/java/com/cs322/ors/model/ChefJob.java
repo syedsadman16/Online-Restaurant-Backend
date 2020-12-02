@@ -20,10 +20,10 @@ public class ChefJob {
 	private long id;
 	
 	@ManyToOne
+	@JsonIdentityReference(alwaysAsId = true)
 	private User chef;	
 	
 	@OneToOne(optional = false)
-	@JsonIdentityReference(alwaysAsId = true)
 	private Order order;	
 	
 	private boolean completed;
