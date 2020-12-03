@@ -95,4 +95,11 @@ public class UserController {
 	public void deleteAccount(@PathVariable long id) {
 		userService.deleteUser(id);
 	}
+
+	@DeleteMapping("/my")
+	@PreAuthorize("isAuthenticated()")
+	public void deletePersonalAccount(Authentication authUser) {
+		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
+		userService.deleteUser(currentUser.getId());
+	}
 }
