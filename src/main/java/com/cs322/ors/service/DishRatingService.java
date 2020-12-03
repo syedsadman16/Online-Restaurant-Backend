@@ -1,5 +1,6 @@
 package com.cs322.ors.service;
 
+import com.cs322.ors.db.DishRatingRepository;
 import com.cs322.ors.db.DishRepository;
 import com.cs322.ors.model.Dish;
 import com.cs322.ors.model.DishRating;
@@ -14,13 +15,17 @@ import java.util.List;
  * Customers can create ratings for a specific dish they've ordered
  * Chefs can only get ratings for their assoicated dishes
  */
+
+
 @Service
 public class DishRatingService {
 
-    // @Autowired
-    // private DishRatingRepository dishRatingRepository;
     @Autowired
     private DishRepository dishRepository; 
+    
+
+    @Autowired
+    DishRatingRepository dishRatingRepository;
 
     /*
      * Returns Dish objects that each contain an array of ratings
@@ -36,6 +41,11 @@ public class DishRatingService {
         Dish dish = dishRepository.findById(id).get();
         return dish.getRatingList();
     }
+    
+    public List<DishRating> getDishRatingsByCustomer(Long customerId){
+        return dishRatingRepository.findByCritic_id(customerId);
+    }
+
 
      /*
      * Return a specific rating from a dish

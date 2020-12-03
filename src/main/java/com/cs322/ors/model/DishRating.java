@@ -10,7 +10,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import com.cs322.ors.security.UserPrincipal;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -22,14 +26,17 @@ public class DishRating {
     private long id;
 
 
+
+    @JsonIgnoreProperties({"keyWord","ratingList"})
+    @ManyToOne
+    private Dish dish;
+    
+    
     @ManyToOne
     @JsonIgnoreProperties({"username", "password", "role", "closed"})
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User critic;
     
-    @ManyToOne
-    @JoinColumn
-    private Dish dish;
     
     private double rating;
     private String comments = "";
@@ -78,6 +85,10 @@ public class DishRating {
 
 	public void setDish(Dish dish) {
 		this.dish = dish;
+	}
+	
+	public Dish getDish() {
+		return this.dish;
 	}
     
 

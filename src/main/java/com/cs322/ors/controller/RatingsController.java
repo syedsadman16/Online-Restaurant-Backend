@@ -95,6 +95,11 @@ public class RatingsController {
     public List<DishRating> getOneDishRatings(@PathVariable Long dishId){
         return dishRatingService.getDishRatings(dishId);
     }
+    
+    @RequestMapping("/dishrating/{userId}")
+    public List<DishRating> getRatingByUser(@PathVariable Long userId){
+        return dishRatingService.getDishRatingsByCustomer(userId);
+    }
 
      /*
      * Specific rating from a dish
