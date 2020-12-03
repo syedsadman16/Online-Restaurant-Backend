@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cs322.ors.model.Dish;
+import com.cs322.ors.service.DishOrderService;
 import com.cs322.ors.service.DishService;
 
 @RestController
@@ -23,9 +24,17 @@ public class DishController {
 	@Autowired
 	private DishService dishService;
 	
+	@Autowired
+	DishOrderService dishOrderService;
+	
 	@RequestMapping("api/menu")
 	public List<Dish> getAllDishes(){
 		return dishService.getAllDishes();
+	}
+	
+	@RequestMapping("api/menu/mostOrdered")
+	public List<Dish> MostOrderedDishes(){
+		return dishOrderService.topThreeOrderedDishes();
 	}
 	
 	@RequestMapping("/Menu/keyword/{keyword}")

@@ -87,6 +87,12 @@ public class OrderController {
 		}
 
 	}
+	
+	@GetMapping("/allOrders")// Get all orders for home page so surfers/new users can see most ordered dishes.
+	public List<Order> geAlltOrders() {
+		return orderService.getAllOrders();
+
+	}
 
 	@GetMapping("/{orderId}") // Get customers order by id
 	@PreAuthorize("isAuthenticated()")

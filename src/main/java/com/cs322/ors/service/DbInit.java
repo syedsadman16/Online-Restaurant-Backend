@@ -148,6 +148,9 @@ public class DbInit implements CommandLineRunner {
 		
 		DishOrder dishOrder3 = new DishOrder(dish5, order4, 3);
 		dishOrderRepository.save(dishOrder3);
+		
+		DishOrder dishOrder4 = new DishOrder(dish4, order3, 3);
+		dishOrderRepository.save(dishOrder4);
 
 		TabooWord tabooWord1 = new TabooWord("Jackass");
 		tabooWordsRepository.save(tabooWord1);
