@@ -78,13 +78,13 @@ public class UserController {
 		throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Account closed");
 
 	}
-	@PatchMapping("/{id}")
-	@PreAuthorize("#id == principal.user.id OR hasRole('MANAGER')") // Users can only access their account OR manager
-	public User updateUserInfo(@PathVariable long id, @RequestBody Map<Object, Object> patchedUser,
+	@PatchMapping
+	@PreAuthorize("isAuthenticated()")
+	public User updateUserInfo(@RequestBody Map<Object, Object> patchedUser,
 			Authentication authUser) {
 		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
 		if (!currentUser.isClosed()) {
-			return userService.patchUser(id, patchedUser);
+			return userService.patchUser(currentUser.getId(), patchedUser);
 		}
 		throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 
