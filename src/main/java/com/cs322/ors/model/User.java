@@ -106,6 +106,7 @@ public class User {
 	private List<Reservation> reservation;
 	
 	@OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<UserRatings> userRatings;
 
 	@JsonIgnore
