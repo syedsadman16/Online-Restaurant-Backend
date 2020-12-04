@@ -19,10 +19,15 @@ public class AccountStatusService {
 	@Autowired
 	VipService vipService;
 	
+	@Autowired
+	ChefStatusService chefStatusService;
+	
 	public void updateStatus(User user) {
 		int warnings = userWarningService.count(user.getId());
 		vipService.checkAndSetVIP(user);
 		boolean isVIP = user.getRole() == "VIP";
+		boolean isChef = user.getRole() == "CHEF";
+
 		boolean isCustomer = user.getRole() == "CUSTOMER" || isVIP;
 		if(isVIP && warnings == 2) {
 			user.setRole("CUSTOMER");
@@ -34,6 +39,11 @@ public class AccountStatusService {
 			user.setClosed(true);
 			userService.updateUser(user);
 		} 		
+		if(isChef) {
+			chefStatusService.promoteOrDemoteChef(user);
+			userService.updateUser(user);
+		}
+		
 	}
 
 }

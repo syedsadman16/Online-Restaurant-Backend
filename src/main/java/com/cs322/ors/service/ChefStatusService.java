@@ -83,25 +83,28 @@ public class ChefStatusService {
 		//ratingInfo[0] = averageRating
 		//ratingInfo[1] = total ratings
 		
-		int counter = 0;		// keeping count of how many demotions
-		int goodCounter = 0;	// count of how many promotions
+		int demotions = chef.getEmployeeInfo().getDemotions();		// keeping count of how many demotions
+		int promotions = chef.getEmployeeInfo().getPromotions();	// count of how many promotions
 		double ratingChecker = ratingInfo.get(1) % 20;
 		BigDecimal currentSalary = salaryService.getSalaryByUser(chef.getId()).get(0).getAmount();
 		
-		if (counter<2 && ratingChecker != counter) {
+		if (demotions<2 && ratingChecker != demotions) {
 			if( ratingChecker >= 1  && ratingInfo.get(0) < 2.5 ) {
-				salaryService.updateSalary(currentSalary.subtract(BigDecimal.valueOf(1000)), chef.getId());
-				counter += 1;
+				salaryService.updateSalary(currentSalary.subtract(BigDecimal.valueOf(500)), chef.getId());
+				chef.getEmployeeInfo().incrementDemotions();
+				userService.updateUser(chef);
 			}
 		}
-		if(ratingChecker != goodCounter){
+		if(ratingChecker != promotions){
 			if( ratingChecker >= 1 && ratingInfo.get(0) >= 4.0) {
-				salaryService.updateSalary(currentSalary.add(BigDecimal.valueOf(1000)), chef.getId());
-				goodCounter += 1;
+				salaryService.updateSalary(currentSalary.add(BigDecimal.valueOf(500)), chef.getId());
+				chef.getEmployeeInfo().incrementPromotions();
+				userService.updateUser(chef);
+
 			}
 		}
 		
-		if (counter >= 2 + goodCounter) { //if their demotions exceed their promotions + 2
+		if (demotions >= 2 + promotions) { //if their demotions exceed their promotions + 2
 			// then fire
 			userService.deleteUser(chef.getId());
 		}

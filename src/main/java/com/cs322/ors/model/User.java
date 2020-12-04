@@ -243,6 +243,11 @@ public class User {
 		this.deliveryJobs = deliveryJobs;
 	}
 
+	
+	public EmployeeInfo getEmployeeInfo() {
+		return employeeInfo;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role + ", closed="

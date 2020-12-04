@@ -18,7 +18,8 @@ public class EmployeeInfo{
     private String address;
 
     private boolean fired;
-    private boolean demotion;
+    private int demotions;
+    private int promotions;
     
 	public EmployeeInfo() {
 	}
@@ -27,6 +28,9 @@ public class EmployeeInfo{
         this.user = user;
         this.address = address;
         this.name = name;
+        this.demotions = 0;
+        this.promotions = 0;
+
     }
 
     public long getId() {
@@ -53,18 +57,37 @@ public class EmployeeInfo{
         this.fired = fired;
     }
 
-    public boolean isDemotion() {
-        return demotion;
+    public int getPromotions() {
+        return promotions;
     }
 
-    public void setDemotion(boolean demotion) {
-        this.demotion = demotion;
+    public int getDemotions() {
+        return demotions;
+    }
+    
+    public void incrementDemotions() {
+        this.demotions++;
+    }
+    
+    public void incrementPromotions() {
+        this.promotions++;
+    }
+    
+    public void decrementDemotions() {
+        this.demotions--;
     }
 
-    @Override
-    public String toString() {
-        return "EmployeeInfo [demotion=" + demotion + ", fired=" + fired + ", id=" + id + ", user=" + user + "]";
+    public void decrementPromotions() {
+        this.promotions--;
     }
+
+	@Override
+	public String toString() {
+		return "EmployeeInfo [id=" + id + ", user=" + user + ", name=" + name + ", address=" + address + ", fired="
+				+ fired + ", demotions=" + demotions + ", promotions=" + promotions + "]";
+	}
+    
+
 
     
 }
