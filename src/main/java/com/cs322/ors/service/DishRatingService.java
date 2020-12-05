@@ -23,7 +23,9 @@ public class DishRatingService {
     @Autowired
     private DishRepository dishRepository; 
     
-
+	@Autowired
+	private CensorService censorService;
+	
     @Autowired
     DishRatingRepository dishRatingRepository;
 
@@ -59,7 +61,8 @@ public class DishRatingService {
      * Add a rating to an existing dish object
      */
     public void createDishRating(DishRating dishRating, long dishId){
-        Dish ratedDish = dishRepository.findById(dishId).get();
+        Dish ratedDish = dishRepository.findById(dishId).get();      
+        dishRating.setComments(censorService.censor(dishRating.getComments(), dishRating.getCritic()));
         ratedDish.getRatingList().add(dishRating);
         dishRepository.save(ratedDish);
     }
