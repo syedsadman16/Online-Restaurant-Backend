@@ -17,11 +17,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "`ORDER`")
@@ -50,13 +51,31 @@ public class Order {
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private ChefJob chefJob;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<DishOrder> dishOrders = new ArrayList<>();
 
 	@JsonIgnore
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private DeliveryStatus deliveryStatus;
+	
+	@JsonIgnore
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private DeliveryJobs deliveryJobs;
+	
+	@JsonIgnore
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private UserRatings userRating;
+	
+	@JsonIgnore
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private Reservation reservation;
+
+//	@JsonIdentityInfo(property = "id", generator = ObjectIdGenerators.PropertyGenerator.class)
+////	@JsonIdentityReference(alwaysAsId = true)
+@JsonIgnoreProperties({"id", "password", "role", "closed", "deliveryJobs"})
+	@OneToOne
+	private User deliveryPerson; 
 
 	public Order() {
 	}
@@ -69,7 +88,6 @@ public class Order {
 		this.completed = false;
 		this.cancelled = false;
 	}
-	
 	
 
 	public List<DishOrder> getDishOrders() {
@@ -111,7 +129,7 @@ public class Order {
 	public void setType(int type) {
 		this.type = type;
 	}
-
+	
 	public boolean getCompleted() {
 		return completed;
 	}
@@ -126,6 +144,38 @@ public class Order {
 
 	public void setCancelled(boolean cancelled) {
 		this.cancelled = cancelled;
+	}
+
+	public boolean isCompleted() {
+		return completed;
+	}
+
+	public boolean isCancelled() {
+		return cancelled;
+	}
+
+	public ChefJob getChefJob() {
+		return chefJob;
+	}
+
+	public void setChefJob(ChefJob chefJob) {
+		this.chefJob = chefJob;
+	}
+
+	public DeliveryStatus getDeliveryStatus() {
+		return deliveryStatus;
+	}
+
+	public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
+		this.deliveryStatus = deliveryStatus;
+	}
+
+	public User getDeliveryPerson() {
+		return deliveryPerson;
+	}
+
+	public void setDeliveryPerson(User deliveryPerson) {
+		this.deliveryPerson = deliveryPerson;
 	}
 
 	@Override

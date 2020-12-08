@@ -1,11 +1,6 @@
 package com.cs322.ors.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
@@ -25,10 +20,9 @@ public class DishKeyWord {
 	
 	@JsonIdentityInfo(property = "id", generator = ObjectIdGenerators.PropertyGenerator.class)
 	@JsonIdentityReference(alwaysAsId = true)
-	@ManyToOne (optional = false)   //multiple dishes can be marked by same keyword	
+	@ManyToOne   //multiple dishes can be marked by same keyword
 	private Dish dish;
 	
-	@JsonIgnore
 	@ManyToOne (optional = false)	// one chef can use many keywords
 	private User chef;
 

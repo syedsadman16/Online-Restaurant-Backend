@@ -34,4 +34,8 @@ public class UserWarningService {
 	public void deleteAllByUser(long userId) {		//deletes all warnings from a specific user using their user_id
 		userWarningRepository.deleteByUser_Id(userId);
 	}
+
+	public void createWarning(UserWarning userWarning){
+		userWarningRepository.save(userWarning);
+	}
 }

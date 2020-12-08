@@ -24,16 +24,12 @@ public class VipService {
 	
 	public boolean checkVIP(User customer) {
 		List<Order> orderList = orderService.getOrderByUser(customer.getId());
-		List<Transaction> transactionList = transactionService.getTransactionsbyCustomer(customer.getId());
 		boolean isFiftyOrders = orderList.size() >= 50;
 		boolean spentFiveHundred = false;
 		
-		double transactionSum = 0;
-		for (int i = 0; i < transactionList.size() || transactionSum >=500 ; i++) {
-			transactionSum += transactionList.get(i).getAmount().doubleValue();
-		}
-		
-		if (transactionSum >= 500) {
+		BigDecimal transactionSum = transactionService.getTransactionSumByCustomer(customer);
+			
+		if (transactionSum.doubleValue() >= 500) {
 			spentFiveHundred = true;
 		}
 		

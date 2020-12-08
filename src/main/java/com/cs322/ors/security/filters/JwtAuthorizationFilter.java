@@ -65,11 +65,14 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 		String token = request.getHeader(JwtProperties.HEADER_STRING).replace(JwtProperties.TOKEN_PREFIX, "");
 
 		if (token != null) {
-			// Validate JWT and get the user
+			try {
+						// Validate JWT and get the user
 			String username = JWT.require(HMAC512(JwtProperties.SECRET.getBytes())).build().verify(token).getSubject();
 
 			UserDetails userDetails = userPrincipalService.loadUserByUsername(username);
 			return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+	
+			}catch (Exception e) {}
 
 		}
 		return null;

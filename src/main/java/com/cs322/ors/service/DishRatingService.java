@@ -4,13 +4,10 @@ import com.cs322.ors.db.DishRatingRepository;
 import com.cs322.ors.db.DishRepository;
 import com.cs322.ors.model.Dish;
 import com.cs322.ors.model.DishRating;
-import com.cs322.ors.model.TabooWord;
-import com.cs322.ors.model.UserRating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 /*
  * Handle all the crud methods of a dish rating. Can be accessed using id
@@ -18,13 +15,19 @@ import java.util.Optional;
  * Customers can create ratings for a specific dish they've ordered
  * Chefs can only get ratings for their assoicated dishes
  */
+
+
 @Service
 public class DishRatingService {
 
-    // @Autowired
-    // private DishRatingRepository dishRatingRepository;
     @Autowired
     private DishRepository dishRepository; 
+    
+	@Autowired
+	private CensorService censorService;
+	
+    @Autowired
+    DishRatingRepository dishRatingRepository;
 
     /*
      * Returns Dish objects that each contain an array of ratings
@@ -40,6 +43,11 @@ public class DishRatingService {
         Dish dish = dishRepository.findById(id).get();
         return dish.getRatingList();
     }
+    
+    public List<DishRating> getDishRatingsByCustomer(Long customerId){
+        return dishRatingRepository.findByCritic_id(customerId);
+    }
+
 
      /*
      * Return a specific rating from a dish
@@ -53,7 +61,8 @@ public class DishRatingService {
      * Add a rating to an existing dish object
      */
     public void createDishRating(DishRating dishRating, long dishId){
-        Dish ratedDish = dishRepository.findById(dishId).get();
+        Dish ratedDish = dishRepository.findById(dishId).get();      
+        dishRating.setComments(censorService.censor(dishRating.getComments(), dishRating.getCritic()));
         ratedDish.getRatingList().add(dishRating);
         dishRepository.save(ratedDish);
     }
@@ -69,10 +78,12 @@ public class DishRatingService {
 
     /*
      * Deletes rating from list in Dish object
+     * Dishid to find the dish that contains the  rating
+     * Ratingid is used to search ratings list and remove it
      */
     public void deleteDishRating(long dishId, long ratingId) {
         Dish deletedDish = dishRepository.findById(dishId).get();
-        deletedDish.deleteRating(dishId, ratingId);
+        deletedDish.deleteRating(ratingId);
         dishRepository.save(deletedDish);
     }
 

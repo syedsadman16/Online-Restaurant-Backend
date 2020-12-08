@@ -1,5 +1,6 @@
 package com.cs322.ors.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,10 +44,18 @@ public class OrderService {
 		Optional<Order> OrderDB = this.orderRepository.findById(orderId);
 		
 		if(OrderDB.isPresent()) {
-			orderUpdate.setId(orderId);
 			orderRepository.save(orderUpdate);
 		}
 	}
+	
+//	public Dish commonOrder(long userId) {
+//		List<Dish> allDishesOrdered = new ArrayList<Dish>();
+//		getOrderByUser(userId).stream()
+//				.forEach(Order -> Order.getDishOrders()
+//				.forEach(dishOrder -> dishOrder.)).
+//				.
+//		
+//	}
 
 	public void deleteOrder(long orderId) {
 		orderRepository.deleteById(orderId);    //throws illegalArgumentException if null
@@ -54,6 +63,15 @@ public class OrderService {
 
 	public Optional<Order> getOrderById(long orderId) {
 		return orderRepository.findById(orderId);
+	}
+
+	public void setCompleted(long id) {
+		Optional <Order> orderDB = orderRepository.findById(id);
+		
+		if (orderDB.isPresent()) {
+			orderDB.get().setCompleted(true);
+			orderRepository.save(orderDB.get());
+		}
 	}
 	
 	

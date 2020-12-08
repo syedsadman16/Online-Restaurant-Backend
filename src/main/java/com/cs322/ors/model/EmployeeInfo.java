@@ -13,18 +13,24 @@ public class EmployeeInfo{
     private long id;
     
     @OneToOne(optional = false)
-    private User userId;
+    private User user;
+    private String name;
+    private String address;
 
     private boolean fired;
-    private boolean demotion;
+    private int demotions;
+    private int promotions;
     
 	public EmployeeInfo() {
 	}
 
-    public EmployeeInfo(User userId, boolean fired, boolean demotion) {
-        this.userId = userId;
-        this.fired = fired;
-        this.demotion = demotion;
+    public EmployeeInfo(String address, String name, User user) {
+        this.user = user;
+        this.address = address;
+        this.name = name;
+        this.demotions = 0;
+        this.promotions = 0;
+
     }
 
     public long getId() {
@@ -35,12 +41,12 @@ public class EmployeeInfo{
         this.id = id;
     }
 
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public boolean isFired() {
@@ -51,18 +57,37 @@ public class EmployeeInfo{
         this.fired = fired;
     }
 
-    public boolean isDemotion() {
-        return demotion;
+    public int getPromotions() {
+        return promotions;
     }
 
-    public void setDemotion(boolean demotion) {
-        this.demotion = demotion;
+    public int getDemotions() {
+        return demotions;
+    }
+    
+    public void incrementDemotions() {
+        this.demotions++;
+    }
+    
+    public void incrementPromotions() {
+        this.promotions++;
+    }
+    
+    public void decrementDemotions() {
+        this.demotions--;
     }
 
-    @Override
-    public String toString() {
-        return "EmployeeInfo [demotion=" + demotion + ", fired=" + fired + ", id=" + id + ", userId=" + userId + "]";
+    public void decrementPromotions() {
+        this.promotions--;
     }
+
+	@Override
+	public String toString() {
+		return "EmployeeInfo [id=" + id + ", user=" + user + ", name=" + name + ", address=" + address + ", fired="
+				+ fired + ", demotions=" + demotions + ", promotions=" + promotions + "]";
+	}
+    
+
 
     
 }

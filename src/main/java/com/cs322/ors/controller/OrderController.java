@@ -24,14 +24,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.cs322.ors.model.ChefJob;
+import com.cs322.ors.model.DeliveryJobs;
 import com.cs322.ors.model.Dish;
 import com.cs322.ors.model.DishOrder;
 import com.cs322.ors.model.Order;
+import com.cs322.ors.model.Reservation;
+import com.cs322.ors.model.RestaurantTable;
+import com.cs322.ors.model.TimeSlot;
 import com.cs322.ors.model.Transaction;
 import com.cs322.ors.model.User;
 import com.cs322.ors.security.UserPrincipal;
+import com.cs322.ors.service.ChefJobService;
+import com.cs322.ors.service.DeliveryJobsService;
 import com.cs322.ors.service.DishService;
 import com.cs322.ors.service.OrderService;
+import com.cs322.ors.service.ReservationService;
 import com.cs322.ors.service.TransactionService;
 import com.cs322.ors.service.UserService;
 import com.cs322.ors.service.VipService;
@@ -41,7 +49,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/orders")
 public class OrderController {
 
 	@Autowired
@@ -59,7 +67,16 @@ public class OrderController {
 	@Autowired
 	public DishService dishService;
 
-	@GetMapping("/Orders") // Get all customer own orders or all orders
+	@Autowired
+	public DeliveryJobsService deliveryJobsService;
+	
+	@Autowired
+	public ChefJobService chefJobService;
+	
+	@Autowired
+	public ReservationService reservationService;
+	
+	@GetMapping// Get all customer own orders or all orders
 	@PreAuthorize("isAuthenticated()")
 	public List<Order> getOrders(Authentication authUser) {
 		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
@@ -70,8 +87,14 @@ public class OrderController {
 		}
 
 	}
+	
+	@GetMapping("/allOrders")// Get all orders for home page so surfers/new users can see most ordered dishes.
+	public List<Order> geAlltOrders() {
+		return orderService.getAllOrders();
 
-	@GetMapping("/Orders/{orderId}") // Get customers order by id
+	}
+
+	@GetMapping("/{orderId}") // Get customers order by id
 	@PreAuthorize("isAuthenticated()")
 	public Order getOrderWithId(@PathVariable long orderId, Authentication authUser) {
 		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
@@ -90,19 +113,25 @@ public class OrderController {
 		}
 	}
 
-	@PostMapping("/Orders")
+	@PostMapping
 	@PreAuthorize("hasAnyRole('CUSTOMER','VIP','MANAGER')")
-	public void makeOrder(@Valid @RequestBody JsonNode rawOrder, Authentication authUser) {
+	public void makeOrder(@Valid @RequestBody JsonNode rawOrder, Authentication authUser) throws Exception {
 
 		// Get json paramaters
 		int orderType = rawOrder.get("type").intValue();
 		ObjectMapper mapper = new ObjectMapper();
 		List<Map<String, Long>> rawDishOrder;
+		TimeSlot timeSlot;
+		RestaurantTable table;
 		try {
 			rawDishOrder = mapper.readValue(rawOrder.get("dishes").toString(),
 					new TypeReference<List<Map<String, Long>>>() {
 					});
+			table = mapper.treeToValue(rawOrder.get("table"), RestaurantTable.class);
+			timeSlot = mapper.treeToValue(rawOrder.get("timeSlot"), TimeSlot.class);
+			
 		} catch (Exception e) {
+			System.err.println(e);
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
@@ -123,25 +152,43 @@ public class OrderController {
 					dishOrder -> dishOrder.getDish().getPrice().multiply(BigDecimal.valueOf(dishOrder.getQuantity())))
 					.reduce(BigDecimal.ZERO, BigDecimal::add);
 			BigDecimal newAmount = vipService.applyDiscount(originalAmount, currentUser);
-			BigDecimal currentBalance = currentUser.getAccountBalance();
+			BigDecimal currentBalance = transactionService.getTransactionSumByCustomer(currentUser);
 
-			// Check funds. Manually update customer balance and create a transaction for the order if possible.
+			// Check funds. Create a transaction & jobs for the order if possible.
 			if (currentBalance.compareTo(newAmount) == -1) {
 				throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Account don't have enough funds");
-			} else {
+			} else {			
 				Order order = orderService.makeOrder(currentUser, dishOrders, orderType);
 				transactionService.createTransaction(
 						new Transaction(currentUser, newAmount, String.format("OrderId: %d", order.getId()), 0));
-				currentUser.setAccountBalance(currentBalance.subtract(newAmount));
-				userService.updateUser(currentUser);
+				
+				chefJobService.addChefJob(new ChefJob(dishOrders.get(0).getDish().getChef(), order));
+				
+				if(order.getType() == 1) {
+					deliveryJobsService.addDeliveryJob(new DeliveryJobs(order));
+				}
+				if(order.getType() == 2) {
+					//TODO: Fix this
+					reservationService.createReservation(new Reservation(timeSlot, currentUser, order, table));
+
+				}
+
 			}
 		} else {
+			
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not order special dishes");
 
 		}
 	}
-
-	@PutMapping("/Orders/{orderId}") // Update a customers order
+	
+	@PostMapping("/{orderId}")
+	@PreAuthorize("isAuthenticated()")
+	public void setCompleted(@PathVariable long orderId) {
+		orderService.setCompleted(orderId);
+	}
+	
+	
+	@PutMapping("/{orderId}") // Update a customers order
 	@PreAuthorize("isAuthenticated()")
 	public void updateOrder(@Valid @RequestBody Order order, @PathVariable long orderId, Authentication authUser) {
 		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
@@ -160,7 +207,7 @@ public class OrderController {
 
 	}
 
-	@DeleteMapping("/Orders/{orderId}") // Delete a customers order
+	@DeleteMapping("/{orderId}") // Delete a customers order
 	@PreAuthorize("isAuthenticated()")
 	public void deleteOrder(@PathVariable long orderId, Authentication authUser) {
 		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();

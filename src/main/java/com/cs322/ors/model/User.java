@@ -22,9 +22,11 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User {
 
 	@Id
@@ -42,11 +44,10 @@ public class User {
 
 	@NotBlank(message = "Account type is mandatory")
 	private String role;
-	private boolean closed;
 	
-	@Column(precision = 13, scale = 2)
-	private BigDecimal accountBalance;
-	private int rating;
+	private boolean closed;
+	private boolean verified;
+
 
 	// Bidirectional Mapping
 
@@ -55,15 +56,24 @@ public class User {
 	private List<Order> orders = new ArrayList<>();
 
 	@JsonIgnore
+	@OneToMany(mappedBy = "commenter", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<Comment> comments = new ArrayList<>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "creator", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<Discussion> discussions = new ArrayList<>();
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<UserWarning> userWarnings = new ArrayList<>();
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "chef", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "chef", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<ChefJob> chefJobs = new ArrayList<>();
 
 	@JsonIgnore
-	@OneToOne(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private EmployeeInfo employeeInfo;
 
 	@JsonIgnore
@@ -83,55 +93,45 @@ public class User {
 	private List<DishKeyWord> dishKeywords = new ArrayList<>();
 
 	@JsonIgnore
+	@OneToMany(mappedBy = "critic", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private List<DishRating> dishRating = new ArrayList<>();
+	
+	@JsonIgnore
 	@OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private CustomerInfo customerInfo;
 
+	@JsonIgnore
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<Reservation> reservation;
+	
+	@OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private List<UserRatings> userRatings;
 
-	// Unidirectional
+	@JsonIgnore
+	@OneToMany(mappedBy = "victim", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private List<Claims> claims;
+
+	//@JsonIgnore
+	@OneToMany( cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
 	@LazyCollection(LazyCollectionOption.FALSE)
-	@OneToMany( cascade = CascadeType.ALL)
-	private List<UserRating> ratingList;
-
-	// Only for managers
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@OneToMany( cascade = CascadeType.ALL)
-	private List<Claims> disputeList;
+	private List<DeliveryJobs> deliveryJobs;
 
 
-	public User() {
-	}
+	public User() { }
 
 	public User(String username, String password, String role) {
 		this.username = username;
 		this.password = password;
 		this.role = role;
 		this.closed = false;
+		this.verified = role == "MANAGER" ? true : false;
 
-		if (role == "CUSTOMER" || role == "VIP") {
-			this.accountBalance = BigDecimal.valueOf(300); // 300 dollars given to customers by default
+		if(role == "DELIVERER"){
+			deliveryJobs = new ArrayList<>();
 		}
-		
-		
-
-		if (role == "CUSTOMER" || role == "VIP" || role == "DELIVERER") {
-			ratingList = new ArrayList<>();
-			if(ratingList.size() > 0) {
-				this.rating = calculateAverageRating();
-			} 
-		}
-
-		if(role == "MANAGER"){
-			disputeList = new ArrayList<>();
-		}
-
-	}
-
-	public BigDecimal getAccountBalance() {
-		return accountBalance;
-	}
-
-	public void setAccountBalance(BigDecimal accountBalance) {
-		this.accountBalance = accountBalance;
 	}
 
 	public long getId() {
@@ -174,60 +174,80 @@ public class User {
 		this.closed = closed;
 	}
 
-	public List<UserRating> getRating() {
-		return this.ratingList;
+	public boolean isVerified() {
+		return verified;
 	}
 
-	public void setRating(List<UserRating> rating) {
-		this.ratingList = rating;
+	public void setVerified(boolean verified) {
+		this.verified = verified;
 	}
 
-	public void addToRatings(UserRating uRating){
-		ratingList.add(uRating);
+	public List<DeliveryJobs> getDeliveryJobs() {
+		return this.deliveryJobs;
 	}
 
-	public UserRating getSingleUserRating(Long id) {
-		UserRating newRating = new UserRating();
-		for(int i=0; i<ratingList.size(); i++){
-			if(ratingList.get(i).getId() == id){
-			newRating = ratingList.get(i);
+	public void replaceDeliveryJob(DeliveryJobs jobs){
+		for(int i=0; i<deliveryJobs.size(); i++){
+			if(deliveryJobs.get(i).getId() == jobs.getId()){
+				deliveryJobs.set(i, jobs);
 			}
 		}
-		return newRating;
-	}
-
-	public void updateRating(UserRating newRating, Long ratingId){
-		for(int i=0; i<ratingList.size(); i++){
-			if(ratingList.get(i).getId() == ratingId){
-				ratingList.set(i, newRating);
-			}
-		}
-	}
-
-	public void deleteRating(Long dishId, Long ratingId){
-		for(int i=0; i<ratingList.size(); i++){
-			if(ratingList.get(i).getId() == ratingId){
-				ratingList.remove(i);
-			}
-		}
-	}
-
-	public int calculateAverageRating(){
-		int total = 0;
-		for(int i=0; i<ratingList.size(); i++){
-			total += ratingList.get(i).getRating();
-		}
-		return total/ratingList.size();
-	}
-
-	public List<Claims> getDisputeList() {
-		return this.disputeList;
-	}
-
-	public void setDisputeList(List<Claims> disputeList) {
-		this.disputeList = disputeList;
 	}
 	
+
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public void setDeliveryJob(List<DeliveryJobs> deliveryJobs) {
+		this.deliveryJobs = deliveryJobs;
+	}
+	
+	public List<Transaction> getTransactions() {
+		return transactions;
+	}
+
+	public void setTransactions(List<Transaction> transactions) {
+		this.transactions = transactions;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+
+	public void setChefJobs(List<ChefJob> chefJobs) {
+		this.chefJobs = chefJobs;
+	}
+
+	public void setEmployeeInfo(EmployeeInfo employeeInfo) {
+		this.employeeInfo = employeeInfo;
+	}
+
+	public void setSalary(Salary salary) {
+		this.salary = salary;
+	}
+
+	public void setDishes(List<Dish> dishes) {
+		this.dishes = dishes;
+	}
+
+	public void setDishKeywords(List<DishKeyWord> dishKeywords) {
+		this.dishKeywords = dishKeywords;
+	}
+
+	public void setCustomerInfo(CustomerInfo customerInfo) {
+		this.customerInfo = customerInfo;
+	}
+
+	public void setDeliveryJobs(List<DeliveryJobs> deliveryJobs) {
+		this.deliveryJobs = deliveryJobs;
+	}
+
+	
+	public EmployeeInfo getEmployeeInfo() {
+		return employeeInfo;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role + ", closed="

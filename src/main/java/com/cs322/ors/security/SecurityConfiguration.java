@@ -22,7 +22,6 @@ import com.cs322.ors.db.UserRepository;
 import com.cs322.ors.security.filters.JwtAuthenticationFilter;
 import com.cs322.ors.security.filters.JwtAuthorizationFilter;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
@@ -34,34 +33,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		this.userPrincipalService = userPrincipalService;
 	}
 
-
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authenticationProvider());
 	}
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception{
-    	final JwtAuthenticationFilter AuthenticationFilter = new JwtAuthenticationFilter(authenticationManager());
-    	AuthenticationFilter.setFilterProcessesUrl("/api/auth");
-   	  	final JwtAuthorizationFilter AuthorizationFilter = new JwtAuthorizationFilter(authenticationManager(), userPrincipalService);
-   	 
-    	http
-    	.csrf().disable()
-    	.cors()
-    	.and()
-    	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-    	.and()
-    	.headers().frameOptions().sameOrigin() //For DB GUI
-    	.and()
-    	.addFilter(AuthenticationFilter)
-    	.addFilter(AuthorizationFilter)
-    	.authorizeRequests()
-    	.mvcMatchers("/h2-console/**").permitAll(); //For Db GUI
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		final JwtAuthenticationFilter AuthenticationFilter = new JwtAuthenticationFilter(authenticationManager());
+		AuthenticationFilter.setFilterProcessesUrl("/api/auth");
+		final JwtAuthorizationFilter AuthorizationFilter = new JwtAuthorizationFilter(authenticationManager(),
+				userPrincipalService);
 
-    }
+		http.csrf().disable().cors().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and().headers().frameOptions().sameOrigin() // For DB GUI
+				.and().addFilter(AuthenticationFilter).addFilter(AuthorizationFilter).authorizeRequests()
+				.mvcMatchers("/h2-console/**").permitAll(); // For Db GUI
 
-    @Bean
+	}
+
+	@Bean
 	PasswordEncoder passwordEncoder() {
 		return NoOpPasswordEncoder.getInstance();
 	}
@@ -73,24 +64,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		daoAuthenticationProvider.setUserDetailsService(userPrincipalService);
 		return daoAuthenticationProvider;
 	}
-	
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-    	
-    	CorsConfiguration configuration = new CorsConfiguration();
-       configuration.applyPermitDefaultValues();
-    	
-    	//configuration.setAllowedMethods(Arrays.asList("GET", "PUT", "POST", "DELETE", 
-           //     "PATCH", "OPTIONS", "HEAD"));
-        // This allow us to expose the headers
-        configuration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Headers", "Authorization, x-xsrf-token, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, " +
-                "Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"));
 
-      
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**",configuration);
-        return source;
-    }
-    
-  
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedMethods(Arrays.asList("GET", "PUT", "POST", "DELETE", "PATCH", "OPTIONS", "HEAD"));
+		configuration.setAllowedOrigins(Arrays.asList("*"));
+		configuration.setAllowCredentials(true);
+		configuration.setAllowedHeaders(Arrays.asList("*"));
+		configuration.setMaxAge((long) 180);
+		configuration.setExposedHeaders(Arrays.asList("Authorization"));
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
+
 }

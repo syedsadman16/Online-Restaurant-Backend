@@ -30,6 +30,7 @@ public class Transaction {
         this.userid = userid;
         this.amount = amount;
         this.description = description;
+        this.type = type;
     }
     
 

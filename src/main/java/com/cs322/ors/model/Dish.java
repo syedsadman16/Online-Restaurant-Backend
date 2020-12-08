@@ -14,6 +14,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -30,10 +35,15 @@ public class Dish {
 	private User chef;
 
 	// Unidirectional relations
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<DishRating> rating;
+	@OneToMany(mappedBy = "dish", cascade = CascadeType.ALL,fetch = FetchType.EAGER, orphanRemoval = true)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private List<DishRating> rating = new ArrayList<DishRating>();;
 	
-	@OneToMany(mappedBy = "dish",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "dish", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<DishOrder> dishOrder;
+	
+	@OneToMany(mappedBy = "dish",cascade = CascadeType.ALL, orphanRemoval = true)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<DishKeyWord> keyword;
 
 	
@@ -58,7 +68,6 @@ public class Dish {
 		this.price = price;
 		this.name = name;
 		this.special = special;
-		rating = new ArrayList<DishRating>();
 		this.averageRating = getAverageRating();
 	}
 
@@ -168,13 +177,16 @@ public class Dish {
 
 	public double getAverageRating(){
 		double sum = 0;
+		if(rating.size() == 0)
+			return 0;
+
 		for(int i=0; i<rating.size(); i++){
 			sum += rating.get(i).getRating();
 		}
 		return sum/rating.size();
 	}
 
-	public void deleteRating(Long dishId, Long ratingId){
+	public void deleteRating(Long ratingId){
 		for(int i=0; i<rating.size(); i++){
 			if(rating.get(i).getId() == ratingId){
 				rating.remove(i);

@@ -28,12 +28,15 @@ public class DishService {
 		return dishRepository.findAll();
 	}
 
+	public List<Dish>getDishesbyChef(long chefId){
+		return dishRepository.findByChef_id(chefId);
+	}
 	public Optional<Dish> getDish(long Id) {
 		return dishRepository.findById(Id);
 	}
 
-	public void addDish(Dish dish) {
-		dishRepository.save(dish);
+	public Dish addDish(Dish dish) {
+		return dishRepository.save(dish);
 	}
 
 	public void updateDish(Dish dish,long Id) {

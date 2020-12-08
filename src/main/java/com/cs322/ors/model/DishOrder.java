@@ -25,9 +25,10 @@ public class DishOrder {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@ManyToOne(optional = false)
+	@ManyToOne
 	private Dish dish;	
-	
+
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "order_id")
 	private Order order;
