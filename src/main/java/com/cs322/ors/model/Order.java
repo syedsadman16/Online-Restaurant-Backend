@@ -153,7 +153,10 @@ public class Order {
 	public boolean isCancelled() {
 		return cancelled;
 	}
-
+	public DeliveryJobs getDeliveryJob() {
+		return deliveryJobs;
+	}
+	
 	public ChefJob getChefJob() {
 		return chefJob;
 	}
