@@ -40,9 +40,11 @@ public class Dish {
 	private List<DishRating> rating = new ArrayList<DishRating>();;
 	
 	@OneToMany(mappedBy = "dish", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<DishOrder> dishOrder;
 	
 	@OneToMany(mappedBy = "dish",cascade = CascadeType.ALL, orphanRemoval = true)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<DishKeyWord> keyword;
 
