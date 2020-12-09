@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 
 import com.cs322.ors.db.TransactionRepository;
+import com.cs322.ors.db.UserRepository;
 import com.cs322.ors.model.Transaction;
 import com.cs322.ors.model.User;
 
@@ -20,17 +21,23 @@ public class TransactionService {
 	@Autowired
 	private TransactionRepository transactionRepository;
 
+	@Autowired
+	private UserService userService; 
+	
 	public Transaction createTransaction(Transaction transaction) throws Exception {
 		User customer = transaction.getUserid();
+		customer = userService.getUserById(customer.getId()).get();
+		BigDecimal currVipSum = customer.getVipSum();
 		if(transaction.getType() == 0) {
 			BigDecimal sum = getTransactionSumByCustomer(customer);
 			
 			if(sum.doubleValue() < transaction.getAmount().doubleValue()) {
 				throw new Exception("Cant perform transaction");
 			}
-			
 		}
-		
+		currVipSum = currVipSum.add(transaction.getAmount());
+		customer.setVipSum(currVipSum);
+		userService.updateUser(customer); 
 		return transactionRepository.save(transaction);
 	}
 

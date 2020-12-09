@@ -16,9 +16,9 @@ public class DeliveryJobs {
     /*
      * 0 - Job is available for delivery
      * 1 - Job is being delivered
+     * 2 - Job is completed
      */
     private int status = 0;
-
 
 	public DeliveryJobs() {}
 	

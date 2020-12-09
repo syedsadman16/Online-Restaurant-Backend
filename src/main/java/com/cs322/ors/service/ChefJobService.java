@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.cs322.ors.db.ChefJobRepository;
 import com.cs322.ors.model.ChefJob;
+import com.cs322.ors.model.DeliveryJobs;
+import com.cs322.ors.model.Order;
 
 
 @Service
@@ -15,6 +17,9 @@ public class ChefJobService {
 	
 	@Autowired
 	ChefJobRepository chefJobRepository;
+	
+	@Autowired
+	OrderService orderService;
 
 	public List<ChefJob> getAllchefjobs() {
 		return chefJobRepository.findAll();
@@ -40,8 +45,20 @@ public class ChefJobService {
 		Optional<ChefJob> chefJobDB = chefJobRepository.findById(id);
 		
 		if (chefJobDB.isPresent()) {
-			chefJobDB.get().setCompleted(!chefJobDB.get().isCompleted());   //updates to opposite of what is the current completion status
-			chefJobRepository.save(chefJobDB.get());
+			ChefJob job  = chefJobDB.get();
+			job.setCompleted(!chefJobDB.get().isCompleted());   //updates to opposite of what is the current completion status
+			Order order = job.getOrder();
+			DeliveryJobs deliveryJob = order.getDeliveryJob();
+	        boolean deliveryJobCompleted = deliveryJob.getStatus() == 2;
+	        if(order.getType() == 1 && deliveryJobCompleted) {
+				order.setCompleted(true);
+				orderService.updateOrder(order, order.getId());
+			}	
+			if(order.getType() == 0 || order.getType() == 2) {
+				order.setCompleted(true);
+				orderService.updateOrder(order, order.getId());
+			}			
+			chefJobRepository.save(job);
 		}
 		
 	}

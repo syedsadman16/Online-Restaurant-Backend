@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cs322.ors.db.UserWarningRepository;
 import com.cs322.ors.model.UserWarning;
@@ -30,7 +31,8 @@ public class UserWarningService {
 		List<UserWarning> userWarnings = userWarningRepository.findByUser_Id(userId);
 		return userWarnings.size();
 	}
-
+	
+	@Transactional
 	public void deleteAllByUser(long userId) {		//deletes all warnings from a specific user using their user_id
 		userWarningRepository.deleteByUser_Id(userId);
 	}

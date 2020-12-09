@@ -47,6 +47,7 @@ public class User {
 	
 	private boolean closed;
 	private boolean verified;
+	private BigDecimal vipSum = BigDecimal.ZERO;
 
 
 	// Bidirectional Mapping
@@ -90,6 +91,7 @@ public class User {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "chef", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<DishKeyWord> dishKeywords = new ArrayList<>();
 
 	@JsonIgnore
@@ -120,7 +122,8 @@ public class User {
 	private List<DeliveryJobs> deliveryJobs;
 
 
-	public User() { }
+	public User() { 
+	}
 
 	public User(String username, String password, String role) {
 		this.username = username;
@@ -132,6 +135,7 @@ public class User {
 		if(role == "DELIVERER"){
 			deliveryJobs = new ArrayList<>();
 		}
+		
 	}
 
 	public long getId() {
@@ -246,6 +250,14 @@ public class User {
 	
 	public EmployeeInfo getEmployeeInfo() {
 		return employeeInfo;
+	}
+
+	public BigDecimal getVipSum() {
+		return vipSum;
+	}
+
+	public void setVipSum(BigDecimal vipSum) {
+		this.vipSum = vipSum;
 	}
 
 	@Override

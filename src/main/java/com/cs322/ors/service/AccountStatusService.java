@@ -1,5 +1,6 @@
 package com.cs322.ors.service;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ public class AccountStatusService {
 
 		boolean isCustomer = user.getRole() == "CUSTOMER" || isVIP;
 		if(isVIP && warnings == 2) {
+			user.setVipSum(BigDecimal.ZERO);
 			user.setRole("CUSTOMER");
 			userWarningService.deleteAllByUser(user.getId());
 			userService.updateUser(user);

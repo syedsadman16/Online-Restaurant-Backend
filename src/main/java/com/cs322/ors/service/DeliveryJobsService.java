@@ -1,7 +1,7 @@
 package com.cs322.ors.service;
 
 import com.cs322.ors.db.DeliveryJobsRepository;
-
+import com.cs322.ors.model.ChefJob;
 import com.cs322.ors.model.DeliveryJobs;
 import com.cs322.ors.model.DeliveryStatus;
 import com.cs322.ors.model.Order;
@@ -115,17 +115,25 @@ public class DeliveryJobsService {
      * When delivery is complete, update the delivery and order status
      */
     public void deliveryJobCompleted(Long id){
-        DeliveryJobs completedJobs = deliveryJobsRepository.findById(id).get();
-        DeliveryStatus updateDeliveryStatus = completedJobs.getOrder().getDeliveryStatus();
-        updateDeliveryStatus.setDelivered(true);
-        Order completedOrder = completedJobs.getOrder();
-        completedOrder.setDeliveryStatus(updateDeliveryStatus);
+        DeliveryJobs completedJob = deliveryJobsRepository.findById(id).get();
+       // DeliveryStatus updateDeliveryStatus = completedJobs.getOrder().getDeliveryStatus();
+        //updateDeliveryStatus.setDelivered(true);
+        //Order completedOrder = completedJobs.getOrder();
+        //completedOrder.setDeliveryStatus(updateDeliveryStatus);
+        Order order = completedJob.getOrder();
+        ChefJob chefJob = order.getChefJob();
+        boolean chefJobCompleted = chefJob.isCompleted();
+        if(order.getType() == 1 && chefJobCompleted) {
+			order.setCompleted(true);
+			orderService.updateOrder(order, order.getId());
+		}		
+        completedJob.setStatus(2);
 
         // Enter amt to be paid here
 
         //Save to tables
-        orderService.updateOrder(completedOrder, completedJobs.getOrder().getId());
-        deliveryJobsRepository.delete(completedJobs);
+        //orderService.updateOrder(completedOrder, completedJobs.getOrder().getId());
+        deliveryJobsRepository.save(completedJob);
     }
 
 }

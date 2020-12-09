@@ -44,7 +44,7 @@ public class JobsController {
     }
 
     @PostMapping("/delivery/acceptJob/{jobId}")
-    @PreAuthorize("hasRole('DELIVERER')")
+    @PreAuthorize("hasAnyRole('MANAGER','DELIVERER')")
     public void acceptDeliveryJob(@PathVariable Long jobId, Authentication authUser){
         User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
         if(currentUser.getRole() == "DELIVERER") {
