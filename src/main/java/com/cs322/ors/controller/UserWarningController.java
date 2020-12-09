@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import com.cs322.ors.model.User;
@@ -65,6 +66,12 @@ public class UserWarningController {
 		else {
 			return null;
 			}		
+	}
+	
+	
+	@DeleteMapping("{id}")
+	public void deleteByUser(@PathVariable long id) {
+		userWarningService.deleteAllByUser(id);
 	}
 
 	
