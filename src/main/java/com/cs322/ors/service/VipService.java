@@ -37,8 +37,9 @@ public class VipService {
 	}
 	
 	public void checkAndSetVIP(User Customer) {
-		if (checkVIP(Customer) == true) {
+		if (checkVIP(Customer) == true && Customer.getVipSum().doubleValue() > 500) {
 			Customer.setRole("VIP");
+			
 			userService.updateUser(Customer);			
 		}
 	}

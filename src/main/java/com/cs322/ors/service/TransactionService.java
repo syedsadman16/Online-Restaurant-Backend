@@ -22,15 +22,16 @@ public class TransactionService {
 
 	public Transaction createTransaction(Transaction transaction) throws Exception {
 		User customer = transaction.getUserid();
+		BigDecimal currVipSum = customer.getVipSum();
 		if(transaction.getType() == 0) {
 			BigDecimal sum = getTransactionSumByCustomer(customer);
 			
 			if(sum.doubleValue() < transaction.getAmount().doubleValue()) {
 				throw new Exception("Cant perform transaction");
 			}
-			
 		}
-		
+		currVipSum = currVipSum.add(transaction.getAmount());
+		customer.setVipSum(currVipSum);
 		return transactionRepository.save(transaction);
 	}
 
