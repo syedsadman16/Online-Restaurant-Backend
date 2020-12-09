@@ -55,7 +55,7 @@ public class Order {
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<DishOrder> dishOrders = new ArrayList<>();
 
-	@JsonIgnore
+
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private DeliveryStatus deliveryStatus;
 	

@@ -116,16 +116,17 @@ public class DeliveryJobsService {
      */
     public void deliveryJobCompleted(Long id){
         DeliveryJobs completedJobs = deliveryJobsRepository.findById(id).get();
-        DeliveryStatus updateDeliveryStatus = completedJobs.getOrder().getDeliveryStatus();
-        updateDeliveryStatus.setDelivered(true);
-        Order completedOrder = completedJobs.getOrder();
-        completedOrder.setDeliveryStatus(updateDeliveryStatus);
+       // DeliveryStatus updateDeliveryStatus = completedJobs.getOrder().getDeliveryStatus();
+        //updateDeliveryStatus.setDelivered(true);
+        //Order completedOrder = completedJobs.getOrder();
+        //completedOrder.setDeliveryStatus(updateDeliveryStatus);
+        completedJobs.setStatus(2);
 
         // Enter amt to be paid here
 
         //Save to tables
-        orderService.updateOrder(completedOrder, completedJobs.getOrder().getId());
-        deliveryJobsRepository.delete(completedJobs);
+        //orderService.updateOrder(completedOrder, completedJobs.getOrder().getId());
+        deliveryJobsRepository.save(completedJobs);
     }
 
 }
