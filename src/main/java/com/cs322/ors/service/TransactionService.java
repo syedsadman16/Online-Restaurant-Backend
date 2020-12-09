@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 
 import com.cs322.ors.db.TransactionRepository;
+import com.cs322.ors.db.UserRepository;
 import com.cs322.ors.model.Transaction;
 import com.cs322.ors.model.User;
 
@@ -17,6 +18,8 @@ import com.cs322.ors.model.User;
 @Service
 public class TransactionService {
 
+	@Autowired
+	UserRepository userRepository;
 	@Autowired
 	private TransactionRepository transactionRepository;
 
@@ -32,6 +35,7 @@ public class TransactionService {
 		}
 		currVipSum = currVipSum.add(transaction.getAmount());
 		customer.setVipSum(currVipSum);
+		userRepository.save(customer);
 		return transactionRepository.save(transaction);
 	}
 

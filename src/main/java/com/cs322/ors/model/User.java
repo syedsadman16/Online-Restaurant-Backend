@@ -47,7 +47,7 @@ public class User {
 	
 	private boolean closed;
 	private boolean verified;
-	private BigDecimal vipSum;
+	private BigDecimal vipSum = BigDecimal.ZERO;
 
 
 	// Bidirectional Mapping
@@ -122,7 +122,8 @@ public class User {
 	private List<DeliveryJobs> deliveryJobs;
 
 
-	public User() { }
+	public User() { 
+	}
 
 	public User(String username, String password, String role) {
 		this.username = username;
@@ -134,7 +135,7 @@ public class User {
 		if(role == "DELIVERER"){
 			deliveryJobs = new ArrayList<>();
 		}
-		this.vipSum = BigDecimal.ZERO;
+		
 	}
 
 	public long getId() {
