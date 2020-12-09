@@ -49,7 +49,10 @@ public class ChefJobService {
 			job.setCompleted(!chefJobDB.get().isCompleted());   //updates to opposite of what is the current completion status
 			Order order = job.getOrder();
 			DeliveryJobs deliveryJob = order.getDeliveryJob();
-	        boolean deliveryJobCompleted = deliveryJob.getStatus() == 2;
+			boolean deliveryJobCompleted = false;
+			if(deliveryJob != null) {
+				deliveryJobCompleted = deliveryJob.getStatus() == 2;
+			}
 	        if(order.getType() == 1 && deliveryJobCompleted) {
 				order.setCompleted(true);
 				orderService.updateOrder(order, order.getId());

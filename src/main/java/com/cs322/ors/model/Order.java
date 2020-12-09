@@ -38,7 +38,7 @@ public class Order {
 	@JsonIdentityReference(alwaysAsId = true)
 	private User customer;
 
-	@Column(columnDefinition = "DATE")
+	@Column(columnDefinition="DATETIME")
 	private LocalDateTime date;
 
 	private int type; // 0 = pick-up, 1 = delivery, 2 = reservation
