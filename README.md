@@ -13,6 +13,24 @@ This is the backend for the [***Client Repo***](https://github.com/syedsadman16/
  - Samuel Fils
 
 ----
+
+## Running locally
+
+```
+git clone https://github.com/syedsadman16/Online-Restaurant-Backend.git
+cd Online-Restaurant-Backend
+./mvnw package
+java -jar target/*.jar
+```
+
+Or you can run it from Maven directly using the Spring Boot Maven plugin. If you do this it will pick up changes that you make in the project immediately (changes to Java source files require a compile as well - most people use an IDE for this):
+
+```
+./mvnw spring-boot:run
+```
+
+You can then the backend here: http://localhost:8080/
+
 #### Project Documentation:
 
 1. [Phase 1 Report - Software Requirements & Description](https://github.com/syedsadman16/Online-Restaurant-Backend/blob/next/CSC32200_ORS_R.pdf)
