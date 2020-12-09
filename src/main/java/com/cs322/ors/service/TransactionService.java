@@ -19,12 +19,14 @@ import com.cs322.ors.model.User;
 public class TransactionService {
 
 	@Autowired
-	UserRepository userRepository;
-	@Autowired
 	private TransactionRepository transactionRepository;
 
+	@Autowired
+	private UserService userService; 
+	
 	public Transaction createTransaction(Transaction transaction) throws Exception {
 		User customer = transaction.getUserid();
+		customer = userService.getUserById(customer.getId()).get();
 		BigDecimal currVipSum = customer.getVipSum();
 		if(transaction.getType() == 0) {
 			BigDecimal sum = getTransactionSumByCustomer(customer);
@@ -35,7 +37,7 @@ public class TransactionService {
 		}
 		currVipSum = currVipSum.add(transaction.getAmount());
 		customer.setVipSum(currVipSum);
-		userRepository.save(customer);
+		userService.updateUser(customer); 
 		return transactionRepository.save(transaction);
 	}
 
