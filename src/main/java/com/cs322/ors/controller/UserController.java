@@ -90,6 +90,13 @@ public class UserController {
 
 	}
 
+	@PatchMapping("/{id}")
+	@PreAuthorize("isAuthenticated()")
+	public User setUserVerified(@PathVariable Long id, @RequestBody Map<Object, Object> patchedUser) {
+		return userService.patchUser(id, patchedUser);
+	}
+
+
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('MANAGER')") // Only manager has access
 	public void deleteAccount(@PathVariable long id) {
