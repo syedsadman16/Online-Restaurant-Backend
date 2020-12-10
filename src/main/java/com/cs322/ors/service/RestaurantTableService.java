@@ -19,5 +19,9 @@ public class RestaurantTableService {
 		return restaurantTableRepository.findAvailableTables(timeSlot.getFrom(), timeSlot.getTo());
 	}
 	
+	public RestaurantTable findTableByName(Long name){
+		return restaurantTableRepository.findByName(name);
+	}
+	
 
 }

@@ -36,14 +36,9 @@ public class ReservationService {
 	}
 
 	public boolean isReservationAvailable(RestaurantTable table, TimeSlot timeSlot) {
-		long countOfConflictedRecords = reservationRepository.countOfConflictedReservations(table.getId(),
+		long countOfConflictedRecords = reservationRepository.countOfConflictedReservations(table.getName(),
 				timeSlot.getFrom(), timeSlot.getTo());
 		return countOfConflictedRecords <= 0;
-	}
-
-	public List<Reservation> findReservationByTableId(RestaurantTable table) {
-		List<Reservation> reservations = reservationRepository.findByTableId(table.getId());
-		return reservations;
 	}
 
 	public void checkValidTimeSlot(TimeSlot timeSlot) {

@@ -68,11 +68,11 @@ public class DbInit implements CommandLineRunner {
 
 			// REAL DATA NEEDED TO INITIALIZE APPLICATION
 			User manager = new User("manager", "manager", "MANAGER");
-			RestaurantTable table1 = new RestaurantTable();
-			RestaurantTable table2 = new RestaurantTable();
-			RestaurantTable table3 = new RestaurantTable();
-			RestaurantTable table4 = new RestaurantTable();
-			RestaurantTable table5 = new RestaurantTable();
+			RestaurantTable table1 = new RestaurantTable(1);
+			RestaurantTable table2 = new RestaurantTable(2);
+			RestaurantTable table3 = new RestaurantTable(3);
+			RestaurantTable table4 = new RestaurantTable(4);
+			RestaurantTable table5 = new RestaurantTable(5);
 			List<RestaurantTable> tables = Arrays.asList(table1, table2, table3, table4, table5);
 			userService.createUser(manager, null, null);
 			tableRepository.saveAll(tables);

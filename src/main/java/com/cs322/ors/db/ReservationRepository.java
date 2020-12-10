@@ -13,7 +13,7 @@ import com.cs322.ors.model.Reservation;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
-    @Query("select count(r) from Reservation r where r.table.id = :tableId" +
+    @Query("select count(r) from Reservation r where r.table.name = :tableName" +
             " and not (" +
             " not (r.timeSlot.from >= :inputFrom and r.timeSlot.from < :inputTo)" +
             " and " +
@@ -22,11 +22,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     )
     
 
-    long countOfConflictedReservations( Long tableId,
+    long countOfConflictedReservations( Long tableName,
                                   LocalDateTime inputFrom,
                                   LocalDateTime inputTo);
-
-    List<Reservation> findByTableId(Long tableId);
     
     List<Reservation> findByCustomerId(Long id);
 

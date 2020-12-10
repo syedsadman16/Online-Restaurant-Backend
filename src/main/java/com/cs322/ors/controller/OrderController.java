@@ -40,6 +40,7 @@ import com.cs322.ors.service.DeliveryJobsService;
 import com.cs322.ors.service.DishService;
 import com.cs322.ors.service.OrderService;
 import com.cs322.ors.service.ReservationService;
+import com.cs322.ors.service.RestaurantTableService;
 import com.cs322.ors.service.TransactionService;
 import com.cs322.ors.service.UserService;
 import com.cs322.ors.service.VipService;
@@ -75,6 +76,9 @@ public class OrderController {
 	
 	@Autowired
 	public ReservationService reservationService;
+	
+	@Autowired
+	public RestaurantTableService restaurantTableService;
 	
 	@GetMapping// Get all customer own orders or all orders
 	@PreAuthorize("isAuthenticated()")
@@ -123,11 +127,12 @@ public class OrderController {
 		List<Map<String, Long>> rawDishOrder;
 		TimeSlot timeSlot;
 		RestaurantTable table;
+		long tableName = rawOrder.get("table").longValue();
 		try {
 			rawDishOrder = mapper.readValue(rawOrder.get("dishes").toString(),
 					new TypeReference<List<Map<String, Long>>>() {
 					});
-			table = mapper.treeToValue(rawOrder.get("table"), RestaurantTable.class);
+			table = restaurantTableService.findTableByName(tableName);
 			timeSlot = mapper.treeToValue(rawOrder.get("timeSlot"), TimeSlot.class);
 			
 		} catch (Exception e) {
