@@ -95,6 +95,12 @@ public class UserController {
 	public User setUserVerified(@PathVariable Long id, @RequestBody Map<Object, Object> patchedUser) {
 		return userService.patchUser(id, patchedUser);
 	}
+	
+	@PatchMapping("openAccount/{id}")
+	@PreAuthorize("isAuthenticated()")
+	public User setUserAccountOpen(@PathVariable Long id, @RequestBody Map<Object, Object> patchedUser) {
+		return userService.patchUser(id, patchedUser);
+	}
 
 
 	@DeleteMapping("/{id}")
