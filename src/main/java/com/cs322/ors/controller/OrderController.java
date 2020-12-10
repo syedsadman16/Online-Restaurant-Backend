@@ -70,17 +70,17 @@ public class OrderController {
 
 	@Autowired
 	public DeliveryJobsService deliveryJobsService;
-	
+
 	@Autowired
 	public ChefJobService chefJobService;
-	
+
 	@Autowired
 	public ReservationService reservationService;
-	
+
 	@Autowired
 	public RestaurantTableService restaurantTableService;
-	
-	@GetMapping// Get all customer own orders or all orders
+
+	@GetMapping // Get all customer own orders or all orders
 	@PreAuthorize("isAuthenticated()")
 	public List<Order> getOrders(Authentication authUser) {
 		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
@@ -91,8 +91,9 @@ public class OrderController {
 		}
 
 	}
-	
-	@GetMapping("/allOrders")// Get all orders for home page so surfers/new users can see most ordered dishes.
+
+	@GetMapping("/allOrders") // Get all orders for home page so surfers/new users can see most ordered
+								// dishes.
 	public List<Order> geAlltOrders() {
 		return orderService.getAllOrders();
 
@@ -126,15 +127,17 @@ public class OrderController {
 		ObjectMapper mapper = new ObjectMapper();
 		List<Map<String, Long>> rawDishOrder;
 		TimeSlot timeSlot;
-		RestaurantTable table;
-		long tableName = rawOrder.get("table").longValue();
+		RestaurantTable table = null;
 		try {
 			rawDishOrder = mapper.readValue(rawOrder.get("dishes").toString(),
 					new TypeReference<List<Map<String, Long>>>() {
 					});
-			table = restaurantTableService.findTableByName(tableName);
+			if (rawOrder.has("table")) {
+				long tableName = rawOrder.get("table").longValue();
+				table = restaurantTableService.findTableByName(tableName);
+			}
 			timeSlot = mapper.treeToValue(rawOrder.get("timeSlot"), TimeSlot.class);
-			
+
 		} catch (Exception e) {
 			System.err.println(e);
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -162,37 +165,36 @@ public class OrderController {
 			// Check funds. Create a transaction & jobs for the order if possible.
 			if (currentBalance.compareTo(newAmount) == -1) {
 				throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Account don't have enough funds");
-			} else {			
+			} else {
 				Order order = orderService.makeOrder(currentUser, dishOrders, orderType);
 				transactionService.createTransaction(
 						new Transaction(currentUser, newAmount, String.format("OrderId: %d", order.getId()), 0));
-				
+
 				chefJobService.addChefJob(new ChefJob(dishOrders.get(0).getDish().getChef(), order));
-				
-				if(order.getType() == 1) {
+
+				if (order.getType() == 1) {
 					deliveryJobsService.addDeliveryJob(new DeliveryJobs(order));
 				}
-				if(order.getType() == 2) {
-					//TODO: Fix this
+				if (order.getType() == 2) {
+					// TODO: Fix this
 					reservationService.createReservation(new Reservation(timeSlot, currentUser, order, table));
 
 				}
 
 			}
 		} else {
-			
+
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not order special dishes");
 
 		}
 	}
-	
+
 	@PostMapping("/{orderId}")
 	@PreAuthorize("isAuthenticated()")
 	public void setCompleted(@PathVariable long orderId) {
 		orderService.setCompleted(orderId);
 	}
-	
-	
+
 	@PutMapping("/{orderId}") // Update a customers order
 	@PreAuthorize("isAuthenticated()")
 	public void updateOrder(@Valid @RequestBody Order order, @PathVariable long orderId, Authentication authUser) {
