@@ -140,8 +140,8 @@ public class OrderController {
 				.map(obj -> new DishOrder(dishService.getDish(obj.get("id")).get(), obj.get("quantity").intValue()))
 				.collect(Collectors.toList());
 		User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
-		boolean isVIP = currentUser.getRole() == "VIP";
-		boolean isCustomer = currentUser.getRole() == "CUSTOMER" || isVIP;
+		boolean isVIP = currentUser.getRole().equals("VIP");
+		boolean isCustomer = currentUser.getRole().equals("CUSTOMER") || isVIP;
 		boolean isDishesSpecial = dishOrders.stream().anyMatch(dishOrder -> dishOrder.getDish().isSpecial());
 		boolean canOrderDishTypes = (isVIP && isDishesSpecial) || (isCustomer && !isDishesSpecial);
 
