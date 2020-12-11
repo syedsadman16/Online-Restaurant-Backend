@@ -73,6 +73,26 @@ public class OrderService {
 			orderRepository.save(orderDB.get());
 		}
 	}
+
+	public void setDishRated(long orderId) {
+		Optional <Order> orderDB = orderRepository.findById(orderId);
+		
+		if (orderDB.isPresent()) {
+			orderDB.get().setDishRated(true);
+			orderRepository.save(orderDB.get());
+		}
+		
+	}
+	
+	public void setDelivererRated(long orderId) {
+		Optional <Order> orderDB = orderRepository.findById(orderId);
+		
+		if (orderDB.isPresent()) {
+			orderDB.get().setDelivererRated(true);
+			orderRepository.save(orderDB.get());
+		}
+		
+	}
 	
 	
 

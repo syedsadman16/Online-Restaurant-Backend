@@ -194,6 +194,18 @@ public class OrderController {
 	public void setCompleted(@PathVariable long orderId) {
 		orderService.setCompleted(orderId);
 	}
+	
+	@PostMapping("dishRated/{orderId}")
+	public void setDishRated(@PathVariable long orderId) {
+		orderService.setDishRated(orderId);
+	}
+	
+	
+	@PostMapping("delivererRated/{orderId}")
+	public void setDelivererRated(@PathVariable long orderId) {
+		orderService.setDelivererRated(orderId);
+	}
+	
 
 	@PutMapping("/{orderId}") // Update a customers order
 	@PreAuthorize("isAuthenticated()")

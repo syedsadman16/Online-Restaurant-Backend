@@ -42,6 +42,8 @@ public class Order {
 	private LocalDateTime date;
 
 	private int type; // 0 = pick-up, 1 = delivery, 2 = reservation
+	private boolean DishRated;
+	private boolean DelivererRated;
 	private boolean completed;
 	private boolean cancelled;
 
@@ -87,6 +89,8 @@ public class Order {
 		this.date = LocalDateTime.now();
 		this.completed = false;
 		this.cancelled = false;
+		this.DishRated = false;
+		this.DelivererRated = false;
 	}
 	
 
@@ -136,6 +140,23 @@ public class Order {
 
 	public void setCompleted(boolean completed) {
 		this.completed = completed;
+	}
+	
+
+	public boolean getDishRated() {
+		return DishRated;
+	}
+
+	public void setDishRated(boolean DishRated) {
+		this.DishRated = DishRated;
+	}
+
+	public boolean getDelivererRated() {
+		return DelivererRated;
+	}
+
+	public void setDelivererRated(boolean DelivererRated) {
+		this.DelivererRated = DelivererRated;
 	}
 
 	public boolean getCancelled() {
