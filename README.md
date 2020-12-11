@@ -3,6 +3,8 @@ Group project for **CSC 322 @ CCNY**.
 
 This is the backend for the [***Client Repo***](https://github.com/syedsadman16/Online-Restaurant-System-Frontend) using Spring Boot
 
+## Project Site
+https://syedsadman16.github.io/Online-Restaurant-System-Frontend/#/
 
 ------
 #### Team R:
@@ -29,7 +31,7 @@ Or you can run it from Maven directly using the Spring Boot Maven plugin. If you
 ./mvnw spring-boot:run
 ```
 
-You can then the backend here: http://localhost:8080/
+You can then run the backend here: http://localhost:8080/
 
 ### Technologies Used
 - Spring Boot (Maven)
