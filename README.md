@@ -43,6 +43,20 @@ You can then run the backend here: http://localhost:8080/
 - H2 Database Engine
 - Heroku
 
+### Default Users
+##### We already have some intial data in our database just for testing. However you can see create more data dynamically. 
+1. Username: manager, Password: manager
+2. Username: customer1, Password: customer1
+3. Username: customer2, Password: customer2
+4. Username: customer3, Password: customer3
+5. Username: vip1, Password: vip1
+6. Username: chef1, Password: chef1
+7. Username: chef2, Password: chef2
+8. Username: deliverer1, Password: deliverer1
+9. Username: deliverer2, Password: deliverer2
+
+
+
 ### Project Documentation:
 
 1. [Phase 1 Report - Software Requirements & Description](https://github.com/syedsadman16/Online-Restaurant-Backend/blob/next/CSC32200_ORS_R.pdf)
