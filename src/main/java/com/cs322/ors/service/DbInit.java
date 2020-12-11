@@ -191,10 +191,10 @@ public class DbInit implements CommandLineRunner {
 			DishKeyWord word7 = new DishKeyWord("Shake", dish5, chef1);
 			dishKeyWordRepository.save(word7);
 
-			UserRatings rating3 = new UserRatings(2.1, "Customer upset over missing drink", customer1, order1);
+			UserRatings rating3 = new UserRatings(2.1, "Customer upset over missing drink", customer1, order1, 0);
 			userRatingsRepository.save(rating3);
 
-			UserRatings rating4 = new UserRatings(0.9, " missing ", customer2, order2);
+			UserRatings rating4 = new UserRatings(0.9, " missing ", customer2, order2, 0);
 			userRatingsRepository.save(rating4);
 
 			Transaction transaction1 = new Transaction(customer1, BigDecimal.valueOf(32.20), "OrderId: 1", 0);

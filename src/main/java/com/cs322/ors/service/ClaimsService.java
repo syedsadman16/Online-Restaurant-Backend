@@ -57,6 +57,17 @@ public class ClaimsService {
 
 
     /*
+     * If a claim is approved, change type to 1
+     */
+    public void approveClaim(Long claimId) {
+        UserRatings userRatings = claimsRepository.findById(claimId).get().getUserRating();
+        userRatings.setType(1);
+        userRatingsService.updateUserRatings(userRatings);
+        deleteClaim(claimId);
+    }
+
+
+    /*
      * Users can submit a claim for a particular rating
      */
     public void postClaim(Claims claims){

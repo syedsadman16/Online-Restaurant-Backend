@@ -12,10 +12,17 @@ public class UserRatings {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+
+    /*
+     * This is the user that is being rated
+     */
     @ManyToOne
     @JoinColumn(name="person_id")
     private User person;
 
+    /*
+     * Save the order just for reference
+     */
     @OneToOne
     @JoinColumn(name="order_id")
     private Order order;
@@ -24,6 +31,7 @@ public class UserRatings {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Claims claims;
 
+    private int type; // 0 is default, 1 is dismissed
     private double rating;
     private String comments = "";
 
@@ -31,11 +39,12 @@ public class UserRatings {
 
     }
 
-    public UserRatings(double rating, String comments, User person, Order order) {
+    public UserRatings(double rating, String comments, User person, Order order, int type) {
         this.person = person;
         this.rating = rating;
         this.comments = comments;
         this.order = order;
+        this.type = type;
     }
 
     public long getId() {
@@ -80,5 +89,13 @@ public class UserRatings {
 
     public void setClaims(Claims claims) {
         this.claims = claims;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }
