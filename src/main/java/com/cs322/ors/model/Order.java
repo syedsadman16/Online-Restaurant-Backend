@@ -73,7 +73,7 @@ public class Order {
 
 //	@JsonIdentityInfo(property = "id", generator = ObjectIdGenerators.PropertyGenerator.class)
 ////	@JsonIdentityReference(alwaysAsId = true)
-@JsonIgnoreProperties({"id", "password", "role", "closed", "deliveryJobs"})
+	@JsonIgnoreProperties({"password", "role", "closed", "deliveryJobs"})
 	@OneToOne
 	private User deliveryPerson; 
 
