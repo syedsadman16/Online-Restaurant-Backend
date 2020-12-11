@@ -12,6 +12,9 @@ import java.util.List;
 @Service
 public class UserRatingsService {
 
+	@Autowired
+	private CensorService censorService;
+	
     @Autowired
     private UserRatingsRepository userRatingsRepository;
     @Autowired
@@ -26,7 +29,8 @@ public class UserRatingsService {
         return userRatingsRepository.findAllByPerson(person);
     }
 
-    public void addUserRatings(UserRatings userRatings){
+    public void addUserRatings(UserRatings userRatings, User currentUser){
+    	userRatings.setComments(censorService.censor(userRatings.getComments(), currentUser));
         userRatingsRepository.save(userRatings);
     }
 
