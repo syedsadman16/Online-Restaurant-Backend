@@ -23,7 +23,7 @@ public class UserRatings {
     /*
      * Save the order just for reference
      */
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="order_id")
     private Order order;
 

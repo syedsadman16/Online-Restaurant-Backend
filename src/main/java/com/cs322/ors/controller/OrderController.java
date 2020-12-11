@@ -200,6 +200,11 @@ public class OrderController {
 		orderService.setDishRated(orderId);
 	}
 	
+	@PostMapping("userRated/{orderId}")
+	public void setuserRated(@PathVariable long orderId) {
+		orderService.setUserRated(orderId);
+	}
+	
 	
 	@PostMapping("delivererRated/{orderId}")
 	public void setDelivererRated(@PathVariable long orderId) {

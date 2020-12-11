@@ -93,6 +93,16 @@ public class OrderService {
 		}
 		
 	}
+
+	public void setUserRated(long orderId) {
+		Optional <Order> orderDB = orderRepository.findById(orderId);
+		
+		if (orderDB.isPresent()) {
+			orderDB.get().setUserRated(true);
+			orderRepository.save(orderDB.get());
+		}
+		
+	}
 	
 	
 
