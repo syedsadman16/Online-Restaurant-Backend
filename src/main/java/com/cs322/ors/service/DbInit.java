@@ -87,10 +87,13 @@ public class DbInit implements CommandLineRunner {
 			User chef1 = new User("chef1", "chef1", "CHEF");
 			User chef2 = new User("chef2", "chef2", "CHEF");
 			User deliverer1 = new User("deliverer1", "deliverer1", "DELIVERER");
+			User deliverer2 = new User("deliverer2", "deliverer2", "DELIVERER");
 			vip1.setVerified(true);
 			chef1.setVerified(true);
 			chef2.setVerified(true);
 			deliverer1.setVerified(true);
+			deliverer2.setVerified(true);
+			
 
 			userService.createUser(customer1, new CustomerInfo("address", "name", customer1), null);
 			userService.createUser(customer2, new CustomerInfo("address", "name", customer2), null);
@@ -99,6 +102,7 @@ public class DbInit implements CommandLineRunner {
 			userService.createUser(chef1, null, new EmployeeInfo("address", "name", chef1));
 			userService.createUser(chef2, null, new EmployeeInfo("address", "name", chef2));
 			userService.createUser(deliverer1, null, new EmployeeInfo("address", "name", deliverer1));
+			userService.createUser(deliverer2, null, new EmployeeInfo("address", "name", deliverer2));
 
 			Dish dish1 = new Dish("strawberry cake", chef1, "Strawberry falvored cake",
 					"https://static.onecms.io/wp-content/uploads/sites/24/2017/02/474428695_5367210460001_5365952845001-vs.jpg",

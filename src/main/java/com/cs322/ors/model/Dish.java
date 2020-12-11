@@ -31,7 +31,7 @@ public class Dish {
 
 
 	@ManyToOne(optional=false)
-	@JsonIgnoreProperties({"username", "password", "role", "closed"})
+	@JsonIgnoreProperties({"password", "role", "closed"})
 	private User chef;
 
 	// Unidirectional relations
