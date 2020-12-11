@@ -12,6 +12,9 @@ import java.util.List;
 @Service
 public class UserRatingsService {
 
+	@Autowired
+	private CensorService censorService;
+	
     @Autowired
     private UserRatingsRepository userRatingsRepository;
     @Autowired
@@ -26,13 +29,16 @@ public class UserRatingsService {
         return userRatingsRepository.findAllByPerson(person);
     }
 
-    public void addUserRatings(UserRatings userRatings){
+    public void addUserRatings(UserRatings userRatings, User currentUser){
+    	userRatings.setComments(censorService.censor(userRatings.getComments(), currentUser));
         userRatingsRepository.save(userRatings);
     }
 
     public double calculateAverageRatings(Long userId){
         User person = userRepository.findById(userId).get();
         double total = 0;
+        int size = 1;
+
         List<UserRatings> totalRatings = userRatingsRepository.findAllByPerson(person);
 
         if(totalRatings.size() == 0){
@@ -40,9 +46,12 @@ public class UserRatingsService {
         }
 
         for(int i=0; i<totalRatings.size(); i++){
-            total += totalRatings.get(i).getRating();
+            if(totalRatings.get(i).getType() == 0) {
+                size++;
+                total += totalRatings.get(i).getRating();
+            }
         }
-        return total/totalRatings.size();
+        return total/size;
     }
 
     public void updateUserRatings(UserRatings updatedUserRatings){

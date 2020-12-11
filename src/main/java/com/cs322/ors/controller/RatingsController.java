@@ -57,8 +57,9 @@ public class RatingsController {
 
     @PostMapping("/users/add")
     @PreAuthorize("hasAnyRole('CUSTOMER','VIP','DELIVERER', 'MANAGER')")
-    public void addNewUserRatings(@RequestBody UserRatings userRatings) {
-        userRatingsService.addUserRatings(userRatings);
+    public void addNewUserRatings(@RequestBody UserRatings userRatings, Authentication authUser) {
+        User currentUser = ((UserPrincipal) authUser.getPrincipal()).getUser();
+        userRatingsService.addUserRatings(userRatings, currentUser);
     }
 
     @PostMapping("/users/update")

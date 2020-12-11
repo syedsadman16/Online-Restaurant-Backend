@@ -42,6 +42,9 @@ public class Order {
 	private LocalDateTime date;
 
 	private int type; // 0 = pick-up, 1 = delivery, 2 = reservation
+	private boolean DishRated;
+	private boolean DelivererRated;
+	private boolean userRated;
 	private boolean completed;
 	private boolean cancelled;
 
@@ -64,8 +67,9 @@ public class Order {
 	private DeliveryJobs deliveryJobs;
 	
 	@JsonIgnore
-	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private UserRatings userRating;
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<UserRatings> userRating = new ArrayList<>();
 	
 	@JsonIgnore
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -73,7 +77,7 @@ public class Order {
 
 //	@JsonIdentityInfo(property = "id", generator = ObjectIdGenerators.PropertyGenerator.class)
 ////	@JsonIdentityReference(alwaysAsId = true)
-@JsonIgnoreProperties({"id", "password", "role", "closed", "deliveryJobs"})
+	@JsonIgnoreProperties({"password", "role", "closed", "deliveryJobs"})
 	@OneToOne
 	private User deliveryPerson; 
 
@@ -87,6 +91,9 @@ public class Order {
 		this.date = LocalDateTime.now();
 		this.completed = false;
 		this.cancelled = false;
+		this.DishRated = false;
+		this.DelivererRated = false;
+		this.userRated = false;
 	}
 	
 
@@ -136,6 +143,31 @@ public class Order {
 
 	public void setCompleted(boolean completed) {
 		this.completed = completed;
+	}
+	
+
+	public boolean getUserRated() {
+		return userRated;
+	}
+
+	public void setUserRated(boolean userRated) {
+		this.userRated = userRated;
+	}
+
+	public boolean getDishRated() {
+		return DishRated;
+	}
+
+	public void setDishRated(boolean DishRated) {
+		this.DishRated = DishRated;
+	}
+
+	public boolean getDelivererRated() {
+		return DelivererRated;
+	}
+
+	public void setDelivererRated(boolean DelivererRated) {
+		this.DelivererRated = DelivererRated;
 	}
 
 	public boolean getCancelled() {

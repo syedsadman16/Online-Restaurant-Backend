@@ -87,10 +87,13 @@ public class DbInit implements CommandLineRunner {
 			User chef1 = new User("chef1", "chef1", "CHEF");
 			User chef2 = new User("chef2", "chef2", "CHEF");
 			User deliverer1 = new User("deliverer1", "deliverer1", "DELIVERER");
+			User deliverer2 = new User("deliverer2", "deliverer2", "DELIVERER");
 			vip1.setVerified(true);
 			chef1.setVerified(true);
 			chef2.setVerified(true);
 			deliverer1.setVerified(true);
+			deliverer2.setVerified(true);
+			
 
 			userService.createUser(customer1, new CustomerInfo("address", "name", customer1), null);
 			userService.createUser(customer2, new CustomerInfo("address", "name", customer2), null);
@@ -99,22 +102,23 @@ public class DbInit implements CommandLineRunner {
 			userService.createUser(chef1, null, new EmployeeInfo("address", "name", chef1));
 			userService.createUser(chef2, null, new EmployeeInfo("address", "name", chef2));
 			userService.createUser(deliverer1, null, new EmployeeInfo("address", "name", deliverer1));
+			userService.createUser(deliverer2, null, new EmployeeInfo("address", "name", deliverer2));
 
 			Dish dish1 = new Dish("strawberry cake", chef1, "Strawberry falvored cake",
-					"https://aclassictwist.com/wp-content/uploads/2020/08/Fresh-Strawberry-Cake-with-Strawberry-Frosting-3.jpg",
+					"https://static.onecms.io/wp-content/uploads/sites/24/2017/02/474428695_5367210460001_5365952845001-vs.jpg",
 					BigDecimal.valueOf(10), false);
 			Dish dish2 = new Dish("RED velvet cake", chef1, "choclate layered cake",
-					"https://www.savingdessert.com/wp-content/uploads/2018/12/Red-Velvet-Cake-4-480x270.jpg",
+					"https://food-images.files.bbci.co.uk/food/recipes/red_velvet_cake_70743_16x9.jpg",
 					BigDecimal.valueOf(10.50), true);
 			Dish dish3 = new Dish("Tiramisu cake", chef1, "coffee falvored",
-					"https://www.alicaspepperpot.com/wp-content/uploads/2017/12/DSC_0058-2-1024x683.jpg",
+					"https://i.pinimg.com/originals/28/45/94/284594d16a876fa48dd8b660d8cfe327.jpg",
 					BigDecimal.valueOf(10.50), false);
 			Dish dish4 = new Dish("Hershey Pie", chef2,
 					"Chocolate mousse layered with brownies and topped with whipped cream",
-					"https://i.ytimg.com/vi/zXT5Bjr9l5Y/maxresdefault.jpg", BigDecimal.valueOf(8.75), false);
+					"https://hips.hearstapps.com/del.h-cdn.co/assets/17/45/1510259607-delish-hot-chocolate-pie-2.jpg", BigDecimal.valueOf(8.75), false);
 			Dish dish5 = new Dish("Boston Cream Mousse Cheesecake", chef2,
 					"Cheesecake combination: cool, creamy custard nestled in fluffy cake & topped with bittersweet chocolate",
-					"https://cdn.discordapp.com/attachments/753683675643772973/783163947024384020/unknown.png",
+					"https://truffle-assets.imgix.net/pxqrocxwsjcc_77cCHKK1s46C8mEwqqgqic_chocolate-snowflake-mousse-cake_landscapeThumbnail_en.jpeg",
 					BigDecimal.valueOf(11.25), true);
 
 			// Add test dish ratings
@@ -191,10 +195,10 @@ public class DbInit implements CommandLineRunner {
 			DishKeyWord word7 = new DishKeyWord("Shake", dish5, chef1);
 			dishKeyWordRepository.save(word7);
 
-			UserRatings rating3 = new UserRatings(2.1, "Customer upset over missing drink", customer1, order1);
+			UserRatings rating3 = new UserRatings(2.1, "Customer upset over missing drink", customer1, order1, 0);
 			userRatingsRepository.save(rating3);
 
-			UserRatings rating4 = new UserRatings(0.9, " missing ", customer2, order2);
+			UserRatings rating4 = new UserRatings(0.9, " missing ", customer2, order2, 0);
 			userRatingsRepository.save(rating4);
 
 			Transaction transaction1 = new Transaction(customer1, BigDecimal.valueOf(32.20), "OrderId: 1", 0);
@@ -213,11 +217,11 @@ public class DbInit implements CommandLineRunner {
 			deliveryJobsService.addDeliveryJob(job2);
 
 			// Claims
-			Claims claim1 = new Claims(rating3, customer1, "Fake news");
-			claimsService.postClaim(claim1);
-
-			Claims claim2 = new Claims(rating4, customer2, "Fake ");
-			claimsService.postClaim(claim2);
+//			Claims claim1 = new Claims(rating3, customer1, "Fake news");
+//			claimsService.postClaim(claim1);
+//
+//			Claims claim2 = new Claims(rating4, customer2, "Fake ");
+//			claimsService.postClaim(claim2);
 
 			// Discussions
 			Discussion discussion1 = new Discussion(customer1, "Who the best chef in here?");

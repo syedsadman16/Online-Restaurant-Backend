@@ -41,13 +41,15 @@ public class ClaimsController {
         }
     }
 
+
     /*
-     * Accept the claim and remove the rating - this will also delete the claim
+     * Accept the claim and change rating type
      */
     @PostMapping("/approveClaim/{claimId}")
     @PreAuthorize("hasRole('MANAGER')")
-    public void denyClaimToWarning(@PathVariable Long claimId){
-        userRatingsService.deleteUserRatings(claimsService.getClaimById(claimId).getUserRating().getId());
+    public void acceptClaim(@PathVariable Long claimId){
+        //userRatingsService.deleteUserRatings(claimsService.getClaimById(claimId).getUserRating().getId());
+        claimsService.approveClaim(claimId);
     }
 
 
