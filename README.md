@@ -1,7 +1,7 @@
 # Online Restaurant System
 Group project for **CSC 322 @ CCNY**.
 
-This is the backend for the [***Client Repo***](https://github.com/syedsadman16/Online-Restaurant-System-Frontend) using Spring Booot
+This is the backend for the [***Client Repo***](https://github.com/syedsadman16/Online-Restaurant-System-Frontend) using Spring Boot
 
 
 ------
@@ -31,7 +31,17 @@ Or you can run it from Maven directly using the Spring Boot Maven plugin. If you
 
 You can then the backend here: http://localhost:8080/
 
-#### Project Documentation:
+### Technologies Used
+- Spring Boot (Maven)
+- MVC Architecture
+- Spring Security
+- Spring Data JPA
+- JWT Authentication
+- MySQL
+- H2 Database Engine
+- Heroku
+
+### Project Documentation:
 
 1. [Phase 1 Report - Software Requirements & Description](https://github.com/syedsadman16/Online-Restaurant-Backend/blob/next/CSC32200_ORS_R.pdf)
 
