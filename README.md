@@ -4,7 +4,7 @@ Group project for **CSC 322 @ CCNY**.
 This is the backend for the [***Client Repo***](https://github.com/syedsadman16/Online-Restaurant-System-Frontend) using Spring Boot
 
 ## Project Site
-https://syedsadman16.github.io/Grannys-Sweets-Frontend/#/
+https://syedsadman16.github.io/Online-Restaurant-System-Frontend/#/
 
 ------
 #### Team R:
